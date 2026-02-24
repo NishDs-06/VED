@@ -22,13 +22,12 @@
 }
 
 .heroContent {
-    position: relative;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.vedWrapper {
-    will-change: filter;
 }

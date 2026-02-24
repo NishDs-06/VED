@@ -14,12 +14,13 @@ export default function Hero() {
 
     return (
         <section className={styles.hero} id="hero" ref={heroRef}>
+            {/* Canvas is a direct child of hero so position:absolute anchors to hero's top-left */}
+            <VEDLogoCanvas
+                heroRef={heroRef}
+                heroTextRef={heroTextRef}
+                scrollCueRef={scrollCueRef}
+            />
             <div className={styles.heroContent}>
-                <VEDLogoCanvas
-                    heroRef={heroRef}
-                    heroTextRef={heroTextRef}
-                    scrollCueRef={scrollCueRef}
-                />
                 <HeroText ref={heroTextRef} />
             </div>
             <ScrollCue ref={scrollCueRef} />
