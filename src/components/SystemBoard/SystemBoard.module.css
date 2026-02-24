@@ -1,0 +1,449 @@
+/* ── Section ─────────────────────────────────────────────────── */
+.systemSection {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg);
+    padding: var(--sp-7) var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-6);
+    overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.header {
+    text-align: left;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.headerLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: rgba(0, 194, 255, 0.6);
+    text-transform: uppercase;
+    margin-bottom: var(--sp-2);
+}
+
+.headerTitle {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--sp-2);
+}
+
+.headerSub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ghost);
+}
+
+/* ── Board wrap ──────────────────────────────────────────────── */
+.boardWrap {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    height: 560px;
+    background: var(--surface);
+    border: 1px solid rgba(30, 240, 144, 0.25);
+    box-shadow:
+        inset 0 0 80px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(30, 240, 144, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* ── Scan line ───────────────────────────────────────────────── */
+.scanLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 20px rgba(0, 194, 255, 0.8);
+    z-index: 20;
+    pointer-events: none;
+    top: 0;
+    opacity: 0;
+}
+
+/* ── Fiducials ───────────────────────────────────────────────── */
+.fiducial {
+    position: absolute;
+    z-index: 2;
+    opacity: 0.6;
+}
+
+.tl {
+    top: 8px;
+    left: 8px;
+}
+
+.tr {
+    top: 8px;
+    right: 8px;
+}
+
+.bl {
+    bottom: 8px;
+    left: 8px;
+}
+
+.br {
+    bottom: 8px;
+    right: 8px;
+}
+
+/* ── Silkscreen ──────────────────────────────────────────────── */
+.silkscreen {
+    position: absolute;
+    bottom: 4px;
+    left: 30px;
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.12);
+    z-index: 2;
+    text-transform: uppercase;
+}
+
+/* ── Wire SVG overlay ────────────────────────────────────────── */
+.wireSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.wire {
+    transition: stroke-opacity 0.2s, stroke-width 0.2s;
+}
+
+.wireHi {
+    stroke-opacity: 0.9;
+    stroke-width: 1;
+}
+
+.wireDim {
+    stroke-opacity: 0.05;
+}
+
+/* ── VEDA Chip centre ────────────────────────────────────────── */
+.vedaChip {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+.vedaOuter {
+    width: 160px;
+    height: 160px;
+    border: 2px solid var(--accent-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    box-shadow: var(--glow-sm);
+    position: relative;
+}
+
+.vedaInner {
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+    border: 1px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 194, 255, 0.02);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.vedaHeart {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 194, 255, 0.18) 0%, transparent 70%);
+    animation: heartbeat 3s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(0.7);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.vedaLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.2em;
+    position: relative;
+    z-index: 1;
+}
+
+.vedaSub {
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    color: rgba(0, 194, 255, 0.5);
+    letter-spacing: 0.15em;
+    position: relative;
+    z-index: 1;
+    margin-top: 4px;
+}
+
+/* ── Module boxes ────────────────────────────────────────────── */
+.module {
+    position: absolute;
+    background: rgba(0, 194, 255, 0.03);
+    border: 1px solid var(--border-2);
+    border-radius: 2px;
+    padding: 6px 8px;
+    cursor: pointer;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    opacity: 0.8;
+}
+
+.module:hover,
+.moduleHi {
+    border-color: var(--accent) !important;
+    box-shadow: var(--glow-md) !important;
+    opacity: 1 !important;
+}
+
+.moduleDim {
+    opacity: 0.2 !important;
+}
+
+.modDesig {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.1em;
+}
+
+.modLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* LED dot */
+.led {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: ledPulse 1.5s ease-in-out infinite;
+}
+
+/* Status badge */
+.badge {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 12px;
+    height: 3px;
+    border-radius: 1px;
+    opacity: 0.7;
+}
+
+/* ── Board overlay ───────────────────────────────────────────── */
+.boardOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 5;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+/* ── Detail panel ────────────────────────────────────────────── */
+.detailPanel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 420px;
+    background: var(--bg);
+    border-left: 1px solid var(--border-2);
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.9), var(--glow-sm);
+    z-index: 9990;
+    padding: var(--sp-6) var(--sp-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+}
+
+.panelIn {
+    transform: translateX(0);
+}
+
+.closeBtn {
+    position: absolute;
+    top: var(--sp-4);
+    right: var(--sp-4);
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 18px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, color 0.2s;
+    font-family: 'DM Mono', monospace;
+}
+
+.closeBtn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.panelHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.panelDesig {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+}
+
+.panelName {
+    font-family: 'DM Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.panelBadge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: #000;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.panelDivider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0.3;
+}
+
+.panelDesc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+.panelTools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.toolPill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    border: 1px solid var(--border-2);
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+
+.panelLearn {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.panelLearn li {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.arrow {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.panelPath {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--ghost);
+    letter-spacing: 0.1em;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: var(--sp-3);
+}
+
+/* ── Mobile ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .detailPanel {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border-2);
+        top: auto;
+    }
+
+    .boardWrap {
+        height: 420px;
+    }
+
+    .systemSection {
+        padding: var(--sp-5) var(--sp-3);
+    }
+}

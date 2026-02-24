@@ -23,7 +23,7 @@ function generateDots(vpW, vpH) {
     const maxW = vpW * 0.82
     const maxH = vpH * 0.44
     const cx = vpW / 2           // horizontal center
-    const cy = vpH * 0.38        // vertical center (upper area)
+    const cy = vpH * 0.47        // vertical center — matches heroContent top:47%
 
     // Measure text at reference size
     const ref = document.createElement('canvas')
@@ -219,7 +219,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                     default: d.scatterX = vpW + 60 + Math.random() * vpW * 0.4; d.scatterY = d.finalY + (Math.random() - 0.5) * vpH * 0.4; break
                 }
                 const dxC = d.finalX - vpW / 2
-                const dyC = d.finalY - vpH * 0.38
+                const dyC = d.finalY - vpH * 0.47
                 d.stagger = Math.hypot(dxC, dyC)
             })
             const maxD = Math.max(...dots.map(d => d.stagger), 1)
@@ -242,7 +242,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             entryProg = 0
             const p = { t: 0 }
             gsap.to(p, {
-                t: 1, duration: 2.0, ease: 'power3.out', delay: 0.25,
+                t: 1, duration: 2.2, ease: 'power3.out', delay: 0.25,
                 onUpdate() { entryProg = p.t },
                 onComplete() { entryProg = 1; entryDone = true; revealUI(); startBreathing() },
             })
@@ -286,7 +286,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             ctx.clearRect(0, 0, vpW, vpH)
 
             const sp = scrollProg
-            const scan = (now * 0.00018) % 1   // diagonal scan, ~5.5s period
+            const scan = (now * 0.00011) % 1   // diagonal scan, ~9s period
 
             for (const d of dots) {
                 let x, y, alpha, bri
@@ -314,10 +314,10 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                         if (scanDist < 0.07) bri = Math.min(1, bri + (1 - scanDist / 0.07) * 0.55)
 
                     } else if (sp <= 0.14) {
-                        // ── Phase 1: vibrate ──
-                        const amp = (sp / 0.14) * 5
-                        x = d.finalX + (Math.random() - 0.5) * amp * 2
-                        y = d.finalY + (Math.random() - 0.5) * amp * 2
+                        // ── Phase 1: vibrate — sine-based, no random flicker ──
+                        const amp = (sp / 0.14) * 4
+                        x = d.finalX + Math.sin(now * 0.004 + d.phase) * amp
+                        y = d.finalY + Math.cos(now * 0.005 + d.phase) * amp
 
                     } else if (sp <= 0.86) {
                         // ── Phase 2: morph VED → chip ──

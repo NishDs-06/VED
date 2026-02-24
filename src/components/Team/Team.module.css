@@ -1,0 +1,197 @@
+/* ── Section ─────────────────────────────────────────────────── */
+.teamSection {
+    position: relative;
+    width: 100%;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.sectionHeader {
+    padding: var(--sp-7) var(--sp-6) var(--sp-5);
+}
+
+.label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: var(--ghost);
+    text-transform: uppercase;
+    margin-bottom: var(--sp-2);
+}
+
+.heading {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.rule {
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    margin-top: var(--sp-4);
+    opacity: 0.6;
+}
+
+/* ── Track wrapper ───────────────────────────────────────────── */
+.trackWrap {
+    overflow: hidden;
+    padding: 0 var(--sp-6) var(--sp-7);
+}
+
+.track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    will-change: transform;
+    padding: 8px 4px;
+}
+
+/* ── Card base ───────────────────────────────────────────────── */
+.card {
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    padding: 28px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+/* Leadership tier */
+.card[data-tier="leadership"] {
+    width: 220px;
+    min-height: 280px;
+}
+
+/* Lead tier */
+.card[data-tier="lead"] {
+    width: 190px;
+    min-height: 240px;
+}
+
+/* Faculty tier */
+.card[data-tier="faculty"] {
+    width: 190px;
+    min-height: 240px;
+}
+
+/* Ghost / placeholder */
+.ghost {
+    border-style: dashed;
+    opacity: 0.35 !important;
+}
+
+/* Focused state */
+.focused {
+    transform: scale(1.04);
+    border-color: rgba(255, 122, 0, 0.3) !important;
+    box-shadow: 0 0 24px rgba(255, 122, 0, 0.12);
+}
+
+/* ── Avatar ──────────────────────────────────────────────────── */
+.avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.initials {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.05em;
+}
+
+.ghostMark {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: var(--ghost);
+}
+
+/* ── Text ────────────────────────────────────────────────────── */
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.name {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+}
+
+.role {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255, 122, 0, 0.8);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+/* ── Active row ──────────────────────────────────────────────── */
+.activeRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255, 122, 0, 0.7);
+    flex-shrink: 0;
+}
+
+.activeTxt {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--ghost);
+    letter-spacing: 0.15em;
+}
+
+/* ── Mobile: wrap cards ──────────────────────────────────────── */
+@media (max-width: 768px) {
+    .teamSection {
+        overflow: visible;
+    }
+
+    .trackWrap {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .track {
+        padding-bottom: var(--sp-3);
+    }
+
+    .sectionHeader {
+        padding: var(--sp-6) var(--sp-3) var(--sp-4);
+    }
+
+    .trackWrap {
+        padding: 0 var(--sp-3) var(--sp-6);
+    }
+}

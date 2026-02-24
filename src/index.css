@@ -1,19 +1,44 @@
 /* ─────────────────────────────────────────────────────────────
-   VED — Global CSS  (pure black edition)
+   VEDA — Global Design System
+   Dark. White text. Orange signal. Slow precise motion.
 ───────────────────────────────────────────────────────────── */
-@font-face {
-  font-display: swap;
-}
 
 :root {
-  --bg: #000000;
-  --dot-core: #FFFFFF;
-  --dot-glow: rgba(255, 255, 255, 0.6);
-  --dot-outer: rgba(255, 255, 255, 0.15);
-  --text-primary: #FFFFFF;
-  --text-secondary: rgba(255, 255, 255, 0.75);
+  /* Backgrounds */
+  --bg: #0B0F14;
+  --surface: #11161C;
+  --surface-2: #161C23;
+
+  /* Text */
+  --text: #E5E7EB;
+  --muted: rgba(229, 231, 235, 0.55);
+  --ghost: rgba(229, 231, 235, 0.15);
+
+  /* ONE accent — orange only */
+  --accent: #FF7A00;
+  --accent-glow: rgba(255, 122, 0, 0.2);
+  --accent-dim: rgba(255, 122, 0, 0.5);
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.07);
+  --border-2: rgba(255, 255, 255, 0.12);
+
+  /* Glows — subtle only */
+  --glow-xs: 0 0 8px rgba(255, 122, 0, 0.15);
+  --glow-sm: 0 0 16px rgba(255, 122, 0, 0.2);
+  --glow-md: 0 0 32px rgba(255, 122, 0, 0.18);
+
+  /* Spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 16px;
+  --sp-4: 24px;
+  --sp-5: 40px;
+  --sp-6: 64px;
+  --sp-7: 96px;
 }
 
+/* ── Reset ──────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -35,8 +60,8 @@ body,
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: #000000;
-  color: #FFFFFF;
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -44,4 +69,28 @@ body {
 
 canvas {
   display: block;
+}
+
+/* ── Custom scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 122, 0, 0.3);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 122, 0, 0.6);
+}
+
+/* ── Magnetic button base ────────────────────────────────────── */
+.mag {
+  display: inline-block;
+  will-change: transform;
 }

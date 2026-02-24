@@ -10,7 +10,6 @@ const HeroText = forwardRef(function HeroText(_, ref) {
         <div
             ref={ref}
             style={{
-                marginTop: '48px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

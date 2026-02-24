@@ -2,9 +2,8 @@ import { useEffect, useRef } from 'react'
 
 /**
  * AmbientCanvas — Layer 2
- * 65–80 drifting particles. Separate canvas element.
- * Key fix: uses setTransform once then never again in the loop.
- * Pauses via Page Visibility API.
+ * Very subtle drifting particles. White only. Barely visible.
+ * Slow motion. No flickering.
  */
 export default function AmbientCanvas() {
     const canvasRef = useRef(null)
@@ -17,46 +16,40 @@ export default function AmbientCanvas() {
         let particles = []
         let rafId = null
         let alive = true
-        let W = 0, H = 0, dprW = 0, dprH = 0
+        let W = 0, H = 0
 
         function setup() {
             const dpr = window.devicePixelRatio || 1
             W = window.innerWidth
             H = window.innerHeight
-            dprW = Math.round(W * dpr)
-            dprH = Math.round(H * dpr)
-
-            canvas.width = dprW
-            canvas.height = dprH
+            canvas.width = Math.round(W * dpr)
+            canvas.height = Math.round(H * dpr)
             canvas.style.width = W + 'px'
             canvas.style.height = H + 'px'
-
-            // Reset transform to identity first, then apply dpr scale
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
         }
 
         function spawn() {
             particles = []
-            const count = window.innerWidth < 768 ? 35 : 75
+            const count = window.innerWidth < 768 ? 28 : 55
             for (let i = 0; i < count; i++) {
-                const isBlue = Math.random() > 0.55
                 particles.push({
                     x: Math.random() * W,
                     y: Math.random() * H,
-                    r: 0.7 + Math.random() * 1.3,
-                    vx: (Math.random() - 0.5) * 0.22,
-                    vy: (Math.random() - 0.5) * 0.22,
-                    color: isBlue ? '0,194,255' : '30,240,144',
-                    op: isBlue ? (0.08 + Math.random() * 0.10) : (0.06 + Math.random() * 0.08),
+                    r: 0.6 + Math.random() * 1.0,
+                    vx: (Math.random() - 0.5) * 0.12,
+                    vy: (Math.random() - 0.5) * 0.12,
+                    phase: Math.random() * Math.PI * 2,
+                    // max opacity 0.06 — barely visible
+                    baseOp: 0.025 + Math.random() * 0.035,
                 })
             }
         }
 
-        function loop() {
+        function loop(now) {
             if (!alive) return
             ctx.clearRect(0, 0, W, H)
 
-            /* Draw particles */
             for (const p of particles) {
                 p.x += p.vx
                 p.y += p.vy
@@ -65,54 +58,47 @@ export default function AmbientCanvas() {
                 if (p.y < -2) p.y = H + 2
                 if (p.y > H + 2) p.y = -2
 
+                // Slow sine variation — no per-frame Math.random()
+                const op = p.baseOp * (0.7 + 0.3 * Math.sin(now * 0.0003 + p.phase))
+
                 ctx.beginPath()
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(${p.color},${p.op.toFixed(3)})`
+                ctx.fillStyle = `rgba(229,231,235,${op.toFixed(3)})`
                 ctx.fill()
             }
 
-            /* Edge vignette — radial gradient masks out particles near viewport edges
-               so they can't accumulate and glow at the border.
-               'destination-in' clips existing content (particles) by the gradient alpha. */
+            // Edge vignette — keeps particles from crowding borders
             const cx = W / 2, cy = H / 2
-            const grad = ctx.createRadialGradient(cx, cy, Math.min(W, H) * 0.30, cx, cy, Math.max(W, H) * 0.72)
-            grad.addColorStop(0, 'rgba(0,0,0,1)')   // fully opaque center: keep particles
-            grad.addColorStop(1, 'rgba(0,0,0,0)')   // transparent at edges: erase particles
+            const grad = ctx.createRadialGradient(
+                cx, cy, Math.min(W, H) * 0.30,
+                cx, cy, Math.max(W, H) * 0.72
+            )
+            grad.addColorStop(0, 'rgba(0,0,0,1)')
+            grad.addColorStop(1, 'rgba(0,0,0,0)')
             ctx.globalCompositeOperation = 'destination-in'
             ctx.fillStyle = grad
             ctx.fillRect(0, 0, W, H)
-            ctx.globalCompositeOperation = 'source-over'   // restore default
+            ctx.globalCompositeOperation = 'source-over'
 
             rafId = requestAnimationFrame(loop)
         }
 
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                alive = false
-                cancelAnimationFrame(rafId)
-            } else {
-                alive = true
-                rafId = requestAnimationFrame(loop)
-            }
+            if (document.hidden) { alive = false; cancelAnimationFrame(rafId) }
+            else { alive = true; rafId = requestAnimationFrame(loop) }
         })
 
         let resizeTimer
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer)
-            resizeTimer = setTimeout(() => {
-                setup()
-                spawn()
-            }, 180)
+            resizeTimer = setTimeout(() => { setup(); spawn() }, 180)
         })
 
         setup()
         spawn()
-        loop()
+        rafId = requestAnimationFrame(loop)
 
-        return () => {
-            alive = false
-            cancelAnimationFrame(rafId)
-        }
+        return () => { alive = false; cancelAnimationFrame(rafId) }
     }, [])
 
     return (
@@ -124,7 +110,6 @@ export default function AmbientCanvas() {
                 top: 0, left: 0,
                 zIndex: 2,
                 pointerEvents: 'none',
-                overflow: 'hidden',
             }}
         />
     )

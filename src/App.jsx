@@ -3,6 +3,10 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'  // eslint-disable-line
 import Hero from './components/Hero/Hero'
+import Domains from './components/Domains/Domains'
+import SystemBoard from './components/SystemBoard/SystemBoard'
+import Team from './components/Team/Team'
+import Footer from './components/Footer/Footer'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -31,29 +35,10 @@ export default function App() {
     return (
         <main>
             <Hero />
-            {/* Below-fold placeholder — replace with real sections */}
-            <section
-                style={{
-                    width: '100%',
-                    minHeight: '100vh',
-                    background: 'var(--surface)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <p
-                    style={{
-                        fontFamily: "'DM Mono', monospace",
-                        fontSize: '11px',
-                        letterSpacing: '0.2em',
-                        color: 'rgba(232,234,240,0.18)',
-                        textTransform: 'uppercase',
-                    }}
-                >
-                    Next Section
-                </p>
-            </section>
+            <Domains />
+            <SystemBoard />
+            <Team />
+            <Footer />
         </main>
     )
 }

@@ -1,0 +1,115 @@
+/* ── Footer shell ────────────────────────────────────────────── */
+.footer {
+    background: var(--bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 64px 64px 0;
+}
+
+/* ── Main grid ───────────────────────────────────────────────── */
+.inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 64px;
+    padding-bottom: 64px;
+}
+
+/* ── Brand column ────────────────────────────────────────────── */
+.brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.brandName {
+    font-family: 'DM Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.brandFull,
+.brandLocation {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    display: block;
+    line-height: 1.6;
+}
+
+.tagline {
+    font-family: 'DM Mono', monospace;
+    font-style: italic;
+    font-size: 12px;
+    color: rgba(229, 231, 235, 0.2);
+    line-height: 1.8;
+    display: block;
+    margin-top: 24px;
+}
+
+/* ── Nav columns ─────────────────────────────────────────────── */
+.colLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    color: rgba(229, 231, 235, 0.25);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 200ms ease, transform 200ms ease;
+    display: inline-block;
+}
+
+.links a:hover {
+    color: var(--accent);
+    transform: translateX(4px);
+}
+
+/* ── Bottom strip ────────────────────────────────────────────── */
+.strip {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.strip span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(229, 231, 235, 0.18);
+    text-transform: uppercase;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .footer {
+        padding: 48px 24px 0;
+    }
+
+    .inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .strip {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,476 @@
+/* ── Section shell ──────────────────────────────────────────── */
+.domainsSection {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+/* ── Perspective grid background ────────────────────────────── */
+.perspectiveGrid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 194, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 194, 255, 0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+    transform: perspective(600px) rotateX(50deg) scale(2.5);
+    transform-origin: center top;
+    animation: gridScroll 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gridScroll {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 0 64px;
+    }
+}
+
+/* ── Glitch overlay ─────────────────────────────────────────── */
+.glitchOverlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    animation: glitchBars 0.28s steps(1) forwards;
+    background: rgba(0, 194, 255, 0.04);
+}
+
+@keyframes glitchBars {
+    0% {
+        clip-path: inset(0% 0 95% 0);
+        opacity: 1;
+    }
+
+    20% {
+        clip-path: inset(30% 0 60% 0);
+        opacity: 0.8;
+    }
+
+    40% {
+        clip-path: inset(70% 0 20% 0);
+        opacity: 1;
+    }
+
+    60% {
+        clip-path: inset(10% 0 85% 0);
+        opacity: 0.8;
+    }
+
+    80% {
+        clip-path: inset(55% 0 40% 0);
+        opacity: 1;
+    }
+
+    100% {
+        clip-path: inset(0% 0 0% 0);
+        opacity: 0;
+    }
+}
+
+/* ── Scrolling track ────────────────────────────────────────── */
+.domainTrack {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 100%;
+    will-change: transform;
+}
+
+/* ── Panel base ─────────────────────────────────────────────── */
+.panel {
+    flex-shrink: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-7);
+    gap: var(--sp-6);
+    position: relative;
+}
+
+/* Odd: visual left, text right */
+.panelOdd {
+    flex-direction: row;
+}
+
+/* Even: text left, visual right */
+.panelEven {
+    flex-direction: row;
+}
+
+/* ── Visual area ────────────────────────────────────────────── */
+.vizArea {
+    flex: 0 0 54%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vizSvg {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    filter: drop-shadow(0 0 12px rgba(0, 194, 255, 0.15));
+}
+
+/* ── Text area ──────────────────────────────────────────────── */
+.textArea {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+}
+
+.panelNum {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(80px, 12vw, 140px);
+    line-height: 1;
+    color: var(--text);
+    opacity: 0.05;
+    position: absolute;
+    top: var(--sp-5);
+    right: var(--sp-5);
+    user-select: none;
+    pointer-events: none;
+}
+
+.panelEven .panelNum {
+    right: auto;
+    left: var(--sp-5);
+}
+
+.panelTitle {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(42px, 6vw, 86px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--text);
+    letter-spacing: -0.02em;
+}
+
+.panelDesc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 420px;
+}
+
+.panelTools {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: rgba(0, 194, 255, 0.7);
+    text-transform: uppercase;
+    margin-top: var(--sp-1);
+}
+
+/* ── Progress squares ───────────────────────────────────────── */
+.progressBar {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 5;
+}
+
+.progressSq {
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(0, 194, 255, 0.5);
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* ── SVG element animations ─────────────────────────────────── */
+
+/* Oscilloscope scan cursor */
+.scanCursor {
+    animation: scanMove 3s linear infinite;
+    transform-origin: left center;
+}
+
+@keyframes scanMove {
+    from {
+        transform: translateX(10px);
+    }
+
+    to {
+        transform: translateX(300px);
+    }
+}
+
+/* Wave animations (dash-offset drift) */
+.waveClk {
+    stroke-dasharray: 400;
+    animation: waveDrift 4s linear infinite;
+}
+
+.waveDat {
+    stroke-dasharray: 350;
+    animation: waveDrift 5s linear infinite;
+}
+
+.waveEn {
+    animation: waveDrift 6s linear infinite;
+}
+
+@keyframes waveDrift {
+    from {
+        stroke-dashoffset: 0;
+    }
+
+    to {
+        stroke-dashoffset: -400;
+    }
+}
+
+/* Bode magnitude draw */
+.bodeLine {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawIn 2s ease-out forwards;
+}
+
+.sineIn {
+    animation: sineScroll 3s linear infinite;
+}
+
+.sineOut {
+    animation: sineScroll 3.6s linear infinite;
+}
+
+@keyframes sineScroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-70px);
+    }
+}
+
+@keyframes drawIn {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Pipeline tokens */
+.tokenA {
+    animation: tokenFlow 3s linear infinite;
+}
+
+.tokenB {
+    animation: tokenFlow 3s 1s linear infinite;
+    opacity: 0.75;
+}
+
+.tokenC {
+    animation: tokenFlow 3s 2s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes tokenFlow {
+    0% {
+        transform: translate(18px, 0);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    20% {
+        transform: translate(74px, 0);
+    }
+
+    40% {
+        transform: translate(130px, 0);
+    }
+
+    60% {
+        transform: translate(186px, 0);
+    }
+
+    80% {
+        transform: translate(242px, 0);
+    }
+
+    95% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(288px, 0);
+        opacity: 0;
+    }
+}
+
+/* Chip cells place */
+.cell {
+    opacity: 0;
+    animation: placeCell 0.08s ease-out forwards;
+}
+
+@keyframes placeCell {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Route lines draw */
+.routeLine {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawRoute 2.5s ease-out forwards;
+}
+
+@keyframes drawRoute {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* MCU pulses travel along buses */
+.pulse1 {
+    animation: pulseUart 2.4s linear infinite;
+}
+
+.pulse2 {
+    animation: pulseSpi 2s 0.6s linear infinite;
+}
+
+.pulse3 {
+    animation: pulseGpio 3s 1.2s linear infinite;
+}
+
+@keyframes pulseUart {
+    0% {
+        transform: translate(70px, 34px);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(115px, 90px);
+        opacity: 0;
+    }
+}
+
+@keyframes pulseSpi {
+    0% {
+        transform: translate(250px, 34px);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(205px, 90px);
+        opacity: 0;
+    }
+}
+
+@keyframes pulseGpio {
+    0% {
+        transform: translate(70px, 100px);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(115px, 100px);
+        opacity: 0;
+    }
+}
+
+/* GPIO LED blink */
+.gpioLed {
+    animation: gpioLedBlink 1.2s ease-in-out infinite;
+}
+
+@keyframes gpioLedBlink {
+
+    0%,
+    100% {
+        fill: rgba(30, 240, 144, 0.2);
+        box-shadow: none;
+    }
+
+    50% {
+        fill: rgba(30, 240, 144, 0.9);
+        filter: drop-shadow(0 0 6px #E5E7EB);
+    }
+}
+
+/* Binary stream scroll */
+.binStream {
+    animation: binScroll 4s linear infinite;
+}
+
+@keyframes binScroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-60px);
+    }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .panel {
+        flex-direction: column !important;
+        padding: var(--sp-5) var(--sp-3);
+        gap: var(--sp-4);
+        justify-content: center;
+    }
+
+    .vizArea {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .panelTitle {
+        font-size: 36px;
+    }
+
+    .panelNum {
+        font-size: 60px;
+    }
+
+    .perspectiveGrid {
+        display: none;
+    }
+}
