@@ -1,0 +1,47 @@
+/* ─────────────────────────────────────────────────────────────
+   VED — Global CSS  (pure black edition)
+───────────────────────────────────────────────────────────── */
+@font-face {
+  font-display: swap;
+}
+
+:root {
+  --bg: #000000;
+  --dot-core: #FFFFFF;
+  --dot-glow: rgba(255, 255, 255, 0.6);
+  --dot-outer: rgba(255, 255, 255, 0.15);
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.75);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #000000;
+  color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+canvas {
+  display: block;
+}
