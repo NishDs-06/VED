@@ -1,46 +1,72 @@
 /* ── Section ─────────────────────────────────────────────────── */
-.teamSection {
-    position: relative;
-    width: 100%;
-    background: var(--bg);
+.section {
+    background: #000000;
     overflow: hidden;
+    position: relative;
 }
 
 /* ── Header ──────────────────────────────────────────────────── */
-.sectionHeader {
-    padding: var(--sp-7) var(--sp-6) var(--sp-5);
+.header {
+    padding: 80px 64px 32px;
 }
 
-.label {
+.eyebrow {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.28em;
     color: var(--ghost);
     text-transform: uppercase;
-    margin-bottom: var(--sp-2);
+    margin-bottom: 10px;
 }
 
 .heading {
     font-family: 'DM Mono', monospace;
-    font-size: clamp(36px, 5vw, 64px);
+    font-size: clamp(28px, 5vw, 52px);
     font-weight: 500;
-    color: var(--text);
+    color: #FFFFFF;
     letter-spacing: -0.02em;
-    line-height: 1;
+    line-height: 1.1;
 }
 
 .rule {
-    width: 48px;
+    width: 40px;
     height: 1px;
     background: var(--accent);
-    margin-top: var(--sp-4);
-    opacity: 0.6;
+    opacity: 0.55;
+    margin: 14px 0 10px;
 }
 
-/* ── Track wrapper ───────────────────────────────────────────── */
+.sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--ghost);
+    text-transform: uppercase;
+}
+
+/* ── Sine wave canvas ────────────────────────────────────────── */
+.sineCanvas {
+    display: block;
+    width: 100%;
+    height: 80px;
+    margin-bottom: 8px;
+}
+
+/* ── Track ───────────────────────────────────────────────────── */
 .trackWrap {
-    overflow: hidden;
-    padding: 0 var(--sp-6) var(--sp-7);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 64px 80px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.trackWrap::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
 }
 
 .track {
@@ -48,150 +74,313 @@
     gap: 20px;
     width: max-content;
     will-change: transform;
-    padding: 8px 4px;
+    align-items: stretch;
 }
 
-/* ── Card base ───────────────────────────────────────────────── */
+/* ── Card ────────────────────────────────────────────────────── */
 .card {
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.03);
+    background: #000000;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 4px;
-    padding: 28px 24px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-}
-
-/* Leadership tier */
-.card[data-tier="leadership"] {
-    width: 220px;
+    border-radius: 2px;
+    padding: 28px 26px;
+    width: 300px;
     min-height: 280px;
-}
-
-/* Lead tier */
-.card[data-tier="lead"] {
-    width: 190px;
-    min-height: 240px;
-}
-
-/* Faculty tier */
-.card[data-tier="faculty"] {
-    width: 190px;
-    min-height: 240px;
-}
-
-/* Ghost / placeholder */
-.ghost {
-    border-style: dashed;
-    opacity: 0.35 !important;
-}
-
-/* Focused state */
-.focused {
-    transform: scale(1.04);
-    border-color: rgba(255, 122, 0, 0.3) !important;
-    box-shadow: 0 0 24px rgba(255, 122, 0, 0.12);
-}
-
-/* ── Avatar ──────────────────────────────────────────────────── */
-.avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.initials {
-    font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: 0.05em;
-}
-
-.ghostMark {
-    font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    color: var(--ghost);
-}
-
-/* ── Text ────────────────────────────────────────────────────── */
-.info {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    text-align: center;
+    gap: 0;
+    transition: border-color 250ms, box-shadow 250ms, transform 250ms;
+    outline: none;
+    position: relative;
 }
 
-.name {
+.card:hover,
+.card:focus-visible {
+    border-color: rgba(255, 122, 0, 0.35);
+    box-shadow: 0 0 24px rgba(255, 122, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+.ghost {
+    opacity: 0.25;
+    border-style: dashed;
+    cursor: default;
+    pointer-events: none;
+    transform: none !important;
+}
+
+/* ── Card content ────────────────────────────────────────────── */
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.cardInitials {
+    font-family: 'DM Mono', monospace;
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.cardRole {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.18);
+    text-transform: uppercase;
+    text-align: right;
+    padding-top: 6px;
+    max-width: 90px;
+    line-height: 1.5;
+}
+
+.cardDivider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 14px;
+}
+
+.cardName {
     font-family: 'DM Mono', monospace;
     font-size: 14px;
     font-weight: 500;
-    color: var(--text);
-    letter-spacing: 0.04em;
+    color: #FFFFFF;
+    letter-spacing: 0.03em;
     line-height: 1.4;
+    margin-bottom: 10px;
 }
 
-.role {
+.cardOneLiner {
     font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 400;
-    color: rgba(255, 122, 0, 0.8);
-    letter-spacing: 0.15em;
+    font-style: italic;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.38);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.cardPlaceholder {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.15);
+    text-transform: uppercase;
+    flex: 1;
+}
+
+.cardTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 2px;
     text-transform: uppercase;
 }
 
-/* ── Active row ──────────────────────────────────────────────── */
-.activeRow {
+/* Card footer — icons + CTA */
+.cardFooter {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
     margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(255, 122, 0, 0.7);
+.cardFooter svg {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.cardCta {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-left: auto;
+}
+
+/* ── Overlay ─────────────────────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.90);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayIn 180ms ease forwards;
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* ── Popup ───────────────────────────────────────────────────── */
+.popup {
+    background: #0A0A0A;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    padding: 44px;
+    width: min(480px, 92vw);
+    position: relative;
+    animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popupIn {
+    from {
+        transform: scale(0.92) translateY(14px);
+        opacity: 0
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1
+    }
+}
+
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 150ms, color 150ms;
+    line-height: 1;
+}
+
+.closeBtn:hover {
+    border-color: rgba(255, 122, 0, 0.5);
+    color: #FFF;
+}
+
+.popupHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.popupInitials {
+    font-family: 'DM Mono', monospace;
+    font-size: 56px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
     flex-shrink: 0;
 }
 
-.activeTxt {
+.popupName {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--ghost);
-    letter-spacing: 0.15em;
+    font-size: 18px;
+    font-weight: 500;
+    color: #FFFFFF;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
 }
 
-/* ── Mobile: wrap cards ──────────────────────────────────────── */
+.popupRole {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+.popupDivider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 24px 0;
+}
+
+.popupQuote {
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.75;
+}
+
+.popupTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.popupLinks {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.linkBtn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 9px 16px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 150ms, border-color 150ms;
+}
+
+.linkBtn:hover {
+    color: var(--accent);
+    border-color: rgba(255, 122, 0, 0.4);
+}
+
+/* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .teamSection {
-        overflow: visible;
+    .header {
+        padding: 60px 24px 24px;
     }
 
     .trackWrap {
-        overflow: auto;
+        padding: 8px 24px 60px;
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
-    .track {
-        padding-bottom: var(--sp-3);
-    }
-
-    .sectionHeader {
-        padding: var(--sp-6) var(--sp-3) var(--sp-4);
-    }
-
-    .trackWrap {
-        padding: 0 var(--sp-3) var(--sp-6);
+    .card {
+        width: 260px;
+        min-height: 240px;
     }
 }

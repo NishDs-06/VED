@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Lenis from '@studio-freight/lenis'  // eslint-disable-line
+import Lenis from '@studio-freight/lenis'
 import Hero from './components/Hero/Hero'
 import Domains from './components/Domains/Domains'
-import SystemBoard from './components/SystemBoard/SystemBoard'
+import Projects from './components/Projects/Projects'
 import Team from './components/Team/Team'
 import Footer from './components/Footer/Footer'
 
@@ -36,7 +36,7 @@ export default function App() {
         <main>
             <Hero />
             <Domains />
-            <SystemBoard />
+            <Projects />
             <Team />
             <Footer />
         </main>

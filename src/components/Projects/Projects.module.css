@@ -1,0 +1,502 @@
+/* ── Section ─────────────────────────────────────────────────── */
+.section {
+    background: #000000;
+    padding: 80px 64px 80px;
+    position: relative;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.header {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.watermark {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(80px, 14vw, 180px);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.025);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    top: -20px;
+    left: -8px;
+    white-space: nowrap;
+}
+
+.eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.heading {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 500;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    position: relative;
+}
+
+/* ── Terminal bar ────────────────────────────────────────────── */
+.terminalBar {
+    background: #0A0A0A;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 2px;
+    padding: 10px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.12em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.prompt {
+    color: var(--accent);
+    margin-right: 6px;
+}
+
+.liveDot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    margin-right: 7px;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+
+    0%,
+    100% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0.3
+    }
+}
+
+/* ── Grid ────────────────────────────────────────────────────── */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 1100px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding: 60px 24px 60px;
+    }
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.card {
+    background: var(--card-bg-hint, #0A0A0A);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    padding: 28px 28px 24px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 280px;
+    transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+    outline: none;
+}
+
+.card:hover,
+.card:focus-visible {
+    border-color: rgba(255, 122, 0, 0.35);
+    box-shadow: 0 0 32px rgba(255, 122, 0, 0.12), 0 8px 32px rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Accent bar — color from CSS var */
+.cardAccent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--card-accent, #FF7A00);
+    opacity: 0.85;
+}
+
+/* Header */
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.cardName {
+    font-family: 'DM Mono', monospace;
+    font-size: 17px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+}
+
+.cardStatus {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.statusDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Domain */
+.cardDomain {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1.4;
+}
+
+/* Separator */
+.cardSep {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 4px 0;
+}
+
+/* Meta */
+.cardMeta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cardMetaLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.24em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+}
+
+.cardMetaVal {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Tools */
+.cardTools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.toolChip {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+
+/* CTA */
+.cardCta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+/* ── Overlay ─────────────────────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.90);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayIn 180ms ease forwards;
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* ── Popup ───────────────────────────────────────────────────── */
+.popup {
+    background: #0A0A0A;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    padding: 48px;
+    width: min(580px, 92vw);
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 122, 0, 0.3) transparent;
+}
+
+@keyframes popupIn {
+    from {
+        transform: scale(0.93) translateY(16px);
+        opacity: 0
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1
+    }
+}
+
+.popupAccent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    opacity: 0.9;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 150ms, color 150ms;
+    line-height: 1;
+}
+
+.closeBtn:hover {
+    border-color: rgba(255, 122, 0, 0.5);
+    color: #FFF;
+}
+
+.popupTop {
+    margin-bottom: 0;
+}
+
+.popupStatus {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.popupName {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.popupDomainLabel {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.popupRule {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 24px 0;
+}
+
+.metaRow {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 16px;
+}
+
+.metaBox {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.metaLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+}
+
+.metaVal {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.popupToolsWrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 4px;
+}
+
+.toolPill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+
+.sectionLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    color: rgba(255, 255, 255, 0.22);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.popupAbout {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.8;
+}
+
+.learnList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.learnList li {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+}
+
+.arrow {
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.popupActions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.actionLink {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 18px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 150ms, border-color 150ms;
+}
+
+.actionLink:hover {
+    color: var(--accent);
+    border-color: rgba(255, 122, 0, 0.4);
+}
+
+.actionPrimary {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: #000;
+    background: var(--accent);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 150ms;
+}
+
+.actionPrimary:hover {
+    opacity: 0.85;
+}

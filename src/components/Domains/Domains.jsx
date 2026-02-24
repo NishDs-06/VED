@@ -49,7 +49,7 @@ function Oscilloscope() {
             {/* Shell */}
             <rect x="4" y="4" width="312" height="192" rx="6" fill="none"
                 stroke="rgba(229,231,235,0.5)" strokeWidth="1" />
-            <rect x="10" y="10" width="300" height="140" rx="2" fill="rgba(0,20,30,0.9)"
+            <rect x="10" y="10" width="300" height="140" rx="2" fill="rgba(0,0,0,0.95)"
                 stroke="rgba(229,231,235,0.2)" strokeWidth="0.5" />
             {/* Grid lines */}
             {[0.25, 0.5, 0.75].map(f => (
@@ -100,7 +100,7 @@ function BodePlot() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
             {/* Background */}
-            <rect x="0" y="0" width="320" height="200" fill="rgba(0,5,10,0.8)" rx="4" />
+            <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
             {/* Grid */}
             {[0.2, 0.4, 0.6, 0.8].map(f => (
                 <line key={f}
@@ -156,7 +156,7 @@ function Pipeline() {
 
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
-            <rect x="0" y="0" width="320" height="200" fill="rgba(0,5,10,0.8)" rx="4" />
+            <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
 
             {/* Stage boxes */}
             {stages.map((s, i) => (
@@ -219,7 +219,7 @@ function ChipPlacement() {
     const cells = Array.from({ length: cols * rows }, (_, i) => i)
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
-            <rect x="0" y="0" width="320" height="200" fill="rgba(0,5,10,0.8)" rx="4" />
+            <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
             {/* Die outline */}
             <rect x="10" y="10" width="230" height="140" rx="1"
                 fill="none" stroke="rgba(255,122,0,0.3)" strokeWidth="1" />
@@ -276,7 +276,7 @@ function ChipPlacement() {
 function MCUSystem() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
-            <rect x="0" y="0" width="320" height="200" fill="rgba(0,5,10,0.8)" rx="4" />
+            <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
             {/* Central MCU */}
             <rect x="115" y="65" width="90" height="70" rx="3"
                 fill="rgba(229,231,235,0.06)" stroke="rgba(229,231,235,0.5)" strokeWidth="1" />
@@ -344,27 +344,17 @@ export default function Domains() {
         const track = trackRef.current
         if (!section || !track) return
 
-        const panels = track.querySelectorAll('[data-panel]')
         const totalShift = window.innerWidth * (DOMAINS.length - 1)
-
-        // Simple fade in on enter
-        ScrollTrigger.create({
-            trigger: section,
-            start: 'top 90%',
-            once: true,
-            onEnter: () => {
-                gsap.fromTo(section, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
-            },
-        })
 
         // Horizontal scroll pin
         let lastPanel = 0
         const hst = ScrollTrigger.create({
             trigger: section,
             pin: true,
+            anticipatePin: 1,
             start: 'top top',
-            end: () => `+=${totalShift * 1.15}`,
-            scrub: 0.8,
+            end: () => `+=${totalShift * 1.5}`,
+            scrub: 1,
             onUpdate(self) {
                 gsap.set(track, { x: -self.progress * totalShift })
 
@@ -386,6 +376,9 @@ export default function Domains() {
                     }
                 }
             },
+            // Hide section after pin ends so it doesn't appear again in normal flow
+            onLeave() { section.style.visibility = 'hidden' },
+            onEnterBack() { section.style.visibility = 'visible' },
         })
 
         return () => { hst.kill() }
@@ -415,7 +408,7 @@ export default function Domains() {
                                 </div>
                                 <div className={styles.textArea}>
                                     <span className={styles.panelNum}>{d.num}</span>
-                                    <h2 className={`${styles.panelTitle} glitch`} data-scramble>{d.title}</h2>
+                                    <h2 className={styles.panelTitle}>{d.title}</h2>
                                     <p className={styles.panelDesc}>{d.desc}</p>
                                     <p className={styles.panelTools}>{d.tools}</p>
                                 </div>
@@ -425,7 +418,7 @@ export default function Domains() {
                             <>
                                 <div className={styles.textArea}>
                                     <span className={styles.panelNum}>{d.num}</span>
-                                    <h2 className={`${styles.panelTitle} glitch`} data-scramble>{d.title}</h2>
+                                    <h2 className={styles.panelTitle}>{d.title}</h2>
                                     <p className={styles.panelDesc}>{d.desc}</p>
                                     <p className={styles.panelTools}>{d.tools}</p>
                                 </div>

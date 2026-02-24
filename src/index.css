@@ -1,18 +1,18 @@
 /* ─────────────────────────────────────────────────────────────
-   VEDA — Global Design System
-   Dark. White text. Orange signal. Slow precise motion.
+   VEDA — Global Design System v3
+   Black. White. Orange signal. Period.
 ───────────────────────────────────────────────────────────── */
 
 :root {
   /* Backgrounds */
-  --bg: #0B0F14;
-  --surface: #11161C;
-  --surface-2: #161C23;
+  --bg: #000000;
+  --surface: #0A0A0A;
+  --surface-2: #111111;
 
   /* Text */
-  --text: #E5E7EB;
-  --muted: rgba(229, 231, 235, 0.55);
-  --ghost: rgba(229, 231, 235, 0.15);
+  --text: #FFFFFF;
+  --muted: rgba(255, 255, 255, 0.55);
+  --ghost: rgba(255, 255, 255, 0.15);
 
   /* ONE accent — orange only */
   --accent: #FF7A00;
@@ -23,9 +23,9 @@
   --border: rgba(255, 255, 255, 0.07);
   --border-2: rgba(255, 255, 255, 0.12);
 
-  /* Glows — subtle only */
+  /* Glows — subtle */
   --glow-xs: 0 0 8px rgba(255, 122, 0, 0.15);
-  --glow-sm: 0 0 16px rgba(255, 122, 0, 0.2);
+  --glow-sm: 0 0 16px rgba(255, 122, 0, 0.20);
   --glow-md: 0 0 32px rgba(255, 122, 0, 0.18);
 
   /* Spacing */
@@ -38,7 +38,6 @@
   --sp-7: 96px;
 }
 
-/* ── Reset ──────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -60,8 +59,8 @@ body,
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: #000000;
+  color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -71,7 +70,6 @@ canvas {
   display: block;
 }
 
-/* ── Custom scrollbar ───────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -87,10 +85,4 @@ canvas {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 122, 0, 0.6);
-}
-
-/* ── Magnetic button base ────────────────────────────────────── */
-.mag {
-  display: inline-block;
-  will-change: transform;
 }

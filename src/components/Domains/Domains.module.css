@@ -4,7 +4,8 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: var(--bg);
+    background: #000000;
+    /* sit above Projects/Team during pin */
 }
 
 /* ── Perspective grid background ────────────────────────────── */
@@ -12,8 +13,8 @@
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(0, 194, 255, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 194, 255, 0.06) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
     background-size: 64px 64px;
     transform: perspective(600px) rotateX(50deg) scale(2.5);
     transform-origin: center top;
@@ -40,7 +41,7 @@
     z-index: 10;
     pointer-events: none;
     animation: glitchBars 0.28s steps(1) forwards;
-    background: rgba(0, 194, 255, 0.04);
+    background: rgba(255, 122, 0, 0.03);
 }
 
 @keyframes glitchBars {
@@ -96,12 +97,10 @@
     position: relative;
 }
 
-/* Odd: visual left, text right */
 .panelOdd {
     flex-direction: row;
 }
 
-/* Even: text left, visual right */
 .panelEven {
     flex-direction: row;
 }
@@ -118,7 +117,7 @@
     width: 100%;
     max-width: 480px;
     height: auto;
-    filter: drop-shadow(0 0 12px rgba(0, 194, 255, 0.15));
+    filter: drop-shadow(0 0 12px rgba(255, 122, 0, 0.08));
 }
 
 /* ── Text area ──────────────────────────────────────────────── */
@@ -134,7 +133,7 @@
     font-size: clamp(80px, 12vw, 140px);
     line-height: 1;
     color: var(--text);
-    opacity: 0.05;
+    opacity: 0.04;
     position: absolute;
     top: var(--sp-5);
     right: var(--sp-5);
@@ -168,7 +167,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.22em;
-    color: rgba(0, 194, 255, 0.7);
+    color: rgba(255, 122, 0, 0.6);
     text-transform: uppercase;
     margin-top: var(--sp-1);
 }
@@ -187,13 +186,11 @@
 .progressSq {
     width: 12px;
     height: 12px;
-    border: 1px solid rgba(0, 194, 255, 0.5);
+    border: 1px solid rgba(255, 122, 0, 0.4);
     transition: background 0.3s, box-shadow 0.3s;
 }
 
 /* ── SVG element animations ─────────────────────────────────── */
-
-/* Oscilloscope scan cursor */
 .scanCursor {
     animation: scanMove 3s linear infinite;
     transform-origin: left center;
@@ -209,7 +206,6 @@
     }
 }
 
-/* Wave animations (dash-offset drift) */
 .waveClk {
     stroke-dasharray: 400;
     animation: waveDrift 4s linear infinite;
@@ -234,7 +230,6 @@
     }
 }
 
-/* Bode magnitude draw */
 .bodeLine {
     stroke-dasharray: 400;
     stroke-dashoffset: 400;
@@ -265,7 +260,6 @@
     }
 }
 
-/* Pipeline tokens */
 .tokenA {
     animation: tokenFlow 3s linear infinite;
 }
@@ -316,7 +310,6 @@
     }
 }
 
-/* Chip cells place */
 .cell {
     opacity: 0;
     animation: placeCell 0.08s ease-out forwards;
@@ -328,7 +321,6 @@
     }
 }
 
-/* Route lines draw */
 .routeLine {
     stroke-dasharray: 600;
     stroke-dashoffset: 600;
@@ -341,7 +333,6 @@
     }
 }
 
-/* MCU pulses travel along buses */
 .pulse1 {
     animation: pulseUart 2.4s linear infinite;
 }
@@ -414,7 +405,6 @@
     }
 }
 
-/* GPIO LED blink */
 .gpioLed {
     animation: gpioLedBlink 1.2s ease-in-out infinite;
 }
@@ -423,17 +413,15 @@
 
     0%,
     100% {
-        fill: rgba(30, 240, 144, 0.2);
-        box-shadow: none;
+        fill: rgba(229, 231, 235, 0.15);
     }
 
     50% {
-        fill: rgba(30, 240, 144, 0.9);
-        filter: drop-shadow(0 0 6px #E5E7EB);
+        fill: rgba(255, 122, 0, 0.9);
+        filter: drop-shadow(0 0 6px rgba(255, 122, 0, 0.5));
     }
 }
 
-/* Binary stream scroll */
 .binStream {
     animation: binScroll 4s linear infinite;
 }
