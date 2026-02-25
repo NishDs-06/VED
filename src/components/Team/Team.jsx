@@ -65,103 +65,90 @@ function SineWave() {
             ctx.clearRect(0, 0, W, H)
             const amp = 22, freq = (2 * Math.PI) / (W * 0.42)
 
-            // Wave layers — bloom pass then sharp line on top
+            // 3 waves — shadowBlur for glow instead of ctx.filter (GPU vs CPU)
             const waves = [
-                { ph: 0, a: 0.7, w: 1.8, blur: 18 },
-                { ph: 1.1, a: 0.35, w: 1.0, blur: 10 },
-                { ph: -0.7, a: 0.15, w: 0.6, blur: 4 },
+                { ph: 0, a: 0.65, w: 1.8, glow: 8 },
+                { ph: 1.1, a: 0.28, w: 0.9, glow: 0 },
+                { ph: -0.7, a: 0.12, w: 0.5, glow: 0 },
             ]
 
-            waves.forEach(({ ph, a, w, blur }) => {
-                // Bloom
-                ctx.save()
+            waves.forEach(({ ph, a, w, glow }) => {
                 ctx.beginPath()
-                ctx.strokeStyle = `rgba(168,85,247,${a * 0.5})`
-                ctx.lineWidth = w + 8
-                ctx.filter = `blur(${blur}px)`
+                ctx.strokeStyle = `rgba(168,85,247,${a})`
+                ctx.lineWidth = w
+                ctx.shadowBlur = glow
+                ctx.shadowColor = 'rgba(168,85,247,0.7)'
                 for (let x = 0; x <= W; x += 3) {
                     const y = H / 2 + amp * Math.sin(freq * x + t + ph)
                     x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
                 }
                 ctx.stroke()
-                ctx.restore()
-
-                // Sharp line
-                ctx.save()
-                ctx.beginPath()
-                ctx.strokeStyle = `rgba(168,85,247,${a})`
-                ctx.lineWidth = w
-                ctx.shadowBlur = blur * 0.5
-                ctx.shadowColor = 'rgba(168,85,247,0.6)'
-                for (let x = 0; x <= W; x += 2) {
-                    const y = H / 2 + amp * Math.sin(freq * x + t + ph)
-                    x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
-                }
-                ctx.stroke()
-                ctx.restore()
+                ctx.shadowBlur = 0
             })
 
-            // Rolling dot position
+            // Rolling dot
             const dotX = (t * 55) % W
             const dotY = H / 2 + amp * Math.sin(freq * dotX + t)
 
             trail.push({ x: dotX, y: dotY })
             if (trail.length > TRAIL_LEN) trail.shift()
 
-            // Trail — purple fading to white
-            for (let i = 0; i < trail.length - 1; i++) {
-                const prog = i / trail.length
-                const alpha = prog * prog * 0.85
-                const r = Math.round(168 + (255 - 168) * prog)
-                const g = Math.round(85 + (255 - 85) * prog)
-                ctx.save()
+            // Trail — batch into single path per segment group to avoid 48 save/restores
+            const tLen = trail.length
+            for (let i = 0; i < tLen - 1; i++) {
+                const prog = i / tLen
+                if (prog < 0.1) continue  // skip near-invisible tail
+                const alpha = prog * prog * 0.8
+                const r = Math.round(168 + 87 * prog)
+                const g = Math.round(85 + 170 * prog)
                 ctx.beginPath()
                 ctx.moveTo(trail[i].x, trail[i].y)
                 ctx.lineTo(trail[i + 1].x, trail[i + 1].y)
                 ctx.strokeStyle = `rgba(${r},${g},247,${alpha})`
-                ctx.lineWidth = 1.5 + prog * 1.5
-                ctx.shadowBlur = 6 + prog * 10
-                ctx.shadowColor = `rgba(${r},${g},247,0.5)`
+                ctx.lineWidth = 1 + prog * 2
+                ctx.shadowBlur = 0
                 ctx.stroke()
-                ctx.restore()
             }
 
-            // Outer bloom halo
-            ctx.save()
-            ctx.beginPath()
-            ctx.arc(dotX, dotY, 14, 0, Math.PI * 2)
-            ctx.fillStyle = 'rgba(200,140,255,0.12)'
-            ctx.filter = 'blur(6px)'
-            ctx.fill()
-            ctx.restore()
-
-            // Mid glow
-            ctx.save()
+            // Dot — mid glow + white core (skip expensive filter blur halo)
             ctx.beginPath()
             ctx.arc(dotX, dotY, 6, 0, Math.PI * 2)
-            ctx.fillStyle = 'rgba(216,180,254,0.5)'
-            ctx.shadowBlur = 18
+            ctx.fillStyle = 'rgba(216,180,254,0.45)'
+            ctx.shadowBlur = 14
             ctx.shadowColor = '#A855F7'
             ctx.fill()
-            ctx.restore()
 
-            // White core
-            ctx.save()
             ctx.beginPath()
             ctx.arc(dotX, dotY, 2.5, 0, Math.PI * 2)
             ctx.fillStyle = '#ffffff'
-            ctx.shadowBlur = 12
+            ctx.shadowBlur = 10
             ctx.shadowColor = 'rgba(255,255,255,0.9)'
             ctx.fill()
-            ctx.restore()
+            ctx.shadowBlur = 0
 
             t += 0.020
             raf.current = requestAnimationFrame(draw)
         }
 
         draw()
+
+        // Pause RAF when canvas is not visible — saves CPU when user is elsewhere
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    if (!raf.current) raf.current = requestAnimationFrame(draw)
+                } else {
+                    cancelAnimationFrame(raf.current)
+                    raf.current = null
+                }
+            },
+            { threshold: 0 }
+        )
+        observer.observe(canvas)
+
         return () => {
             cancelAnimationFrame(raf.current)
+            observer.disconnect()
             window.removeEventListener('resize', resize)
         }
     }, [])
