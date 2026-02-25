@@ -31,7 +31,7 @@ export default function AmbientCanvas() {
 
         function spawn() {
             particles = []
-            const count = window.innerWidth < 768 ? 28 : 55
+            const count = window.innerWidth < 768 ? 16 : 32
             for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * W,

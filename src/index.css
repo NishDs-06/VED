@@ -1,32 +1,28 @@
 /* ─────────────────────────────────────────────────────────────
-   VEDA — Global Design System v3
-   Black. White. Orange signal. Period.
+   VED — Global Design System v3
+   Black. White. Purple bloom signal. Period.
 ───────────────────────────────────────────────────────────── */
 
 :root {
-  /* Backgrounds */
   --bg: #000000;
   --surface: #0A0A0A;
   --surface-2: #111111;
 
-  /* Text */
   --text: #FFFFFF;
   --muted: rgba(255, 255, 255, 0.55);
   --ghost: rgba(255, 255, 255, 0.15);
 
-  /* ONE accent — orange only */
-  --accent: #FF7A00;
-  --accent-glow: rgba(255, 122, 0, 0.2);
-  --accent-dim: rgba(255, 122, 0, 0.5);
+  /* NEW — Electric violet from the poster */
+  --accent: #7B35E8;
+  --accent-glow: rgba(123, 53, 232, 0.20);
+  --accent-dim: rgba(123, 53, 232, 0.50);
 
-  /* Borders */
   --border: rgba(255, 255, 255, 0.07);
   --border-2: rgba(255, 255, 255, 0.12);
 
-  /* Glows — subtle */
-  --glow-xs: 0 0 8px rgba(255, 122, 0, 0.15);
-  --glow-sm: 0 0 16px rgba(255, 122, 0, 0.20);
-  --glow-md: 0 0 32px rgba(255, 122, 0, 0.18);
+  --glow-xs: 0 0 8px rgba(123, 53, 232, 0.18);
+  --glow-sm: 0 0 16px rgba(123, 53, 232, 0.22);
+  --glow-md: 0 0 32px rgba(123, 53, 232, 0.20);
 
   /* Spacing */
   --sp-1: 4px;
@@ -79,10 +75,10 @@ canvas {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 122, 0, 0.3);
+  background: rgba(123, 53, 232, 0.3);
   border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 122, 0, 0.6);
+  background: rgba(123, 53, 232, 0.6);
 }

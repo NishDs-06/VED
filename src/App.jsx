@@ -19,7 +19,10 @@ export default function App() {
             smoothTouch: false,
         })
 
-        lenis.on('scroll', ScrollTrigger.update)
+        lenis.on('scroll', (e) => {
+            window.__lenisY = e.scroll
+            ScrollTrigger.update()
+        })
 
         const tickerFn = (time) => lenis.raf(time * 1000)
         gsap.ticker.add(tickerFn)

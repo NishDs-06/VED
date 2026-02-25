@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Projects.module.css'
 
 /* ── SVG Icons ───────────────────────────────────────────────── */
@@ -85,13 +87,13 @@ const PROJECTS = [
 ]
 
 const STATUS_COLOR = {
-    BUILDING: '#FF7A00',
+    BUILDING: '#7B35E8',
     TESTING: '#FFFFFF',
     DESIGNING: 'rgba(255,255,255,0.4)',
     PLANNING: 'rgba(255,255,255,0.2)',
 }
 const STATUS_BG = {
-    BUILDING: 'rgba(255,122,0,0.08)',
+    BUILDING: 'rgba(123,53,232,0.08)',
     TESTING: 'rgba(255,255,255,0.06)',
     DESIGNING: 'rgba(255,255,255,0.03)',
     PLANNING: 'rgba(255,255,255,0.02)',
@@ -99,7 +101,7 @@ const STATUS_BG = {
 
 /* ── Popup ───────────────────────────────────────────────────── */
 function ProjectPopup({ project, onClose }) {
-    const color = STATUS_COLOR[project.status] || '#FF7A00'
+    const color = STATUS_COLOR[project.status] || '#7B35E8'
 
     useEffect(() => {
         document.body.style.overflow = 'hidden'
@@ -177,7 +179,7 @@ function ProjectPopup({ project, onClose }) {
 
 /* ── Project card ────────────────────────────────────────────── */
 function ProjectCard({ project, onClick }) {
-    const color = STATUS_COLOR[project.status] || '#FF7A00'
+    const color = STATUS_COLOR[project.status] || '#7B35E8'
     const bgHint = STATUS_BG[project.status] || 'transparent'
 
     return (
@@ -232,9 +234,60 @@ function ProjectCard({ project, onClick }) {
 /* ── Main ────────────────────────────────────────────────────── */
 export default function Projects() {
     const [selected, setSelected] = useState(null)
+    const sectionRef = useRef(null)
+
+    // Staged reveal animation
+    useEffect(() => {
+        const PRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        if (PRM) return
+
+        const section = sectionRef.current
+        if (!section) return
+        const terminalBar = section.querySelector('[class*="terminalBar"]')
+        const allCards = section.querySelectorAll('[class*="card"]')
+        if (!allCards?.length) return
+
+        const firstTwo = Array.from(allCards).slice(0, 2)
+        const rest = Array.from(allCards).slice(2)
+
+        // Set everything invisible initially
+        gsap.set([terminalBar, ...allCards], { opacity: 0, y: 16 })
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: section,
+                start: 'top 65%',
+                once: true,
+            }
+        })
+
+        // 1. Terminal bar types in
+        tl.to(terminalBar, {
+            opacity: 1, y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+        })
+
+        // 2. First 2 cards appear together
+        tl.to(firstTwo, {
+            opacity: 1, y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            stagger: 0.08,
+        }, '+=0.1')
+
+        // 3. Remaining 4 cards stagger in
+        tl.to(rest, {
+            opacity: 1, y: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+            stagger: 0.07,
+        }, '+=0.1')
+
+    }, [])
 
     return (
-        <section className={styles.section} id="projects">
+        <section ref={sectionRef} className={styles.section} id="projects">
             <div className={styles.header}>
                 <p className={styles.watermark} aria-hidden>PROJECTS</p>
                 <p className={styles.eyebrow}>Spring 2026</p>

@@ -24,6 +24,43 @@ export default function Hero() {
                 <HeroText ref={heroTextRef} />
             </div>
             <ScrollCue ref={scrollCueRef} />
+
+            {/* Chip recognition label — fades in during chip hold phase */}
+            <div
+                id="chip-label"
+                aria-hidden="true"
+                style={{
+                    position: 'absolute',
+                    bottom: '17%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    opacity: 0,
+                    zIndex: 6,
+                    pointerEvents: 'none',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
+                }}
+            >
+                <p style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: '9px',
+                    letterSpacing: '0.38em',
+                    color: 'rgba(123,53,232,0.6)',
+                    textTransform: 'uppercase',
+                    marginBottom: '7px',
+                }}>
+                    System-on-Chip Architecture
+                </p>
+                <p style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: '8px',
+                    letterSpacing: '0.22em',
+                    color: 'rgba(255,255,255,0.15)',
+                    textTransform: 'uppercase',
+                }}>
+                    SKY130 · 130nm · MIT Bangalore
+                </p>
+            </div>
         </section>
     )
 }

@@ -167,10 +167,10 @@ function drawPixel(ctx, x, y, baseR, shape, sizeScale, bri, alpha) {
 
     if (shape === 'circle') {
         ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
-        // Tiny inner highlight
-        ctx.globalAlpha = alpha * 0.4
+        // Tiny inner highlight — reduced for sharper CAD-like look
+        ctx.globalAlpha = alpha * 0.15
         ctx.fillStyle = '#fff'
-        ctx.beginPath(); ctx.arc(x, y, r * 0.36, 0, Math.PI * 2); ctx.fill()
+        ctx.beginPath(); ctx.arc(x, y, r * 0.3, 0, Math.PI * 2); ctx.fill()
     } else if (shape === 'square') {
         const h = r * 0.9; ctx.fillRect(x - h, y - h, h * 2, h * 2)
     } else {
@@ -261,9 +261,10 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
 
         /* ── ScrollTrigger ─────────────────────────────────── */
         function setupScrollTrigger() {
+            const heroEl = heroRef?.current
             ScrollTrigger.create({
-                trigger: heroRef?.current || '#hero',
-                start: 'top top', end: '+=160%', scrub: 1.2, pin: true,
+                trigger: heroEl || '#hero',
+                start: 'top top', end: '+=380%', scrub: 1.2, pin: true,
                 onUpdate(self) {
                     scrollProg = self.progress
                     const t = heroTextRef?.current
@@ -275,6 +276,16 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                     } else if (entryDone) {
                         if (t) t.style.opacity = 1
                         if (c) c.style.opacity = 1
+                    }
+
+                    // Chip label fade in when chip is formed (sp > 0.65)
+                    const chipLabel = document.getElementById('chip-label')
+                    if (chipLabel) {
+                        if (self.progress > 0.65) {
+                            chipLabel.style.opacity = Math.min(1, (self.progress - 0.65) / 0.10) * 0.55
+                        } else {
+                            chipLabel.style.opacity = 0
+                        }
                     }
                 },
             })
@@ -313,25 +324,26 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                         const scanDist = Math.abs(diagPos - scan)
                         if (scanDist < 0.07) bri = Math.min(1, bri + (1 - scanDist / 0.07) * 0.55)
 
-                    } else if (sp <= 0.14) {
+                    } else if (sp <= 0.08) {
                         // ── Phase 1: vibrate — sine-based, no random flicker ──
-                        const amp = (sp / 0.14) * 4
+                        const amp = (sp / 0.08) * 3
                         x = d.finalX + Math.sin(now * 0.004 + d.phase) * amp
                         y = d.finalY + Math.cos(now * 0.005 + d.phase) * amp
 
-                    } else if (sp <= 0.86) {
+                    } else if (sp <= 0.60) {
                         // ── Phase 2: morph VED → chip ──
-                        const t = (sp - 0.14) / 0.72
+                        const t = (sp - 0.08) / 0.52
                         const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
                         x = d.finalX + (d.chipX - d.finalX) * ease
                         y = d.finalY + (d.chipY - d.finalY) * ease
                         bri = d.brightness + (1 - d.brightness) * ease * 0.45
 
                     } else {
-                        // ── Phase 3: chip formed ──
+                        // ── Phase 3: CHIP HOLDS — sp 0.60 → 1.00 ──
+                        // 40% of scroll, user has full time to read "System-on-Chip"
                         x = d.chipX
                         y = d.chipY
-                        bri = Math.min(1, d.brightness + 0.25)
+                        bri = Math.min(1, d.brightness * 1.8 + 0.15)
 
                         const diagPos = (d.chipX / vpW * 0.6 + (1 - d.chipY / vpH) * 0.4)
                         const scanDist = Math.abs(diagPos - scan)

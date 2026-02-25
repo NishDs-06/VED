@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    z-index: 10;
 }
 
 /* Subtle edge vignette — very light */
@@ -16,7 +17,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(11, 15, 20, 0.45) 100%);
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
     pointer-events: none;
     z-index: 10;
 }

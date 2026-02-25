@@ -76,10 +76,10 @@ function SineWaveCanvas() {
 
             waves.forEach(({ phase, alpha, lw }) => {
                 ctx.beginPath()
-                ctx.strokeStyle = `rgba(255,122,0,${alpha})`
+                ctx.strokeStyle = `rgba(123,53,232,${alpha})`
                 ctx.lineWidth = lw
                 ctx.shadowBlur = alpha > 0.3 ? 8 : 0
-                ctx.shadowColor = 'rgba(255,122,0,0.3)'
+                ctx.shadowColor = 'rgba(123,53,232,0.3)'
 
                 for (let x = 0; x <= W; x += 2) {
                     const y = H / 2 + amplitude * Math.sin(freq * x + t + phase)
@@ -94,9 +94,9 @@ function SineWaveCanvas() {
             const dotY = H / 2 + amplitude * Math.sin(freq * dotX + t)
             ctx.beginPath()
             ctx.arc(dotX, dotY, 3, 0, Math.PI * 2)
-            ctx.fillStyle = '#FF7A00'
+            ctx.fillStyle = '#7B35E8'
             ctx.shadowBlur = 12
-            ctx.shadowColor = '#FF7A00'
+            ctx.shadowColor = '#7B35E8'
             ctx.fill()
             ctx.shadowBlur = 0
 
@@ -229,7 +229,7 @@ export default function Team() {
             {/* Header */}
             <div className={styles.header}>
                 <p className={styles.eyebrow}>Our Team</p>
-                <h2 className={styles.heading}>The People Behind VEDA</h2>
+                <h2 className={styles.heading}>The People Behind VED</h2>
                 <div className={styles.rule} />
                 <p className={styles.sub}>{realCount} confirmed · {TEAM.length - realCount} positions open</p>
             </div>

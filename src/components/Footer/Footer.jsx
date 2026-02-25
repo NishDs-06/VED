@@ -6,8 +6,8 @@ export default function Footer() {
             <div className={styles.inner}>
                 {/* LEFT — Brand */}
                 <div className={styles.brand}>
-                    <span className={styles.brandName}>VEDA</span>
-                    <span className={styles.brandFull}>VLSI &amp; Embedded Design Association</span>
+                    <span className={styles.brandName}>VED</span>
+                    <span className={styles.brandFull}>VLSI &amp; Embedded Design Club</span>
                     <span className={styles.brandLocation}>MIT Bangalore</span>
                     <span className={styles.tagline}>
                         Design. Build. Iterate.<br />Silicon to System.
@@ -33,7 +33,7 @@ export default function Footer() {
             </div>
 
             <div className={styles.strip}>
-                <span>© 2026 VEDA — MIT Bangalore</span>
+                <span>© 2026 VED — MIT Bangalore</span>
                 <span>Designed in RTL.</span>
             </div>
         </footer>

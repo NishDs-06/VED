@@ -1,8 +1,9 @@
 /* ── Section ─────────────────────────────────────────────────── */
 .section {
     background: #000000;
-    padding: 80px 64px 80px;
+    padding: 40px 64px 80px;
     position: relative;
+    z-index: 2;
 }
 
 /* ── Header ──────────────────────────────────────────────────── */
@@ -50,7 +51,7 @@
 .terminalBar {
     background: #0A0A0A;
     border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 2px;
+    border-radius: 10px;
     padding: 10px 18px;
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -117,7 +118,7 @@
 .card {
     background: var(--card-bg-hint, #0A0A0A);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 2px;
+    border-radius: 12px;
     padding: 28px 28px 24px;
     cursor: pointer;
     position: relative;
@@ -132,8 +133,8 @@
 
 .card:hover,
 .card:focus-visible {
-    border-color: rgba(255, 122, 0, 0.35);
-    box-shadow: 0 0 32px rgba(255, 122, 0, 0.12), 0 8px 32px rgba(0, 0, 0, 0.6);
+    border-color: rgba(123, 53, 232, 0.35);
+    box-shadow: 0 0 32px rgba(123, 53, 232, 0.12), 0 8px 32px rgba(0, 0, 0, 0.6);
     transform: translateY(-2px);
 }
 
@@ -144,7 +145,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: var(--card-accent, #FF7A00);
+    background: var(--card-accent, #7B35E8);
     opacity: 0.85;
 }
 
@@ -237,7 +238,7 @@
     color: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.07);
     padding: 3px 8px;
-    border-radius: 2px;
+    border-radius: 6px;
     text-transform: uppercase;
 }
 
@@ -278,7 +279,7 @@
 .popup {
     background: #0A0A0A;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+    border-radius: 12px;
     padding: 48px;
     width: min(580px, 92vw);
     max-height: 88vh;
@@ -286,7 +287,7 @@
     position: relative;
     animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 122, 0, 0.3) transparent;
+    scrollbar-color: rgba(123, 53, 232, 0.3) transparent;
 }
 
 @keyframes popupIn {
@@ -325,13 +326,13 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 2px;
+    border-radius: 8px;
     transition: border-color 150ms, color 150ms;
     line-height: 1;
 }
 
 .closeBtn:hover {
-    border-color: rgba(255, 122, 0, 0.5);
+    border-color: rgba(123, 53, 232, 0.5);
     color: #FFF;
 }
 
@@ -413,7 +414,7 @@
     color: rgba(255, 255, 255, 0.45);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 4px 10px;
-    border-radius: 2px;
+    border-radius: 6px;
     text-transform: uppercase;
 }
 
@@ -470,7 +471,7 @@
     text-decoration: none;
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 10px 18px;
-    border-radius: 2px;
+    border-radius: 8px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -480,7 +481,7 @@
 
 .actionLink:hover {
     color: var(--accent);
-    border-color: rgba(255, 122, 0, 0.4);
+    border-color: rgba(123, 53, 232, 0.4);
 }
 
 .actionPrimary {
@@ -491,7 +492,7 @@
     background: var(--accent);
     border: none;
     padding: 10px 20px;
-    border-radius: 2px;
+    border-radius: 8px;
     text-transform: uppercase;
     cursor: pointer;
     transition: opacity 150ms;

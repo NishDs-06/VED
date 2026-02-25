@@ -5,7 +5,7 @@
     height: 100vh;
     overflow: hidden;
     background: #000000;
-    /* sit above Projects/Team during pin */
+    z-index: 1;
 }
 
 /* ── Perspective grid background ────────────────────────────── */
@@ -13,8 +13,8 @@
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
     background-size: 64px 64px;
     transform: perspective(600px) rotateX(50deg) scale(2.5);
     transform-origin: center top;
@@ -41,7 +41,7 @@
     z-index: 10;
     pointer-events: none;
     animation: glitchBars 0.28s steps(1) forwards;
-    background: rgba(255, 122, 0, 0.03);
+    background: rgba(123, 53, 232, 0.03);
 }
 
 @keyframes glitchBars {
@@ -83,6 +83,7 @@
     display: flex;
     height: 100%;
     will-change: transform;
+    transform-style: preserve-3d;
 }
 
 /* ── Panel base ─────────────────────────────────────────────── */
@@ -117,7 +118,7 @@
     width: 100%;
     max-width: 480px;
     height: auto;
-    filter: drop-shadow(0 0 12px rgba(255, 122, 0, 0.08));
+    filter: drop-shadow(0 0 12px rgba(123, 53, 232, 0.08));
 }
 
 /* ── Text area ──────────────────────────────────────────────── */
@@ -167,7 +168,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.22em;
-    color: rgba(255, 122, 0, 0.6);
+    color: rgba(123, 53, 232, 0.6);
     text-transform: uppercase;
     margin-top: var(--sp-1);
 }
@@ -186,7 +187,7 @@
 .progressSq {
     width: 12px;
     height: 12px;
-    border: 1px solid rgba(255, 122, 0, 0.4);
+    border: 1px solid rgba(123, 53, 232, 0.4);
     transition: background 0.3s, box-shadow 0.3s;
 }
 
@@ -417,8 +418,8 @@
     }
 
     50% {
-        fill: rgba(255, 122, 0, 0.9);
-        filter: drop-shadow(0 0 6px rgba(255, 122, 0, 0.5));
+        fill: rgba(123, 53, 232, 0.9);
+        filter: drop-shadow(0 0 6px rgba(123, 53, 232, 0.5));
     }
 }
 

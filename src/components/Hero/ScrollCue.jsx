@@ -29,7 +29,7 @@ const ScrollCue = forwardRef(function ScrollCue(_, ref) {
 
         function onScroll() {
             if (tweenRef.current) tweenRef.current.kill()
-            gsap.to(el, { autoAlpha: 0, duration: 0.3, ease: 'power1.in' })
+            gsap.to(el, { autoAlpha: 0, duration: 0.3, ease: 'power2.in' })
             window.removeEventListener('scroll', onScroll)
         }
         window.addEventListener('scroll', onScroll, { passive: true, once: true })

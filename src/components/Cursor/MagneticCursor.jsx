@@ -36,16 +36,16 @@ export default function MagneticCursor() {
             if (e.target.closest('a,button,[data-magnetic]')) {
                 halo.style.width = '80px'
                 halo.style.height = '80px'
-                halo.style.background = 'rgba(0,194,255,0.18)'
-                halo.style.borderColor = 'rgba(0,194,255,0.9)'
+                halo.style.background = 'rgba(123,53,232,0.12)'
+                halo.style.borderColor = 'rgba(123,53,232,0.65)'
             }
         }
         function onLeave(e) {
             if (e.target.closest('a,button,[data-magnetic]')) {
                 halo.style.width = '48px'
                 halo.style.height = '48px'
-                halo.style.background = 'rgba(0,194,255,0.08)'
-                halo.style.borderColor = 'rgba(0,194,255,0.5)'
+                halo.style.background = 'rgba(123,53,232,0.08)'
+                halo.style.borderColor = 'rgba(123,53,232,0.45)'
             }
         }
         document.addEventListener('mouseover', onEnter)
@@ -76,8 +76,8 @@ export default function MagneticCursor() {
                 position: 'fixed', top: 0, left: 0,
                 width: 48, height: 48,
                 borderRadius: '50%',
-                background: 'rgba(0,194,255,0.08)',
-                border: '1px solid rgba(0,194,255,0.5)',
+                background: 'rgba(123,53,232,0.08)',
+                border: '1px solid rgba(123,53,232,0.45)',
                 backdropFilter: 'blur(1px)',
                 zIndex: 99998,
                 pointerEvents: 'none',
