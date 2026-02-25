@@ -21,14 +21,14 @@ const ROW1 = [
 ]
 
 const ROW2 = [
-    { id: 'tl', role: 'Technical Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
+    { id: 'tl', role: 'random Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
     { id: 'rl', role: 'Research Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
     { id: 'el', role: 'Events Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
     { id: 'fl', role: 'Finance Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
 ]
 
 const ROW3 = [
-    { id: 'nd', role: 'Web & Design Lead', initials: 'ND', name: "Nishanth D'Souza", photo: null, oneLiner: 'Turns silicon specs into pixels. Built this site.', tags: ['Frontend', 'UI/UX', 'React'], linkedin: null, github: 'https://nishds-06.github.io/' },
+    { id: 'nd', role: 'Technical Head', initials: 'ND', name: "Nishanth D'Souza", photo: null, oneLiner: 'Turns silicon specs into pixels. Built this site.', tags: ['Frontend', 'UI/UX', 'React'], linkedin: null, github: 'https://nishds-06.github.io/' },
     { id: 'wc2', role: 'Working Committee', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
     { id: 'wc3', role: 'Working Committee', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
     { id: 'wc4', role: 'Working Committee', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
