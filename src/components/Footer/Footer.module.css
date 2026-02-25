@@ -1,18 +1,53 @@
+/* ── Import Rubik 80s Fade for VED logo text ─────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Rubik+80s+Fade&display=swap');
+
 /* ── Footer shell ────────────────────────────────────────────── */
 .footer {
-    background: var(--bg);
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 64px 64px 0;
+    background: #050507;
+    border-top: 1px solid rgba(168, 85, 247, 0.15);
+    padding: 0 64px 0;
     position: relative;
-    z-index: 2;
+    overflow: hidden;
+}
+
+/* Deep purple radial glow rising from bottom */
+.footer::before {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 340px;
+    background: radial-gradient(ellipse at center, rgba(123, 47, 255, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Top accent bar — purple gradient */
+.footer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(168, 85, 247, 0.4) 20%,
+            #A855F7 50%,
+            rgba(168, 85, 247, 0.4) 80%,
+            transparent 100%);
 }
 
 /* ── Main grid ───────────────────────────────────────────────── */
 .inner {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 64px;
-    padding-bottom: 64px;
+    padding: 64px 0 64px;
 }
 
 /* ── Brand column ────────────────────────────────────────────── */
@@ -21,33 +56,83 @@
     flex-direction: column;
 }
 
+/* VED — Rubik 80s Fade, bright purple glow */
 .brandName {
-    font-family: 'DM Mono', monospace;
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: 0.04em;
+    font-family: 'Rubik 80s Fade', 'DM Mono', monospace;
+    font-size: 64px;
+    font-weight: 400;
+    color: #C084FC;
+    letter-spacing: 0.06em;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 14px;
+    line-height: 1;
+    text-shadow:
+        0 0 16px rgba(192, 132, 252, 0.9),
+        0 0 40px rgba(168, 85, 247, 0.55),
+        0 0 80px rgba(123, 47, 255, 0.25);
 }
 
-.brandFull,
-.brandLocation {
+.brandFull {
     font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--muted);
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
     display: block;
-    line-height: 1.6;
+    line-height: 1.7;
+}
+
+.brandLocation {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    display: block;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
 }
 
 .tagline {
     font-family: 'DM Mono', monospace;
     font-style: italic;
     font-size: 12px;
-    color: rgba(229, 231, 235, 0.2);
-    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.9;
     display: block;
-    margin-top: 24px;
+    margin-top: 20px;
+}
+
+/* ── Made by credit ──────────────────────────────────────────── */
+.madeBy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+.madeByLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.30em;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+}
+
+.madeByName {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(192, 132, 252, 0.85);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 200ms ease, text-shadow 200ms ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.madeByName:hover {
+    color: #C084FC;
+    text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
 }
 
 /* ── Nav columns ─────────────────────────────────────────────── */
@@ -55,36 +140,39 @@
     font-family: 'DM Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.28em;
-    color: rgba(229, 231, 235, 0.25);
+    color: rgba(168, 85, 247, 0.7);
     text-transform: uppercase;
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .links {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 .links a {
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
-    color: var(--muted);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
     transition: color 200ms ease, transform 200ms ease;
     display: inline-block;
+    letter-spacing: 0.01em;
 }
 
 .links a:hover {
-    color: var(--accent);
-    transform: translateX(4px);
+    color: #C084FC;
+    transform: translateX(5px);
 }
 
 /* ── Bottom strip ────────────────────────────────────────────── */
 .strip {
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 16px 0;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -94,19 +182,24 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.18em;
-    color: rgba(229, 231, 235, 0.18);
+    color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
 }
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .footer {
-        padding: 48px 24px 0;
+        padding: 0 24px 0;
     }
 
     .inner {
         grid-template-columns: 1fr;
         gap: 40px;
+        padding: 48px 0 48px;
+    }
+
+    .brandName {
+        font-size: 52px;
     }
 
     .strip {
