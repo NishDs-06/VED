@@ -268,7 +268,6 @@ function MCUSystem() {
     )
 }
 
-/* ── Visual selector ─────────────────────────────────────────── */
 function DomainVisual({ type }) {
     switch (type) {
         case 'oscilloscope': return <Oscilloscope />
@@ -280,11 +279,12 @@ function DomainVisual({ type }) {
     }
 }
 
-/* ── Main Component ──────────────────────────────────────────── */
-
-// Detect touch device once at module level — stable across renders
+/* ── IS_TOUCH: tablet check ──────────────────────────────────── */
+// pointer:coarse + narrow screen = phone → stack vertically
+// pointer:coarse + wide screen = tablet → horizontal scroll still works
 const IS_TOUCH = typeof window !== 'undefined' &&
-    window.matchMedia('(pointer: coarse)').matches
+    window.matchMedia('(pointer: coarse)').matches &&
+    window.innerWidth < 1024
 
 let lastPanel = 0
 
@@ -304,13 +304,11 @@ export default function Domains() {
 
         const totalShift = window.innerWidth * (DOMAINS.length - 1)
 
-        // ── IntersectionObserver: pause CSS animations on off-screen panels ──
-        // This fixes the "all 5 panels animating at once" mobile GPU drain
+        // ── Pause CSS animations on off-screen panels (perf) ─────
         const panelObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach(entry => {
                     const panel = entry.target
-                    // Toggle animation-play-state on all animated SVG elements inside
                     const animated = panel.querySelectorAll(
                         '[class*="waveClk"],[class*="waveDat"],[class*="waveEn"],' +
                         '[class*="scanCursor"],[class*="bodeLine"],[class*="sineIn"],' +
@@ -323,47 +321,55 @@ export default function Domains() {
                     })
                 })
             },
-            // Generous threshold — pause when panel is fully off screen
             { threshold: 0, rootMargin: '0px 100px 0px 100px' }
         )
-
         panelRefs.current.forEach(p => { if (p) panelObserver.observe(p) })
 
-        // ── On mobile: skip ScrollTrigger entirely ──
-        // The CSS stacks panels vertically with height:auto so there's nothing
-        // to pin or horizontally translate. Native scroll handles it perfectly.
         if (IS_TOUCH) {
-            // Still disconnect observer on unmount
             return () => { panelObserver.disconnect() }
         }
 
         let hst
-        const initTimer = setTimeout(() => {
+
+        // ── FIX: Don't use setTimeout — it's a race condition ────
+        // Instead, wait for the first ScrollTrigger refresh to fire.
+        // This guarantees the Hero ScrollTrigger (created in VEDLogoCanvas
+        // after document.fonts.ready) has already been registered and
+        // ScrollTrigger has calculated all pin spacer heights before we
+        // create the Domains ST on top of them.
+        //
+        // Using a one-shot 'refresh' listener means we're always creating
+        // AFTER the existing STs have settled, regardless of how long
+        // fonts/images take to load on any given device.
+        //
+        // invalidateOnRefresh: true ensures if the window is resized or
+        // ST refreshes again later, the end position recalculates correctly.
+        let initialized = false
+
+        function initST() {
+            if (initialized) return
+            initialized = true
+
             hst = ScrollTrigger.create({
                 trigger: section,
                 pin: true,
                 pinSpacing: true,
                 anticipatePin: 1,
+                invalidateOnRefresh: true,  // KEY: recalculate on resize/refresh
                 start: 'top top',
-                end: () => `+=${totalShift * 1.05}`,
+                end: () => `+=${window.innerWidth * (DOMAINS.length - 1) * 1.05}`,
                 scrub: 1,
                 onUpdate(self) {
                     const progress = Math.max(0, Math.min(1, self.progress))
+                    gsap.set(track, { x: -progress * window.innerWidth * (DOMAINS.length - 1) })
 
-                    gsap.set(track, { x: -progress * totalShift })
-
-                    // ── 3D tilt: desktop only — skip entirely on touch ──
                     if (!IS_TOUCH && progress > 0.85) {
                         const tiltProg = (progress - 0.85) / 0.15
-                        gsap.set(track, {
-                            rotateX: tiltProg * 4,
-                            transformPerspective: 800,
-                        })
+                        gsap.set(track, { rotateX: tiltProg * 4, transformPerspective: 800 })
                     } else {
                         gsap.set(track, { rotateX: 0 })
                     }
 
-                    // Progress squares
                     const currentPanel = Math.round(progress * (DOMAINS.length - 1))
                     progressRef.current.forEach((sq, i) => {
                         if (!sq) return
@@ -371,7 +377,6 @@ export default function Domains() {
                         sq.style.boxShadow = i === currentPanel ? 'var(--glow-xs)' : 'none'
                     })
 
-                    // Glitch flash on panel change
                     if (currentPanel !== lastPanel) {
                         lastPanel = currentPanel
                         const g = glitchRef.current
@@ -381,16 +386,29 @@ export default function Domains() {
                         }
                     }
                 },
-                onLeave() { },
                 onEnterBack() {
                     lastPanel = 0
                     gsap.set(track, { x: 0, rotateX: 0 })
                 },
             })
-        }, 300)
+        }
+
+        // Try to init immediately first — if ST has already refreshed
+        // (e.g. fast load with cached fonts) this fires right away.
+        // The one-shot listener handles the slow-load case.
+        const rafId = requestAnimationFrame(() => {
+            // Small rAF delay lets React finish painting the DOM,
+            // then we hook into the next ST refresh cycle.
+            const unsub = ScrollTrigger.addEventListener('refresh', () => {
+                unsub()
+                initST()
+            })
+            // Trigger a refresh so the listener fires
+            ScrollTrigger.refresh()
+        })
 
         return () => {
-            clearTimeout(initTimer)
+            cancelAnimationFrame(rafId)
             hst?.kill()
             panelObserver.disconnect()
         }
@@ -411,9 +429,7 @@ export default function Domains() {
                     >
                         {i % 2 === 0 ? (
                             <>
-                                <div className={styles.vizArea}>
-                                    <DomainVisual type={d.visual} />
-                                </div>
+                                <div className={styles.vizArea}><DomainVisual type={d.visual} /></div>
                                 <div className={styles.textArea}>
                                     <span className={styles.panelNum}>{d.num}</span>
                                     <h2 className={styles.panelTitle}>{d.title}</h2>
@@ -429,9 +445,7 @@ export default function Domains() {
                                     <p className={styles.panelDesc}>{d.desc}</p>
                                     <p className={styles.panelTools}>{d.tools}</p>
                                 </div>
-                                <div className={styles.vizArea}>
-                                    <DomainVisual type={d.visual} />
-                                </div>
+                                <div className={styles.vizArea}><DomainVisual type={d.visual} /></div>
                             </>
                         )}
                     </div>

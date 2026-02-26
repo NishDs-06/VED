@@ -36,7 +36,7 @@ export default function Footer() {
                     <span className={styles.colLabel}>Connect</span>
                     <a href="https://www.linkedin.com/company/ved-mitblr/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     <a href="https://www.instagram.com/ved.mitblr?igsh=MTVscmdyZjk0MTRrbQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
-                    <a href="mailto:ved@mit.edu">ved@mit.edu</a>
+                    <a href="mailto:ved.mitblr@gmail.com">ved.mitblr@gmail.com</a>
                 </div>
             </div>
 

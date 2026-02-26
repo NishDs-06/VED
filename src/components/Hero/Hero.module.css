@@ -37,4 +37,16 @@
     align-items: center;
     gap: 8px;
     z-index: 4;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .heroContent {
+        top: 72%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 24px;
+        width: 100%;
+    }
 }

@@ -112,7 +112,7 @@ const ROW3 = [
     },
     {
         id: 'fm',
-        role: 'Graphic Design Head',
+        role: 'Graphic Design & Media Head',
         initials: 'FM',
         name: 'Farah Manikindi',
         photo: null,
@@ -134,7 +134,7 @@ const ROW3 = [
     },
     {
         id: 'rj',
-        role: 'Media Head',
+        role: 'Marketing Head',
         initials: 'RJ',
         name: 'Riya Joseph',
         photo: null,
@@ -265,11 +265,14 @@ function SineWave() {
 /* ── Popup ─────────────────────────────────────────────────── */
 function Popup({ member, onClose }) {
     useEffect(() => {
+        // ── FIX: dispatch to App so Lenis stops scrolling the background
+        window.dispatchEvent(new Event('ved:popup:open'))
         document.body.style.overflow = 'hidden'
         document.documentElement.style.overflow = 'hidden'
         const onKey = e => e.key === 'Escape' && onClose()
         document.addEventListener('keydown', onKey)
         return () => {
+            window.dispatchEvent(new Event('ved:popup:close'))
             document.body.style.overflow = ''
             document.documentElement.style.overflow = ''
             document.removeEventListener('keydown', onKey)

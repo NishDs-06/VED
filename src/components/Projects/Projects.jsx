@@ -4,14 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Projects.module.css'
 import SectionAtmosphere from '../SectionAtmosphere/SectionAtmosphere'
 
-/* ── SVG Icons ───────────────────────────────────────────────── */
 const GitHubIcon = () => (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
     </svg>
 )
 
-/* ── Project data — from president's problem statements ─────── */
 const PROJECTS = [
     {
         id: 'mosfet',
@@ -95,7 +93,6 @@ const PROJECTS = [
     },
 ]
 
-/* Category → accent colour (purple family matching site palette) */
 const CATEGORY_COLOR = {
     DEVICE: '#C084FC',
     CIRCUIT: '#A855F7',
@@ -117,10 +114,15 @@ function ProjectPopup({ project, onClose }) {
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
 
     useEffect(() => {
+        // ── FIX: dispatch to App so Lenis stops scrolling the background
+        window.dispatchEvent(new Event('ved:popup:open'))
         document.body.style.overflow = 'hidden'
+
         const onKey = e => { if (e.key === 'Escape') onClose() }
         document.addEventListener('keydown', onKey)
+
         return () => {
+            window.dispatchEvent(new Event('ved:popup:close'))
             document.body.style.overflow = ''
             document.removeEventListener('keydown', onKey)
         }
@@ -129,8 +131,6 @@ function ProjectPopup({ project, onClose }) {
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.popup} onClick={e => e.stopPropagation()}>
-
-                {/* Animated shimmer top bar */}
                 <div className={styles.popupShimmer} />
 
                 <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
@@ -140,7 +140,6 @@ function ProjectPopup({ project, onClose }) {
                 </button>
 
                 <div className={styles.popupInner}>
-                    {/* Category badge + status */}
                     <div className={styles.popupBadgeRow}>
                         <span className={styles.popupCategoryBadge} style={{ color: accent, borderColor: accent + '33', background: accent + '11' }}>
                             {project.category}
@@ -154,7 +153,6 @@ function ProjectPopup({ project, onClose }) {
 
                     <div className={styles.popupDivider} />
 
-                    {/* Meta */}
                     <div className={styles.metaRow}>
                         <div className={styles.metaBox}>
                             <span className={styles.metaLabel}>Team</span>
@@ -170,7 +168,6 @@ function ProjectPopup({ project, onClose }) {
                         </div>
                     </div>
 
-                    {/* Tools */}
                     <div className={styles.toolsRow}>
                         {project.tools.map(t => (
                             <span key={t} className={styles.toolPill}>{t}</span>
@@ -179,11 +176,9 @@ function ProjectPopup({ project, onClose }) {
 
                     <div className={styles.popupDivider} />
 
-                    {/* About */}
                     <p className={styles.sectionLabel}>Problem Statement</p>
                     <p className={styles.popupAbout}>{project.about}</p>
 
-                    {/* Learn */}
                     <p className={styles.sectionLabel} style={{ marginTop: 22 }}>What You'll Learn</p>
                     <ul className={styles.learnList}>
                         {project.learn.map(l => (
@@ -221,10 +216,8 @@ function ProjectCard({ project, onClick }) {
             tabIndex={0}
             onKeyDown={e => e.key === 'Enter' && onClick(project)}
         >
-            {/* Top accent line — purple gradient */}
             <div className={styles.cardTopLine} style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }} />
 
-            {/* Category tag */}
             <div className={styles.cardTagRow}>
                 <span className={styles.cardCategory} style={{ color: accent, borderColor: accent + '40', background: accent + '0f' }}>
                     {project.category}
@@ -235,16 +228,10 @@ function ProjectCard({ project, onClick }) {
                 </span>
             </div>
 
-            {/* Name */}
             <h3 className={styles.cardName}>{project.name}</h3>
-
-            {/* Domain */}
             <p className={styles.cardDomain}>{project.domain}</p>
-
-            {/* Divider */}
             <div className={styles.cardDivider} />
 
-            {/* Tools */}
             <div className={styles.cardTools}>
                 {project.tools.slice(0, 3).map(t => (
                     <span key={t} className={styles.toolChip}>{t}</span>
@@ -254,13 +241,11 @@ function ProjectCard({ project, onClick }) {
                 )}
             </div>
 
-            {/* Footer */}
             <div className={styles.cardFooter}>
                 <span className={styles.cardMembers}>{project.members} members</span>
                 <span className={styles.cardCta}>View →</span>
             </div>
 
-            {/* Hover glow */}
             <div className={styles.cardGlow} style={{ background: `radial-gradient(ellipse at 50% 100%, ${accent}22 0%, transparent 70%)` }} />
         </div>
     )
@@ -280,15 +265,54 @@ export default function Projects() {
         const cards = section.querySelectorAll('[class*="card"]')
         const header = section.querySelector('[class*="sectionHeader"]')
         const termBar = section.querySelector('[class*="terminalBar"]')
+        const rule = section.querySelector('[class*="headingRule"]')
 
-        gsap.set([header, termBar, ...cards], { opacity: 0, y: 20 })
+        // Start everything invisible
+        gsap.set([header, termBar, ...cards], { opacity: 0, y: 30 })
+        gsap.set(rule, { scaleX: 0, transformOrigin: 'left center' })
 
         const tl = gsap.timeline({
-            scrollTrigger: { trigger: section, start: 'top 68%', once: true }
+            scrollTrigger: {
+                trigger: section,
+                start: 'top 72%',
+                once: true,
+            }
         })
-        tl.to(header, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
-            .to(termBar, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '+=0.05')
-            .to(cards, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.08 }, '+=0.05')
+
+        tl
+            // 1. Eyebrow + heading sweep in
+            .to(header, {
+                opacity: 1, y: 0,
+                duration: 0.7,
+                ease: 'power3.out',
+            })
+            // 2. Rule draws itself left → right
+            .to(rule, {
+                scaleX: 1,
+                duration: 0.5,
+                ease: 'power2.out',
+            }, '-=0.3')
+            // 3. Terminal bar slides up
+            .to(termBar, {
+                opacity: 1, y: 0,
+                duration: 0.45,
+                ease: 'power2.out',
+            }, '-=0.2')
+            // 4. Cards stagger in with a slight scale pop
+            .fromTo(cards,
+                { opacity: 0, y: 40, scale: 0.96 },
+                {
+                    opacity: 1, y: 0, scale: 1,
+                    duration: 0.55,
+                    ease: 'power3.out',
+                    stagger: {
+                        each: 0.09,
+                        from: 'start',
+                    },
+                },
+                '-=0.15'
+            )
+
     }, [])
 
     return (

@@ -16,10 +16,30 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const GRID = 2
 
 /* ─── VED dot positions ─────────────────────────────────────── */
+// ─────────────────────────────────────────────────────────────
+// DROP-IN REPLACEMENT for the generateDots function in VEDLogoCanvas.jsx
+// Find the existing generateDots function and replace it with this one.
+//
+// Changes:
+//   - cy uses 0.44 on mobile (portrait) instead of 0.47 — sits more centred
+//   - maxH uses 0.32 on mobile instead of 0.44 — prevents overflow on narrow screens
+//   - maxW uses 0.88 on mobile instead of 0.82 — uses more horizontal space
+// ─────────────────────────────────────────────────────────────
+
 function generateDots(vpW, vpH) {
     const spacing = 7
-    const maxW = vpW * 0.82, maxH = vpH * 0.44
-    const cx = vpW / 2, cy = vpH * 0.47
+    const isMobileView = vpW < 768
+
+    // On mobile (portrait) the visual centre of the canvas feels higher
+    // because the subtitle sits below — push VED up slightly less than desktop
+    const cyFrac = isMobileView ? 0.44 : 0.47
+    const maxWFrac = isMobileView ? 0.88 : 0.82
+    const maxHFrac = isMobileView ? 0.30 : 0.44
+
+    const maxW = vpW * maxWFrac
+    const maxH = vpH * maxHFrac
+    const cx = vpW / 2
+    const cy = vpH * cyFrac
 
     const ref = document.createElement('canvas')
     const rctx = ref.getContext('2d')
@@ -34,7 +54,8 @@ function generateDots(vpW, vpH) {
     const fontSize = Math.floor(refSize * scale)
     const textW = Math.ceil(rawW * scale)
     const textH = Math.ceil(fontSize * 1.1)
-    const drawX = cx - textW / 2, drawY = cy - textH / 2
+    const drawX = cx - textW / 2
+    const drawY = cy - textH / 2
 
     const off = document.createElement('canvas')
     off.width = textW; off.height = textH
@@ -57,7 +78,8 @@ function generateDots(vpW, vpH) {
             const t = Math.random()
             const shape = t < 0.45 ? 'circle' : t < 0.80 ? 'square' : 'speck'
             const ss = 0.55 + Math.random() * 0.65
-            const dx = (x - textW / 2) / (textW / 2), dy = (y - textH / 2) / (textH / 2)
+            const dx = (x - textW / 2) / (textW / 2)
+            const dy = (y - textH / 2) / (textH / 2)
             const bri = Math.max(0.3, Math.min(1, ef * (1 - Math.hypot(dx, dy) * 0.22)))
             dots.push({
                 finalX: fx, finalY: fy, scatterX: 0, scatterY: 0,

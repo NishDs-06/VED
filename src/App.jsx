@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
@@ -8,6 +8,7 @@ import Projects from './components/Projects/Projects'
 import Team from './components/Team/Team'
 import Footer from './components/Footer/Footer'
 import ChipLoader from './components/ChipLoader/ChipLoader'
+import TransitionBridge from './components/TransitionBridge/TransitionBridge'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -27,9 +28,10 @@ function getSnapPoints() {
 
 export default function App() {
     const [loading, setLoading] = useState(false) // ChipLoader disabled — set to true to re-enable
+    const lenisRef = useRef(null)
 
     useEffect(() => {
-        if (loading) return  // Don't init Lenis/ST until loader is gone
+        if (loading) return
 
         const lenis = new Lenis({
             duration: 1.4,
@@ -39,6 +41,7 @@ export default function App() {
             touchMultiplier: 1.5,
             touchInertiaMultiplier: 20,
         })
+        lenisRef.current = lenis
 
         let lastVelocity = 0
         let snapTimer = null
@@ -52,25 +55,6 @@ export default function App() {
         setTimeout(refreshSnapPoints, 600)
         window.addEventListener('resize', refreshSnapPoints)
 
-        function trySnap(currentY) {
-            if (isSnapping || snapPoints.length === 0) return
-            let nearest = null
-            let minDist = Infinity
-            for (const pt of snapPoints) {
-                const dist = Math.abs(currentY - pt)
-                if (dist < minDist) { minDist = dist; nearest = pt }
-            }
-            if (nearest === null || minDist > SNAP_ZONE) return
-            if (minDist < 4) return
-            isSnapping = true
-            lenis.scrollTo(nearest, {
-                duration: SNAP_DUR,
-                easing: SNAP_EASE,
-                force: true,
-            })
-            setTimeout(() => { isSnapping = false }, SNAP_DUR * 1000 + 100)
-        }
-
         lenis.on('scroll', (e) => {
             window.__lenisY = e.scroll
             ScrollTrigger.update()
@@ -78,21 +62,49 @@ export default function App() {
             clearTimeout(snapTimer)
             if (!isSnapping) {
                 snapTimer = setTimeout(() => {
-                    if (Math.abs(lastVelocity) < 0.8) {
-                        trySnap(e.scroll)
-                    }
+                    if (Math.abs(lastVelocity) < 0.8) trySnap(e.scroll)
                 }, 80)
             }
         })
+
+        function trySnap(currentY) {
+            if (isSnapping || snapPoints.length === 0) return
+            let nearest = null, minDist = Infinity
+            for (const pt of snapPoints) {
+                const dist = Math.abs(currentY - pt)
+                if (dist < minDist) { minDist = dist; nearest = pt }
+            }
+            if (nearest === null || minDist > SNAP_ZONE || minDist < 4) return
+            isSnapping = true
+            lenis.scrollTo(nearest, { duration: SNAP_DUR, easing: SNAP_EASE, force: true })
+            setTimeout(() => { isSnapping = false }, SNAP_DUR * 1000 + 100)
+        }
 
         const tickerFn = (time) => lenis.raf(time * 1000)
         gsap.ticker.add(tickerFn)
         gsap.ticker.lagSmoothing(0)
 
+        // ── Popup lock — Projects/Team dispatch these to stop Lenis
+        //    so the background doesn't scroll behind an open modal
+        function onPopupOpen() {
+            lenis.stop()
+            clearTimeout(snapTimer)
+            isSnapping = false
+        }
+        function onPopupClose() {
+            lenis.start()
+            setTimeout(refreshSnapPoints, 100)
+        }
+        window.addEventListener('ved:popup:open', onPopupOpen)
+        window.addEventListener('ved:popup:close', onPopupClose)
+
         return () => {
             clearTimeout(snapTimer)
             window.removeEventListener('resize', refreshSnapPoints)
+            window.removeEventListener('ved:popup:open', onPopupOpen)
+            window.removeEventListener('ved:popup:close', onPopupClose)
             lenis.destroy()
+            lenisRef.current = null
             gsap.ticker.remove(tickerFn)
             ScrollTrigger.killAll()
         }
@@ -100,12 +112,11 @@ export default function App() {
 
     return (
         <>
-            {loading && (
-                <ChipLoader onComplete={() => setLoading(false)} />
-            )}
+            {loading && <ChipLoader onComplete={() => setLoading(false)} />}
             <main style={{ visibility: loading ? 'hidden' : 'visible' }}>
                 <Hero />
                 <Domains />
+                <TransitionBridge />
                 <Projects />
                 <Team />
                 <Footer />
