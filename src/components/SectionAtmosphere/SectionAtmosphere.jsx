@@ -1,34 +1,42 @@
 import { useEffect, useRef } from 'react'
 
 /*
-  HeroAtmosphere — ambient depth layer behind VED dots
-  - 5 slow-breathing elliptical purple glows (BOOSTED opacity)
-  - 3-layer depth particles (far/mid/near)
-  - Accepts heroRef so it reads dimensions from the actual hero element
+  SectionAtmosphere — reusable ambient glow layer
+  Same system as HeroAtmosphere but:
+  - Fewer particles (sections are content-heavy, hero is mostly empty)
+  - Slightly different glow positions per variant
+  - Uses IntersectionObserver to pause RAF when off-screen (perf)
 */
 
 const IS_MOBILE = typeof window !== 'undefined' &&
     window.matchMedia('(max-width: 768px)').matches
 
-// ── FIX: Boosted peak opacity values so glows are actually visible ──
-const GLOW_DEFS = [
-    { cx: 0.12, cy: 0.18, rx: 0.42, ry: 0.35, col: 'rgba(123,47,255,', peak: 0.28, spd: 0.00018, ph: 0.0 },
-    { cx: 0.88, cy: 0.14, rx: 0.38, ry: 0.30, col: 'rgba(88,28,220,', peak: 0.22, spd: 0.00022, ph: 1.8 },
-    { cx: 0.50, cy: 0.75, rx: 0.60, ry: 0.40, col: 'rgba(109,40,217,', peak: 0.30, spd: 0.00015, ph: 3.2 },
-    { cx: 0.08, cy: 0.92, rx: 0.32, ry: 0.25, col: 'rgba(76,29,149,', peak: 0.20, spd: 0.00025, ph: 0.9 },
-    { cx: 0.92, cy: 0.55, rx: 0.30, ry: 0.32, col: 'rgba(139,92,246,', peak: 0.20, spd: 0.00020, ph: 2.4 },
-]
+// Different glow layouts per section so they don't look copy-pasted
+const GLOW_VARIANTS = {
+    projects: [
+        { cx: 0.05, cy: 0.20, rx: 0.38, ry: 0.30, col: 'rgba(123,47,255,', peak: 0.22, spd: 0.00020, ph: 0.0 },
+        { cx: 0.95, cy: 0.10, rx: 0.35, ry: 0.28, col: 'rgba(88,28,220,', peak: 0.18, spd: 0.00018, ph: 2.1 },
+        { cx: 0.50, cy: 0.85, rx: 0.55, ry: 0.35, col: 'rgba(109,40,217,', peak: 0.25, spd: 0.00013, ph: 1.4 },
+        { cx: 0.88, cy: 0.60, rx: 0.28, ry: 0.30, col: 'rgba(139,92,246,', peak: 0.16, spd: 0.00022, ph: 3.0 },
+    ],
+    team: [
+        { cx: 0.10, cy: 0.30, rx: 0.40, ry: 0.32, col: 'rgba(109,40,217,', peak: 0.20, spd: 0.00016, ph: 1.0 },
+        { cx: 0.90, cy: 0.20, rx: 0.36, ry: 0.26, col: 'rgba(123,47,255,', peak: 0.18, spd: 0.00021, ph: 2.6 },
+        { cx: 0.45, cy: 0.90, rx: 0.50, ry: 0.38, col: 'rgba(88,28,220,', peak: 0.22, spd: 0.00014, ph: 0.5 },
+        { cx: 0.08, cy: 0.75, rx: 0.30, ry: 0.24, col: 'rgba(139,92,246,', peak: 0.15, spd: 0.00024, ph: 3.8 },
+        { cx: 0.92, cy: 0.70, rx: 0.28, ry: 0.30, col: 'rgba(76,29,149,', peak: 0.14, spd: 0.00019, ph: 1.8 },
+    ],
+}
 
-function makeParticles(W, H) {
-    const count = IS_MOBILE ? 28 : 55
+function makeParticles(W, H, count) {
     const out = []
     for (let i = 0; i < count; i++) {
         const dr = Math.random()
-        const depth = dr < 0.50 ? 'far' : dr < 0.80 ? 'mid' : 'near'
+        const depth = dr < 0.55 ? 'far' : dr < 0.82 ? 'mid' : 'near'
         const cfg = {
-            far: { rMin: 0.3, rMax: 0.8, opMin: 0.020, opMax: 0.060, spdMul: 0.20 },
-            mid: { rMin: 0.6, rMax: 1.2, opMin: 0.035, opMax: 0.090, spdMul: 0.45 },
-            near: { rMin: 1.0, rMax: 2.0, opMin: 0.055, opMax: 0.130, spdMul: 0.70 },
+            far: { rMin: 0.3, rMax: 0.8, opMin: 0.018, opMax: 0.055, spdMul: 0.18 },
+            mid: { rMin: 0.6, rMax: 1.2, opMin: 0.030, opMax: 0.080, spdMul: 0.40 },
+            near: { rMin: 1.0, rMax: 1.8, opMin: 0.050, opMax: 0.110, spdMul: 0.65 },
         }[depth]
         const r = cfg.rMin + Math.random() * (cfg.rMax - cfg.rMin)
         const baseOp = cfg.opMin + Math.random() * (cfg.opMax - cfg.opMin)
@@ -49,34 +57,35 @@ function makeParticles(W, H) {
     return out
 }
 
-export default function HeroAtmosphere({ heroRef }) {
+export default function SectionAtmosphere({ variant = 'projects', sectionRef }) {
     const canvasRef = useRef(null)
 
     useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
         const ctx = canvas.getContext('2d')
+        const glows = GLOW_VARIANTS[variant] || GLOW_VARIANTS.projects
 
         let W = 0, H = 0, particles = [], rafId, alive = true
 
         function setup() {
-            const hero = heroRef?.current
-            W = hero ? hero.clientWidth : window.innerWidth
-            H = hero ? hero.clientHeight : window.innerHeight
+            const el = sectionRef?.current
+            W = el ? el.clientWidth : window.innerWidth
+            H = el ? el.clientHeight : window.innerHeight
             canvas.width = W
             canvas.height = H
             canvas.style.width = W + 'px'
             canvas.style.height = H + 'px'
-            particles = makeParticles(W, H)
+            const count = IS_MOBILE ? 18 : 36
+            particles = makeParticles(W, H, count)
         }
 
         function drawGlows(now) {
-            for (const g of GLOW_DEFS) {
+            for (const g of glows) {
                 const pulse = 0.5 + 0.5 * Math.sin(now * g.spd + g.ph)
                 const opacity = g.peak * (0.55 + 0.45 * pulse)
                 const cx = g.cx * W, cy = g.cy * H
                 const rx = g.rx * W, ry = g.ry * H
-
                 ctx.save()
                 ctx.translate(cx, cy)
                 ctx.scale(rx, ry)
@@ -85,9 +94,7 @@ export default function HeroAtmosphere({ heroRef }) {
                 grad.addColorStop(0.4, g.col + (opacity * 0.4) + ')')
                 grad.addColorStop(1, g.col + '0)')
                 ctx.fillStyle = grad
-                ctx.beginPath()
-                ctx.arc(0, 0, 1, 0, Math.PI * 2)
-                ctx.fill()
+                ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill()
                 ctx.restore()
             }
         }
@@ -99,18 +106,13 @@ export default function HeroAtmosphere({ heroRef }) {
                 if (p.x > W + 4) p.x = -4
                 if (p.y < -4) p.y = H + 4
                 if (p.y > H + 4) p.y = -4
-
                 let op = p.baseOp
-                if (p.twinkle) {
-                    op *= 0.6 + 0.4 * Math.sin(now * 0.0018 + p.phase)
-                } else {
-                    op *= 0.75 + 0.25 * Math.sin(now * 0.0006 + p.phase)
-                }
+                op *= p.twinkle
+                    ? 0.6 + 0.4 * Math.sin(now * 0.0018 + p.phase)
+                    : 0.75 + 0.25 * Math.sin(now * 0.0006 + p.phase)
                 ctx.globalAlpha = op
                 ctx.fillStyle = `rgb(${p.color})`
-                ctx.beginPath()
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-                ctx.fill()
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill()
             }
             ctx.globalAlpha = 1
         }
@@ -123,9 +125,21 @@ export default function HeroAtmosphere({ heroRef }) {
             rafId = requestAnimationFrame(loop)
         }
 
+        // Pause when off-screen — same pattern as SineWave in Team
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                if (!alive) { alive = true; rafId = requestAnimationFrame(loop) }
+            } else {
+                alive = false; cancelAnimationFrame(rafId)
+            }
+        }, { threshold: 0 })
+        observer.observe(canvas)
+
         function onVis() {
             if (document.hidden) { alive = false; cancelAnimationFrame(rafId) }
-            else { alive = true; rafId = requestAnimationFrame(loop) }
+            else if (canvas.getBoundingClientRect().bottom > 0) {
+                alive = true; rafId = requestAnimationFrame(loop)
+            }
         }
         document.addEventListener('visibilitychange', onVis)
 
@@ -137,20 +151,18 @@ export default function HeroAtmosphere({ heroRef }) {
         window.addEventListener('resize', onResize)
 
         document.fonts.ready.then(() => {
-            requestAnimationFrame(() => {
-                setup()
-                rafId = requestAnimationFrame(loop)
-            })
+            requestAnimationFrame(() => { setup(); rafId = requestAnimationFrame(loop) })
         })
 
         return () => {
             alive = false
             cancelAnimationFrame(rafId)
             clearTimeout(resizeTimer)
+            observer.disconnect()
             document.removeEventListener('visibilitychange', onVis)
             window.removeEventListener('resize', onResize)
         }
-    }, [])
+    }, [variant])
 
     return (
         <canvas
@@ -159,9 +171,7 @@ export default function HeroAtmosphere({ heroRef }) {
             style={{
                 position: 'absolute',
                 top: 0, left: 0,
-                // ── FIX: raised to z-index 2 so it sits above the base bg
-                // but below the VED logo canvas (which is auto/3+)
-                zIndex: 2,
+                zIndex: 0,
                 pointerEvents: 'none',
                 display: 'block',
             }}

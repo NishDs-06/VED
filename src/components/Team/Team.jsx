@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './Team.module.css'
+import SectionAtmosphere from '../SectionAtmosphere/SectionAtmosphere'
 
 /* ── Icons ─────────────────────────────────────────────────── */
 const LinkedInIcon = () => (
@@ -15,23 +16,133 @@ const GitHubIcon = () => (
 
 /* ── Data ──────────────────────────────────────────────────── */
 const ROW1 = [
-    { id: 'rm', role: 'President', initials: 'RM', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'sg', role: 'Vice President', initials: 'SG', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'gs', role: 'General Secretary', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
+    {
+        id: 'rm',
+        role: 'President',
+        initials: 'RM',
+        name: 'Raagmanas Madhukar',
+        photo: null,
+        oneLiner: 'Co-founder. Building VED from the ground up.',
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/raagmanasmadhukar',
+        github: 'https://github.com/Cipher1712',
+    },
+    {
+        id: 'sg',
+        role: 'Vice President',
+        initials: 'SG',
+        name: 'Siddharth Gaur',
+        photo: null,
+        oneLiner: 'Co-founder. Steering vision into execution.',
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/siddharth-gaur-471084266',
+        github: null,
+    },
+    {
+        id: 'gs',
+        role: 'General Secretary',
+        initials: '?',
+        name: null,
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: null,
+        github: null,
+    },
 ]
 
 const ROW2 = [
-    { id: 'tl', role: 'random Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'rl', role: 'Research Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'el', role: 'Events Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'fl', role: 'Finance Lead', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
+    {
+        id: 'ak',
+        role: 'Project Head',
+        initials: 'AK',
+        name: 'Akhil George Kurian',
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: null,
+        github: 'https://github.com/Akhil8231',
+    },
+    {
+        id: 'sc',
+        role: 'Vice Research Head',
+        initials: 'SC',
+        name: 'Sharadhi CP',
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/sharadhi-cp-53791335a',
+        github: 'https://github.com/sharadhi06',
+    },
+    {
+        id: 'hk',
+        role: 'Events Head',
+        initials: 'HK',
+        name: 'Hafiz Khan G J',
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
+        github: null,
+    },
+    {
+        id: 'vu',
+        role: 'Executive Head',
+        initials: 'VU',
+        name: 'Veer Upadhyay',
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/veer-upadhyay-2111b5318',
+        github: null,
+    },
 ]
 
 const ROW3 = [
-    { id: 'nd', role: 'Technical Head', initials: 'ND', name: "Nishanth D'Souza", photo: null, oneLiner: 'Turns silicon specs into pixels. Built this site.', tags: ['Frontend', 'UI/UX', 'React'], linkedin: null, github: 'https://nishds-06.github.io/' },
-    { id: 'wc2', role: 'Working Committee', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'wc3', role: 'Working Committee', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'wc4', role: 'Working Committee', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
+    {
+        id: 'nd',
+        role: 'Technical Head',
+        initials: 'ND',
+        name: "Nishanth D'Souza",
+        photo: null,
+        oneLiner: 'Turns silicon specs into pixels. Built this site.',
+        tags: ['Frontend', 'UI/UX', 'React'],
+        linkedin: 'https://www.linkedin.com/in/nishds30/',
+        github: 'https://github.com/NishDs-06',
+    },
+    {
+        id: 'fm',
+        role: 'Graphic Design Head',
+        initials: 'FM',
+        name: 'Farah Manikindi',
+        photo: null,
+        oneLiner: null,
+        tags: ['Design', 'Branding'],
+        linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
+        github: null,
+    },
+    {
+        id: 'jt',
+        role: 'Vice Project Head',
+        initials: 'JT',
+        name: 'Jeevan Thanu',
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/jeevan-thanu-399b65375',
+        github: 'https://github.com/jeevanthanu836-prog',
+    },
+    {
+        id: 'rj',
+        role: 'Media Head',
+        initials: 'RJ',
+        name: 'Riya Joseph',
+        photo: null,
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
+        github: 'https://github.com/riyaelizabethjoseph',
+    },
 ]
 
 const ROW4 = [
@@ -65,7 +176,6 @@ function SineWave() {
             ctx.clearRect(0, 0, W, H)
             const amp = 22, freq = (2 * Math.PI) / (W * 0.42)
 
-            // 3 waves — shadowBlur for glow instead of ctx.filter (GPU vs CPU)
             const waves = [
                 { ph: 0, a: 0.65, w: 1.8, glow: 8 },
                 { ph: 1.1, a: 0.28, w: 0.9, glow: 0 },
@@ -86,18 +196,16 @@ function SineWave() {
                 ctx.shadowBlur = 0
             })
 
-            // Rolling dot
             const dotX = (t * 55) % W
             const dotY = H / 2 + amp * Math.sin(freq * dotX + t)
 
             trail.push({ x: dotX, y: dotY })
             if (trail.length > TRAIL_LEN) trail.shift()
 
-            // Trail — batch into single path per segment group to avoid 48 save/restores
             const tLen = trail.length
             for (let i = 0; i < tLen - 1; i++) {
                 const prog = i / tLen
-                if (prog < 0.1) continue  // skip near-invisible tail
+                if (prog < 0.1) continue
                 const alpha = prog * prog * 0.8
                 const r = Math.round(168 + 87 * prog)
                 const g = Math.round(85 + 170 * prog)
@@ -110,7 +218,6 @@ function SineWave() {
                 ctx.stroke()
             }
 
-            // Dot — mid glow + white core (skip expensive filter blur halo)
             ctx.beginPath()
             ctx.arc(dotX, dotY, 6, 0, Math.PI * 2)
             ctx.fillStyle = 'rgba(216,180,254,0.45)'
@@ -132,7 +239,6 @@ function SineWave() {
 
         draw()
 
-        // Pause RAF when canvas is not visible — saves CPU when user is elsewhere
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -214,7 +320,7 @@ function Popup({ member, onClose }) {
                             )}
                             {member.github && (
                                 <a href={member.github} target="_blank" rel="noreferrer" className={styles.linkBtn}>
-                                    <GitHubIcon /> {member.id === 'nd' ? 'Portfolio' : 'GitHub'}
+                                    <GitHubIcon /> GitHub
                                 </a>
                             )}
                         </div>
@@ -257,12 +363,6 @@ function Card({ member, onClick, large }) {
                     ? <p className={styles.cardName}>{member.name}</p>
                     : <p className={styles.cardPlaceholder}>Coming soon</p>
                 }
-                {member.oneLiner && <p className={styles.cardOneLiner}>"{member.oneLiner}"</p>}
-                {member.tags.length > 0 && (
-                    <div className={styles.cardTags}>
-                        {member.tags.map(t => <span key={t} className={styles.tag}>{t}</span>)}
-                    </div>
-                )}
                 <div className={styles.cardFooterRow}>
                     {member.linkedin && <LinkedInIcon />}
                     {member.github && <GitHubIcon />}
@@ -275,9 +375,7 @@ function Card({ member, onClick, large }) {
 
 /* ── Row ───────────────────────────────────────────────────── */
 function Row({ label, sublabel, members, cols, onClick, large }) {
-    // ✅ FIX: use styles.grid3 / styles.grid4 directly
     const gridClass = cols === 3 ? styles.grid3 : styles.grid4
-    // Rows without a label still need their own top spacing
     const wrapClass = label ? styles.rowWrap : styles.rowWrapPlain
 
     return (
@@ -301,19 +399,21 @@ function Row({ label, sublabel, members, cols, onClick, large }) {
 /* ── Team ──────────────────────────────────────────────────── */
 export default function Team() {
     const [selected, setSelected] = useState(null)
+    const sectionRef = useRef(null)
 
     return (
-        <section className={styles.section} id="team">
+        <section className={styles.section} id="team" ref={sectionRef} style={{ position: 'relative', overflow: 'hidden' }}>
+            <SectionAtmosphere variant="team" sectionRef={sectionRef} />
             <div className={styles.header}>
                 <p className={styles.eyebrow}>Our Team</p>
                 <h2 className={styles.heading}>The People Behind VED</h2>
                 <div className={styles.headingRule} />
-                <p className={styles.sub}>Roles confirmed · Names coming soon</p>
+                <p className={styles.sub}>Spring 2026 · MIT Bangalore</p>
             </div>
 
             <SineWave />
 
-            <Row label="Core Committee" sublabel="Leadership & Department Heads" members={ROW1} cols={3} onClick={setSelected} large={true} />
+            <Row label="Core Committee" sublabel="Co-founders & Leadership" members={ROW1} cols={3} onClick={setSelected} large={true} />
             <Row members={ROW2} cols={4} onClick={setSelected} large={false} />
             <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={4} onClick={setSelected} large={false} />
             <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={3} onClick={setSelected} large={false} />

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Projects.module.css'
+import SectionAtmosphere from '../SectionAtmosphere/SectionAtmosphere'
 
 /* ── SVG Icons ───────────────────────────────────────────────── */
 const GitHubIcon = () => (
@@ -96,11 +97,11 @@ const PROJECTS = [
 
 /* Category → accent colour (purple family matching site palette) */
 const CATEGORY_COLOR = {
-    DEVICE: '#C084FC',   // light purple
-    CIRCUIT: '#A855F7',   // mid purple
-    EMBEDDED: '#9333EA',   // deep purple
-    IOT: '#7C3AED',   // violet
-    NEUROMORPHIC: '#6D28D9',   // darkest
+    DEVICE: '#C084FC',
+    CIRCUIT: '#A855F7',
+    EMBEDDED: '#9333EA',
+    IOT: '#7C3AED',
+    NEUROMORPHIC: '#6D28D9',
 }
 
 const STATUS_CONFIG = {
@@ -199,9 +200,6 @@ function ProjectPopup({ project, onClose }) {
                         <a href={project.github} target="_blank" rel="noreferrer" className={styles.actionGhost}>
                             <GitHubIcon /> GitHub
                         </a>
-                        <button className={styles.actionPrimary} style={{ background: accent }}>
-                            Join Project
-                        </button>
                     </div>
                 </div>
             </div>
@@ -294,7 +292,8 @@ export default function Projects() {
     }, [])
 
     return (
-        <section ref={sectionRef} className={styles.section} id="projects">
+        <section ref={sectionRef} className={styles.section} id="projects" style={{ position: 'relative', overflow: 'hidden' }}>
+            <SectionAtmosphere variant="projects" sectionRef={sectionRef} />
             <div className={styles.sectionHeader}>
                 <p className={styles.watermark} aria-hidden>PROJECTS</p>
                 <p className={styles.eyebrow}>Spring 2026</p>
