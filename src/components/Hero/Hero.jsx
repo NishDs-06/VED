@@ -1,11 +1,9 @@
 import { useRef } from 'react'
 import styles from './Hero.module.css'
 import VEDLogoCanvas from './VEDLogoCanvas'
+import HeroAtmosphere from './HeroAtmosphere'
 import HeroText from './HeroText'
 import ScrollCue from './ScrollCue'
-
-// BackgroundGrid and AmbientCanvas removed per corrected spec:
-// pure black background, no PCB grid, no ambient particles
 
 export default function Hero() {
     const heroRef = useRef(null)
@@ -14,15 +12,23 @@ export default function Hero() {
 
     return (
         <section className={styles.hero} id="hero" ref={heroRef}>
-            {/* Canvas is a direct child of hero so position:absolute anchors to hero's top-left */}
+
+            {/* Layer 1 — depth particles + ambient purple glows */}
+            <HeroAtmosphere heroRef={heroRef} />
+
+            {/* Layer 3 — VED dot-matrix + chip morph canvas */}
             <VEDLogoCanvas
                 heroRef={heroRef}
                 heroTextRef={heroTextRef}
                 scrollCueRef={scrollCueRef}
             />
+
+            {/* Layer 4 — "VLSI & Embedded Design Club / MIT BLR" */}
             <div className={styles.heroContent}>
                 <HeroText ref={heroTextRef} />
             </div>
+
+            {/* Layer 5 — scroll cue chevron */}
             <ScrollCue ref={scrollCueRef} />
 
             {/* Chip recognition label — fades in during chip hold phase */}
