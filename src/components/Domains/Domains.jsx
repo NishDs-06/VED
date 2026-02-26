@@ -46,12 +46,10 @@ const DOMAINS = [
 function Oscilloscope() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
-            {/* Shell */}
             <rect x="4" y="4" width="312" height="192" rx="6" fill="none"
                 stroke="rgba(229,231,235,0.5)" strokeWidth="1" />
             <rect x="10" y="10" width="300" height="140" rx="2" fill="rgba(0,0,0,0.95)"
                 stroke="rgba(229,231,235,0.2)" strokeWidth="0.5" />
-            {/* Grid lines */}
             {[0.25, 0.5, 0.75].map(f => (
                 <line key={f} x1="10" y1={10 + 140 * f} x2="310" y2={10 + 140 * f}
                     stroke="rgba(229,231,235,0.08)" strokeWidth="0.5" />
@@ -60,29 +58,24 @@ function Oscilloscope() {
                 <line key={f} x1={10 + 300 * f} y1="10" x2={10 + 300 * f} y2="150"
                     stroke="rgba(229,231,235,0.08)" strokeWidth="0.5" />
             ))}
-            {/* CLK — square wave */}
             <polyline
                 points="10,55 40,55 40,100 80,100 80,55 120,55 120,100 160,100 160,55 200,55 200,100 240,100 240,55 280,55 280,100 310,100"
                 fill="none" stroke="rgba(229,231,235,0.9)" strokeWidth="1.5"
                 className={styles.waveClk}
             />
-            {/* DATA — irregular transitions */}
             <polyline
                 points="10,130 50,130 50,80 90,80 90,130 110,130 110,80 170,80 170,130 210,130 210,80 265,80 265,130 310,130"
                 fill="none" stroke="rgba(229,231,235,0.6)" strokeWidth="1"
                 className={styles.waveDat}
             />
-            {/* ENABLE — dashed */}
             <line x1="10" y1="62" x2="310" y2="62"
                 stroke="#FFB347" strokeWidth="1" strokeDasharray="4 6"
                 className={styles.waveEn}
             />
-            {/* Scanning cursor */}
             <line x1="0" y1="10" x2="0" y2="150"
                 stroke="rgba(229,231,235,0.7)" strokeWidth="1"
                 className={styles.scanCursor}
             />
-            {/* Labels */}
             <text x="14" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">0ns</text>
             <text x="84" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">10ns</text>
             <text x="154" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">20ns</text>
@@ -99,45 +92,32 @@ function Oscilloscope() {
 function BodePlot() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
-            {/* Background */}
             <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
-            {/* Grid */}
             {[0.2, 0.4, 0.6, 0.8].map(f => (
-                <line key={f}
-                    x1="30" y1={10 + 90 * f} x2="310" y2={10 + 90 * f}
-                    stroke="rgba(229,231,235,0.06)" strokeWidth="0.5"
-                />
+                <line key={f} x1="30" y1={10 + 90 * f} x2="310" y2={10 + 90 * f}
+                    stroke="rgba(229,231,235,0.06)" strokeWidth="0.5" />
             ))}
             {[0.2, 0.4, 0.6, 0.8].map(f => (
-                <line key={f}
-                    x1={30 + 280 * f} y1="10" x2={30 + 280 * f} y2="100"
-                    stroke="rgba(229,231,235,0.06)" strokeWidth="0.5"
-                />
+                <line key={f} x1={30 + 280 * f} y1="10" x2={30 + 280 * f} y2="100"
+                    stroke="rgba(229,231,235,0.06)" strokeWidth="0.5" />
             ))}
-            {/* Axes */}
             <line x1="30" y1="10" x2="30" y2="100" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
             <line x1="30" y1="100" x2="310" y2="100" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-            {/* Bode magnitude — rolls off */}
-            <path
-                d="M30,25 L120,25 Q160,25 200,45 Q240,65 280,85 L310,88"
+            <path d="M30,25 L120,25 Q160,25 200,45 Q240,65 280,85 L310,88"
                 fill="none" stroke="rgba(123,53,232,0.7)" strokeWidth="1.5"
                 className={styles.bodeLine}
             />
-            {/* Axis labels */}
             <text x="2" y="28" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">0dB</text>
             <text x="2" y="68" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">-20</text>
             <text x="2" y="100" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">-40</text>
             <text x="28" y="110" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">10Hz</text>
             <text x="148" y="110" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">1kHz</text>
             <text x="268" y="110" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">1MHz</text>
-            {/* Sine waves section below */}
             <line x1="30" y1="118" x2="310" y2="118" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-            {/* Input sine */}
             <path d="M30,140 Q48,120 65,140 Q83,160 100,140 Q118,120 135,140 Q153,160 170,140 Q188,120 205,140 Q223,160 240,140 Q258,120 275,140 Q293,160 310,140"
                 fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1"
                 className={styles.sineIn}
             />
-            {/* Output sine — phase shifted, amplitude lower */}
             <path d="M30,148 Q48,132 65,148 Q83,164 100,148 Q118,132 135,148 Q153,164 170,148 Q188,132 205,148 Q223,164 240,148 Q258,132 275,148 Q293,164 310,148"
                 fill="none" stroke="rgba(229,231,235,0.8)" strokeWidth="1.5"
                 className={styles.sineOut}
@@ -150,21 +130,18 @@ function BodePlot() {
 /* ── Pipeline Visual ─────────────────────────────────────────── */
 function Pipeline() {
     const stages = ['IF', 'ID', 'EX', 'MEM', 'WB']
-    const colors = ['rgba(229,231,235,0.08)', 'rgba(229,231,235,0.08)', 'rgba(229,231,235,0.08)', 'rgba(229,231,235,0.08)', 'rgba(229,231,235,0.08)']
     const stageW = 48, stageH = 36, gap = 8
     const startX = 18, startY = 62
 
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
             <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
-
-            {/* Stage boxes */}
             {stages.map((s, i) => (
                 <g key={s}>
                     <rect
                         x={startX + i * (stageW + gap)} y={startY}
                         width={stageW} height={stageH} rx="2"
-                        fill={colors[i]} stroke="rgba(229,231,235,0.4)" strokeWidth="0.8"
+                        fill="rgba(229,231,235,0.08)" stroke="rgba(229,231,235,0.4)" strokeWidth="0.8"
                         className={styles[`stage${i}`]}
                     />
                     <text
@@ -172,7 +149,6 @@ function Pipeline() {
                         fill="rgba(229,231,235,0.9)" fontSize="9" fontFamily="DM Mono, monospace"
                         textAnchor="middle"
                     >{s}</text>
-                    {/* Arrows between stages */}
                     {i < stages.length - 1 && (
                         <path
                             d={`M${startX + i * (stageW + gap) + stageW},${startY + stageH / 2} L${startX + (i + 1) * (stageW + gap)},${startY + stageH / 2}`}
@@ -182,31 +158,19 @@ function Pipeline() {
                     )}
                 </g>
             ))}
-
-            {/* Hazard detection box */}
             <rect x="18" y="115" width="270" height="22" rx="2"
                 fill="none" stroke="rgba(123,53,232,0.2)" strokeWidth="0.8" strokeDasharray="3 3" />
             <text x="22" y="130" fill="rgba(123,53,232,0.5)" fontSize="7" fontFamily="DM Mono, monospace">Hazard Detection Unit</text>
-
-            {/* Forwarding paths */}
             <path d="M130,62 C130,50 186,50 186,62" fill="none" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" strokeDasharray="2 2" />
             <path d="M186,62 C186,44 242,44 242,62" fill="none" stroke="rgba(155,90,255,0.25)" strokeWidth="0.8" strokeDasharray="2 2" />
-
-            {/* 3 token streams */}
-            {/* Token A */}
             <rect className={styles.tokenA} x="0" y={startY + 6} width="10" height="10" rx="1" fill="rgba(123,53,232,0.8)" />
-            {/* Token B */}
             <rect className={styles.tokenB} x="0" y={startY + 18} width="10" height="10" rx="1" fill="rgba(229,231,235,0.6)" />
-            {/* Token C */}
             <rect className={styles.tokenC} x="0" y={startY + 6} width="10" height="10" rx="1" fill="rgba(155,90,255,0.7)" />
-
             <defs>
                 <marker id="arr" markerWidth="5" markerHeight="5" refX="5" refY="2.5" orient="auto">
                     <path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(229,231,235,0.4)" />
                 </marker>
             </defs>
-
-            {/* Label */}
             <text x="8" y="18" fill="rgba(255,255,255,0.2)" fontSize="8" fontFamily="DM Mono, monospace">5-STAGE RISC-V PIPELINE — IN-ORDER</text>
             <text x="8" y="188" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">IPC: 0.94 avg  Stalls: 6.2%  Branch: 8.4%  CPI: 1.07</text>
         </svg>
@@ -220,10 +184,8 @@ function ChipPlacement() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
             <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
-            {/* Die outline */}
             <rect x="10" y="10" width="230" height="140" rx="1"
                 fill="none" stroke="rgba(123,53,232,0.3)" strokeWidth="1" />
-            {/* Cell grid */}
             {cells.map(i => {
                 const col = i % cols
                 const row = Math.floor(i / cols)
@@ -240,7 +202,6 @@ function ChipPlacement() {
                     />
                 )
             })}
-            {/* Routing lines */}
             <path d="M50,30 H180 V80 H100 V120" fill="none"
                 stroke="rgba(229,231,235,0.4)" strokeWidth="0.8"
                 className={styles.routeLine}
@@ -255,7 +216,6 @@ function ChipPlacement() {
                 className={styles.routeLine}
                 style={{ animationDelay: '0.6s' }}
             />
-            {/* Info panel */}
             <rect x="248" y="10" width="64" height="140" rx="2"
                 fill="rgba(229,231,235,0.03)" stroke="rgba(229,231,235,0.15)" strokeWidth="0.5" />
             <text x="252" y="28" fill="rgba(229,231,235,0.7)" fontSize="7" fontFamily="DM Mono, monospace">UTIL: 73.4%</text>
@@ -266,7 +226,6 @@ function ChipPlacement() {
             <text x="252" y="98" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">NETS: 9.4k</text>
             <text x="252" y="132" fill="rgba(155,90,255,0.5)" fontSize="7" fontFamily="DM Mono, monospace">OPENROAD</text>
             <text x="252" y="144" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">FLOW v3.0</text>
-
             <text x="10" y="165" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">SKY130 PDK  100MHz target  Floorplan: 240μm × 160μm</text>
         </svg>
     )
@@ -277,43 +236,32 @@ function MCUSystem() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
             <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
-            {/* Central MCU */}
             <rect x="115" y="65" width="90" height="70" rx="3"
                 fill="rgba(229,231,235,0.06)" stroke="rgba(229,231,235,0.5)" strokeWidth="1" />
             <text x="160" y="95" textAnchor="middle" fill="rgba(229,231,235,0.9)" fontSize="8" fontFamily="DM Mono, monospace">Cortex-M4</text>
             <text x="160" y="108" textAnchor="middle" fill="rgba(229,231,235,0.5)" fontSize="7" fontFamily="DM Mono, monospace">168MHz</text>
             <text x="160" y="120" textAnchor="middle" fill="rgba(229,231,235,0.4)" fontSize="6" fontFamily="DM Mono, monospace">STM32F4</text>
-            {/* Peripherals */}
-            {/* UART */}
             <rect x="10" y="20" width="60" height="28" rx="2" fill="rgba(123,53,232,0.05)" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
             <text x="40" y="36" textAnchor="middle" fill="rgba(123,53,232,0.8)" fontSize="8" fontFamily="DM Mono, monospace">UART</text>
-            {/* SPI */}
             <rect x="250" y="20" width="60" height="28" rx="2" fill="rgba(229,231,235,0.05)" stroke="rgba(229,231,235,0.3)" strokeWidth="0.8" />
             <text x="280" y="36" textAnchor="middle" fill="rgba(229,231,235,0.8)" fontSize="8" fontFamily="DM Mono, monospace">SPI</text>
-            {/* GPIO */}
             <rect x="10" y="86" width="60" height="28" rx="2" fill="rgba(155,90,255,0.05)" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
             <text x="40" y="102" textAnchor="middle" fill="rgba(155,90,255,0.8)" fontSize="8" fontFamily="DM Mono, monospace">GPIO</text>
-            {/* ADC */}
             <rect x="250" y="86" width="60" height="28" rx="2" fill="rgba(155,90,255,0.05)" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
             <text x="280" y="102" textAnchor="middle" fill="rgba(155,90,255,0.8)" fontSize="8" fontFamily="DM Mono, monospace">ADC</text>
-            {/* Timer */}
             <rect x="130" y="158" width="60" height="28" rx="2" fill="rgba(123,53,232,0.05)" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
             <text x="160" y="174" textAnchor="middle" fill="rgba(123,53,232,0.8)" fontSize="8" fontFamily="DM Mono, monospace">TIM</text>
-            {/* Bus lines */}
             <line x1="70" y1="34" x2="115" y2="90" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
             <line x1="250" y1="34" x2="205" y2="90" stroke="rgba(229,231,235,0.3)" strokeWidth="0.8" />
             <line x1="70" y1="100" x2="115" y2="100" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
             <line x1="205" y1="100" x2="250" y2="100" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
             <line x1="160" y1="135" x2="160" y2="158" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
-            {/* Signal pulses on buses */}
             <circle className={styles.pulse1} r="3" fill="rgba(123,53,232,0.8)" />
             <circle className={styles.pulse2} r="3" fill="rgba(229,231,235,0.8)" />
             <circle className={styles.pulse3} r="3" fill="rgba(155,90,255,0.8)" />
-            {/* LED */}
             <circle cx="12" cy="140" r="6" fill="rgba(123,53,232,0.2)" stroke="rgba(123,53,232,0.6)" strokeWidth="0.8"
                 className={styles.gpioLed} />
             <text x="22" y="144" fill="rgba(123,53,232,0.5)" fontSize="7" fontFamily="DM Mono, monospace">LED_STATUS</text>
-            {/* Binary scroll */}
             <text x="10" y="190" fill="rgba(229,231,235,0.3)" fontSize="7" fontFamily="DM Mono, monospace"
                 className={styles.binStream}>01101001 01101110 00100000 01110010 01110100 01101100</text>
         </svg>
@@ -333,24 +281,62 @@ function DomainVisual({ type }) {
 }
 
 /* ── Main Component ──────────────────────────────────────────── */
+
+// Detect touch device once at module level — stable across renders
+const IS_TOUCH = typeof window !== 'undefined' &&
+    window.matchMedia('(pointer: coarse)').matches
+
+let lastPanel = 0
+
 export default function Domains() {
     const sectionRef = useRef(null)
     const trackRef = useRef(null)
     const glitchRef = useRef(null)
     const progressRef = useRef([])
+    const panelRefs = useRef([])
 
     useEffect(() => {
         const section = sectionRef.current
         const track = trackRef.current
         if (!section || !track) return
 
-        // FORCE initial position — panel 1
         gsap.set(track, { x: 0, rotateX: 0 })
 
         const totalShift = window.innerWidth * (DOMAINS.length - 1)
 
-        // Delay trigger creation so Hero's pinSpacing spacer is in DOM first
-        // Without this, Domains trigger.start = ~1048 (1 viewport) instead of ~5184 (after Hero spacer)
+        // ── IntersectionObserver: pause CSS animations on off-screen panels ──
+        // This fixes the "all 5 panels animating at once" mobile GPU drain
+        const panelObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    const panel = entry.target
+                    // Toggle animation-play-state on all animated SVG elements inside
+                    const animated = panel.querySelectorAll(
+                        '[class*="waveClk"],[class*="waveDat"],[class*="waveEn"],' +
+                        '[class*="scanCursor"],[class*="bodeLine"],[class*="sineIn"],' +
+                        '[class*="sineOut"],[class*="tokenA"],[class*="tokenB"],[class*="tokenC"],' +
+                        '[class*="cell"],[class*="routeLine"],[class*="pulse1"],[class*="pulse2"],' +
+                        '[class*="pulse3"],[class*="gpioLed"],[class*="binStream"]'
+                    )
+                    animated.forEach(el => {
+                        el.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused'
+                    })
+                })
+            },
+            // Generous threshold — pause when panel is fully off screen
+            { threshold: 0, rootMargin: '0px 100px 0px 100px' }
+        )
+
+        panelRefs.current.forEach(p => { if (p) panelObserver.observe(p) })
+
+        // ── On mobile: skip ScrollTrigger entirely ──
+        // The CSS stacks panels vertically with height:auto so there's nothing
+        // to pin or horizontally translate. Native scroll handles it perfectly.
+        if (IS_TOUCH) {
+            // Still disconnect observer on unmount
+            return () => { panelObserver.disconnect() }
+        }
+
         let hst
         const initTimer = setTimeout(() => {
             hst = ScrollTrigger.create({
@@ -366,8 +352,8 @@ export default function Domains() {
 
                     gsap.set(track, { x: -progress * totalShift })
 
-                    // Add subtle 3D tilt in final 15% of scroll
-                    if (progress > 0.85) {
+                    // ── 3D tilt: desktop only — skip entirely on touch ──
+                    if (!IS_TOUCH && progress > 0.85) {
                         const tiltProg = (progress - 0.85) / 0.15
                         gsap.set(track, {
                             rotateX: tiltProg * 4,
@@ -385,7 +371,7 @@ export default function Domains() {
                         sq.style.boxShadow = i === currentPanel ? 'var(--glow-xs)' : 'none'
                     })
 
-                    // Glitch bar transitions between panels
+                    // Glitch flash on panel change
                     if (currentPanel !== lastPanel) {
                         lastPanel = currentPanel
                         const g = glitchRef.current
@@ -406,27 +392,24 @@ export default function Domains() {
         return () => {
             clearTimeout(initTimer)
             hst?.kill()
+            panelObserver.disconnect()
         }
     }, [])
 
     return (
         <section ref={sectionRef} className={styles.domainsSection} id="domains">
-            {/* Grid background */}
             <div className={styles.perspectiveGrid} aria-hidden="true" />
-
-            {/* Glitch overlay */}
             <div ref={glitchRef} className={styles.glitchOverlay} aria-hidden="true" />
 
-            {/* Track */}
             <div ref={trackRef} className={styles.domainTrack}>
                 {DOMAINS.map((d, i) => (
                     <div
                         key={d.num}
                         className={`${styles.panel} ${i % 2 === 0 ? styles.panelOdd : styles.panelEven}`}
                         data-panel={i}
+                        ref={el => { panelRefs.current[i] = el }}
                     >
                         {i % 2 === 0 ? (
-                            /* Odd panels — visual left, text right */
                             <>
                                 <div className={styles.vizArea}>
                                     <DomainVisual type={d.visual} />
@@ -439,7 +422,6 @@ export default function Domains() {
                                 </div>
                             </>
                         ) : (
-                            /* Even panels — text left, visual right */
                             <>
                                 <div className={styles.textArea}>
                                     <span className={styles.panelNum}>{d.num}</span>
@@ -456,7 +438,6 @@ export default function Domains() {
                 ))}
             </div>
 
-            {/* Progress squares */}
             <div className={styles.progressBar}>
                 {DOMAINS.map((d, i) => (
                     <div
