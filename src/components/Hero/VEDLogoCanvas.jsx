@@ -446,6 +446,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
         }
 
         /* ── ScrollTrigger ─────────────────────────────────── */
+        let heroST = null
         function setupScrollTrigger() {
             const heroEl = heroRef?.current
             ScrollTrigger.create({
@@ -576,7 +577,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             breathTween?.kill()
             window.removeEventListener('resize', onResize)
             document.removeEventListener('visibilitychange', onVis)
-            ScrollTrigger.getAll().forEach(t => t.kill())
+            heroST?.kill()
         }
     }, [])
 
