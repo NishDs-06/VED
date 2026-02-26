@@ -84,7 +84,6 @@
     height: 100%;
     will-change: transform;
     transform-style: preserve-3d;
-    /* Own compositing layer */
     transform: translateZ(0);
 }
 
@@ -98,7 +97,6 @@
     padding: 0 var(--sp-7);
     gap: var(--sp-6);
     position: relative;
-    /* Each panel is its own paint boundary */
     contain: layout style paint;
 }
 
@@ -131,6 +129,18 @@
     display: flex;
     flex-direction: column;
     gap: var(--sp-3);
+}
+
+/* "Domains" label — only shows on the first panel above the title */
+.sectionLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(13px, 1.6vw, 18px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: rgba(168, 85, 247, 0.55);
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 2px;
 }
 
 .panelNum {
@@ -443,41 +453,26 @@
 
 /* ── Mobile ─────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-
-    /*
-     * On mobile, the horizontal scroll-jack cannot work reliably.
-     * The section becomes a normal vertical-scroll container.
-     * JS disables the ScrollTrigger on touch devices (IS_TOUCH check).
-     * These CSS rules make panels stack vertically and fill naturally.
-     */
-
     .domainsSection {
-        /* Remove fixed height + overflow:hidden that clips off-screen panels */
         height: auto !important;
         overflow: visible !important;
-        /* Still need relative for absolute children like progress bar */
-        position: relative;
     }
 
-    /* Track: vertical stack instead of horizontal flex row */
     .domainTrack {
         flex-direction: column !important;
-        /* Reset any GSAP-applied transform — JS won't touch it on mobile */
         transform: none !important;
         will-change: auto;
         height: auto !important;
     }
 
-    /* Each panel: full width, auto height, vertical layout */
     .panel {
         width: 100vw !important;
         height: auto !important;
         min-height: 100svh;
         flex-direction: column !important;
-        padding: 48px 20px 56px;
+        padding: 80px 20px 56px;
         gap: 28px;
         justify-content: center;
-        /* Panel borders to separate sections visually */
         border-bottom: 1px solid rgba(168, 85, 247, 0.08);
     }
 
@@ -519,15 +514,11 @@
         font-size: 14px;
     }
 
-    /* Progress bar: hide on mobile — doesn't make sense for vertical scroll */
     .progressBar {
         display: none;
     }
 
-    /* Grid background: too heavy on mobile GPU */
     .perspectiveGrid {
         display: none;
     }
-
-    /* Glitch overlay: keep it, it's cheap */
 }

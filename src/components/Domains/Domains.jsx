@@ -239,7 +239,7 @@ export default function Domains() {
                 invalidateOnRefresh: true,
                 start: 'top top',
                 end: () => `+=${window.innerWidth * (DOMAINS.length - 1) * 1.05}`,
-                scrub: 1,
+                scrub: 0.4,
                 onUpdate(self) {
                     const progress = Math.max(0, Math.min(1, self.progress))
                     gsap.set(track, { x: -progress * window.innerWidth * (DOMAINS.length - 1) })
@@ -266,6 +266,14 @@ export default function Domains() {
                             setTimeout(() => { if (g) g.style.display = 'none' }, 300)
                         }
                     }
+                },
+                onLeave() {
+                    // Kill any in-flight scrub tween so the track is at rest
+                    // before the scroll continues into Projects — prevents jitter
+                    gsap.set(track, {
+                        x: -window.innerWidth * (DOMAINS.length - 1),
+                        rotateX: 0,
+                    })
                 },
                 onEnterBack() {
                     lastPanel = 0
@@ -318,6 +326,7 @@ export default function Domains() {
                                 <div className={styles.vizArea}><DomainVisual type={d.visual} /></div>
                                 <div className={styles.textArea}>
                                     <span className={styles.panelNum}>{d.num}</span>
+                                    {i === 0 && <p className={styles.sectionLabel}>Domains</p>}
                                     <h2 className={styles.panelTitle}>{d.title}</h2>
                                     <p className={styles.panelDesc}>{d.desc}</p>
                                     <p className={styles.panelTools}>{d.tools}</p>

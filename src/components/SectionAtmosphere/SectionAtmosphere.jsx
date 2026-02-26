@@ -1,17 +1,15 @@
 import { useEffect, useRef } from 'react'
 
 /*
-  SectionAtmosphere — reusable ambient glow layer
-  Same system as HeroAtmosphere but:
-  - Fewer particles (sections are content-heavy, hero is mostly empty)
-  - Slightly different glow positions per variant
-  - Uses IntersectionObserver to pause RAF when off-screen (perf)
+  SectionAtmosphere — full-viewport ambient glow layer
+  Canvas is position:fixed so it always covers 100vw × 100vh
+  regardless of any max-width constraint on the parent section.
+  It only renders while its section is in the viewport.
 */
 
 const IS_MOBILE = typeof window !== 'undefined' &&
     window.matchMedia('(max-width: 768px)').matches
 
-// Different glow layouts per section so they don't look copy-pasted
 const GLOW_VARIANTS = {
     projects: [
         { cx: 0.05, cy: 0.20, rx: 0.38, ry: 0.30, col: 'rgba(123,47,255,', peak: 0.22, spd: 0.00020, ph: 0.0 },
@@ -69,9 +67,9 @@ export default function SectionAtmosphere({ variant = 'projects', sectionRef }) 
         let W = 0, H = 0, particles = [], rafId, alive = true
 
         function setup() {
-            const el = sectionRef?.current
-            W = el ? el.clientWidth : window.innerWidth
-            H = el ? el.clientHeight : window.innerHeight
+            // Always use the full viewport — the canvas is position:fixed
+            W = window.innerWidth
+            H = window.innerHeight
             canvas.width = W
             canvas.height = H
             canvas.style.width = W + 'px'
@@ -125,19 +123,27 @@ export default function SectionAtmosphere({ variant = 'projects', sectionRef }) 
             rafId = requestAnimationFrame(loop)
         }
 
-        // Pause when off-screen — same pattern as SineWave in Team
+        // Only run the RAF while the section is visible — also hide the canvas
+        // so the last painted frame doesn't bleed into adjacent sections
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
+                canvas.style.opacity = '1'
                 if (!alive) { alive = true; rafId = requestAnimationFrame(loop) }
             } else {
-                alive = false; cancelAnimationFrame(rafId)
+                alive = false
+                cancelAnimationFrame(rafId)
+                canvas.style.opacity = '0'
+                ctx.clearRect(0, 0, W, H)
             }
         }, { threshold: 0 })
-        observer.observe(canvas)
+
+        // Observe the section element (not the canvas, which is fixed)
+        const sectionEl = sectionRef?.current
+        if (sectionEl) observer.observe(sectionEl)
 
         function onVis() {
             if (document.hidden) { alive = false; cancelAnimationFrame(rafId) }
-            else if (canvas.getBoundingClientRect().bottom > 0) {
+            else if (sectionEl && sectionEl.getBoundingClientRect().bottom > 0) {
                 alive = true; rafId = requestAnimationFrame(loop)
             }
         }
@@ -149,6 +155,9 @@ export default function SectionAtmosphere({ variant = 'projects', sectionRef }) 
             resizeTimer = setTimeout(setup, 200)
         }
         window.addEventListener('resize', onResize)
+
+        canvas.style.opacity = '0'
+        canvas.style.transition = 'opacity 0.4s ease'
 
         document.fonts.ready.then(() => {
             requestAnimationFrame(() => { setup(); rafId = requestAnimationFrame(loop) })
@@ -169,8 +178,9 @@ export default function SectionAtmosphere({ variant = 'projects', sectionRef }) 
             ref={canvasRef}
             aria-hidden="true"
             style={{
-                position: 'absolute',
-                top: 0, left: 0,
+                position: 'fixed',   // breaks out of max-width container → full viewport
+                top: 0,
+                left: 0,
                 zIndex: 0,
                 pointerEvents: 'none',
                 display: 'block',
