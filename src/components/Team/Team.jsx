@@ -13,8 +13,21 @@ const GitHubIcon = () => (
         <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
     </svg>
 )
+const InstagramIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+    </svg>
+)
 
 /* ── Data ──────────────────────────────────────────────────── */
+
+// ── IMPORTANT: Copy the 4 photos into your project's public/ folder:
+//   public/sid.jpeg      → Siddharth Gaur
+//   public/sree.jpeg     → Sreeparvathy M
+//   public/akhil.jpeg    → Akhil George Kurian
+//   public/sharadhi.jpeg → Sharadhi CP
+// Then the src="/sid.jpeg" etc. paths below will work automatically.
+
 const ROW1 = [
     {
         id: 'rm',
@@ -26,28 +39,31 @@ const ROW1 = [
         tags: [],
         linkedin: 'https://www.linkedin.com/in/raagmanasmadhukar',
         github: 'https://github.com/Cipher1712',
+        instagram: null,
     },
     {
         id: 'sg',
         role: 'Vice President',
         initials: 'SG',
         name: 'Siddharth Gaur',
-        photo: null,
+        photo: '/sid.jpeg',
         oneLiner: 'Co-founder. Steering vision into execution.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/siddharth-gaur-471084266',
         github: null,
+        instagram: null,
     },
     {
         id: 'gs',
         role: 'General Secretary',
-        initials: '?',
-        name: null,
+        initials: 'AK',
+        name: 'Akshansh Alawa',
         photo: null,
         oneLiner: null,
         tags: [],
-        linkedin: null,
+        linkedin: 'https://www.linkedin.com/in/akshansh-alawa-96a82a20a',
         github: null,
+        instagram: null,
     },
 ]
 
@@ -57,22 +73,37 @@ const ROW2 = [
         role: 'Project Head',
         initials: 'AK',
         name: 'Akhil George Kurian',
-        photo: null,
+        photo: '/akhil.jpeg',
         oneLiner: null,
         tags: [],
         linkedin: null,
         github: 'https://github.com/Akhil8231',
+        instagram: null,
+    },
+    {
+        id: 'sp',
+        role: 'Research Head',
+        initials: 'SP',
+        name: 'Sreeparvathy M',
+        photo: '/sree.jpeg',
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/sreeparvathy-m-4b064930b',
+        github: null,
+        instagram: 'https://www.instagram.com/sreeparv4thy',
     },
     {
         id: 'sc',
         role: 'Vice Research Head',
         initials: 'SC',
         name: 'Sharadhi CP',
-        photo: null,
+        photo: '/sharadhi.jpeg',
+        photoPosition: 'center top',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/sharadhi-cp-53791335a',
         github: 'https://github.com/sharadhi06',
+        instagram: null,
     },
     {
         id: 'hk',
@@ -84,6 +115,7 @@ const ROW2 = [
         tags: [],
         linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
         github: null,
+        instagram: null,
     },
     {
         id: 'vu',
@@ -95,6 +127,7 @@ const ROW2 = [
         tags: [],
         linkedin: 'https://www.linkedin.com/in/veer-upadhyay-2111b5318',
         github: null,
+        instagram: null,
     },
 ]
 
@@ -104,11 +137,13 @@ const ROW3 = [
         role: 'Technical Head',
         initials: 'ND',
         name: "Nishanth D'Souza",
-        photo: null,
+        photo: '/nd.jpeg',
+        photoPosition: 'center 35%',
         oneLiner: 'Turns silicon specs into pixels. Built this site.',
         tags: ['Frontend', 'UI/UX', 'React'],
         linkedin: 'https://www.linkedin.com/in/nishds30/',
         github: 'https://github.com/NishDs-06',
+        instagram: null,
     },
     {
         id: 'fm',
@@ -120,6 +155,7 @@ const ROW3 = [
         tags: ['Design', 'Branding'],
         linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
         github: null,
+        instagram: null,
     },
     {
         id: 'jt',
@@ -131,6 +167,7 @@ const ROW3 = [
         tags: [],
         linkedin: 'https://www.linkedin.com/in/jeevan-thanu-399b65375',
         github: 'https://github.com/jeevanthanu836-prog',
+        instagram: null,
     },
     {
         id: 'rj',
@@ -142,13 +179,52 @@ const ROW3 = [
         tags: [],
         linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
         github: 'https://github.com/riyaelizabethjoseph',
+        instagram: null,
+    },
+    {
+        id: 'vk',
+        role: 'Social Media Head',
+        initials: 'VK',
+        name: 'Varshini',
+        photo: '/varshini.jpeg',
+        photoPosition: 'center 15%',
+        oneLiner: null,
+        tags: [],
+        linkedin: null,
+        github: null,
+        instagram: null,
     },
 ]
 
+// ── Faculty: 2 only. Photos & full qual to be filled in once you get them.
+// Ask faculty personally for a headshot — LinkedIn scraping isn't possible.
 const ROW4 = [
-    { id: 'fa1', role: 'Faculty Adviser', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'fa2', role: 'Faculty Adviser', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
-    { id: 'fa3', role: 'Faculty Adviser', initials: '?', name: null, photo: null, oneLiner: null, tags: [], linkedin: null, github: null },
+    {
+        id: 'fa1',
+        role: 'Faculty Adviser',
+        initials: 'SV',
+        name: 'Dr. Shreshta Valasa',
+        photo: null,
+        qual: 'Ph.D.',
+        linkedin: 'https://www.linkedin.com/in/dr-shreshta-valasa-810999258',
+        github: null,
+        instagram: null,
+        tags: [],
+        oneLiner: null,
+    },
+    {
+        id: 'fa2',
+        role: 'Faculty Adviser',
+        initials: 'BS',
+        name: 'Dr. Bharath Sreenivasulu V',
+        photo: null,
+        qual: 'Ph.D. · Post-Doc (IIT Patna)',
+        linkedin: 'https://www.linkedin.com/in/bharath-sreenivasulu-v-64b4a575',
+        github: null,
+        instagram: null,
+        tags: [],
+        oneLiner: null,
+    },
 ]
 
 /* ── Sine Wave ─────────────────────────────────────────────── */
@@ -265,7 +341,6 @@ function SineWave() {
 /* ── Popup ─────────────────────────────────────────────────── */
 function Popup({ member, onClose }) {
     useEffect(() => {
-        // ── FIX: dispatch to App so Lenis stops scrolling the background
         window.dispatchEvent(new Event('ved:popup:open'))
         document.body.style.overflow = 'hidden'
         document.documentElement.style.overflow = 'hidden'
@@ -278,6 +353,8 @@ function Popup({ member, onClose }) {
             document.removeEventListener('keydown', onKey)
         }
     }, [onClose])
+
+    const isFaculty = member.qual !== undefined
 
     return (
         <div className={styles.overlay} onClick={onClose}>
@@ -292,18 +369,23 @@ function Popup({ member, onClose }) {
                 <div className={styles.popupTop}>
                     <div className={styles.popupPhotoBox}>
                         {member.photo
-                            ? <img src={member.photo} alt={member.name} className={styles.popupImg} />
+                            ? <img src={member.photo} alt={member.name} className={styles.popupImg} loading="lazy" />
                             : <span className={styles.popupInitials}>{member.initials}</span>
                         }
                     </div>
                     <div className={styles.popupMeta}>
                         <span className={styles.popupRoleBadge}>{member.role}</span>
                         <h3 className={styles.popupName}>{member.name || '—'}</h3>
-                        {member.oneLiner && <p className={styles.popupQuote}>"{member.oneLiner}"</p>}
+                        {isFaculty && member.qual && (
+                            <p className={styles.popupQual}>{member.qual}</p>
+                        )}
+                        {!isFaculty && member.oneLiner && (
+                            <p className={styles.popupQuote}>"{member.oneLiner}"</p>
+                        )}
                     </div>
                 </div>
 
-                {member.tags.length > 0 && (
+                {member.tags && member.tags.length > 0 && (
                     <div className={styles.popupSection}>
                         <span className={styles.popupSectionLabel}>Expertise</span>
                         <div className={styles.popupTags}>
@@ -312,7 +394,7 @@ function Popup({ member, onClose }) {
                     </div>
                 )}
 
-                {(member.linkedin || member.github) && (
+                {(member.linkedin || member.github || member.instagram) && (
                     <div className={styles.popupSection}>
                         <span className={styles.popupSectionLabel}>Links</span>
                         <div className={styles.popupLinks}>
@@ -324,6 +406,11 @@ function Popup({ member, onClose }) {
                             {member.github && (
                                 <a href={member.github} target="_blank" rel="noreferrer" className={styles.linkBtn}>
                                     <GitHubIcon /> GitHub
+                                </a>
+                            )}
+                            {member.instagram && (
+                                <a href={member.instagram} target="_blank" rel="noreferrer" className={styles.linkBtn}>
+                                    <InstagramIcon /> Instagram
                                 </a>
                             )}
                         </div>
@@ -350,7 +437,13 @@ function Card({ member, onClick, large }) {
 
             <div className={styles.photoBox}>
                 {member.photo
-                    ? <img src={member.photo} alt={member.name || member.role} className={styles.photoImg} />
+                    ? <img
+                        src={member.photo}
+                        alt={member.name || member.role}
+                        className={styles.photoImg}
+                        loading="lazy"
+                        style={member.photoPosition ? { objectPosition: member.photoPosition } : undefined}
+                    />
                     : (
                         <div className={styles.photoPlaceholder}>
                             <span className={styles.photoInitials}>{member.initials}</span>
@@ -369,6 +462,7 @@ function Card({ member, onClick, large }) {
                 <div className={styles.cardFooterRow}>
                     {member.linkedin && <LinkedInIcon />}
                     {member.github && <GitHubIcon />}
+                    {member.instagram && <InstagramIcon />}
                     <span className={styles.ctaText}>VIEW →</span>
                 </div>
             </div>
@@ -378,7 +472,7 @@ function Card({ member, onClick, large }) {
 
 /* ── Row ───────────────────────────────────────────────────── */
 function Row({ label, sublabel, members, cols, onClick, large }) {
-    const gridClass = cols === 3 ? styles.grid3 : styles.grid4
+    const gridClass = cols === 3 ? styles.grid3 : cols === 2 ? styles.grid2 : cols === 5 ? styles.grid5 : styles.grid4
     const wrapClass = label ? styles.rowWrap : styles.rowWrapPlain
 
     return (
@@ -418,8 +512,8 @@ export default function Team() {
 
             <Row label="Core Committee" sublabel="Co-founders & Leadership" members={ROW1} cols={3} onClick={setSelected} large={true} />
             <Row members={ROW2} cols={4} onClick={setSelected} large={false} />
-            <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={4} onClick={setSelected} large={false} />
-            <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={3} onClick={setSelected} large={false} />
+            <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={5} onClick={setSelected} large={false} />
+            <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={2} onClick={setSelected} large={false} />
 
             {selected && <Popup member={selected} onClose={() => setSelected(null)} />}
         </section>

@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Projects.module.css'
-import SectionAtmosphere from '../SectionAtmosphere/SectionAtmosphere'
 
 const GitHubIcon = () => (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -51,7 +48,7 @@ const PROJECTS = [
         status: 'BUILDING',
         members: 4,
         tools: ['VERILOG', 'VIVADO', 'ARTIX-7', 'C/C++'],
-        about: 'Replacing static eFuse/BBRAM key storage with a PUF-based root of trust on the Artix-7 XC7A100T. Cryptographic keys are derived dynamically from the device\'s intrinsic SRAM power-up behaviour, integrated into a complete soft-core processor secure boot pipeline, and validated for reliability under real-world temperature and voltage stress.',
+        about: "Replacing static eFuse/BBRAM key storage with a PUF-based root of trust on the Artix-7 XC7A100T. Cryptographic keys are derived dynamically from the device's intrinsic SRAM power-up behaviour, integrated into a complete soft-core processor secure boot pipeline, and validated for reliability under real-world temperature and voltage stress.",
         learn: [
             'Physical Unclonable Functions (PUF) design and evaluation',
             'FPGA secure boot pipeline integration',
@@ -114,13 +111,10 @@ function ProjectPopup({ project, onClose }) {
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
 
     useEffect(() => {
-        // ── FIX: dispatch to App so Lenis stops scrolling the background
         window.dispatchEvent(new Event('ved:popup:open'))
         document.body.style.overflow = 'hidden'
-
         const onKey = e => { if (e.key === 'Escape') onClose() }
         document.addEventListener('keydown', onKey)
-
         return () => {
             window.dispatchEvent(new Event('ved:popup:close'))
             document.body.style.overflow = ''
@@ -169,9 +163,7 @@ function ProjectPopup({ project, onClose }) {
                     </div>
 
                     <div className={styles.toolsRow}>
-                        {project.tools.map(t => (
-                            <span key={t} className={styles.toolPill}>{t}</span>
-                        ))}
+                        {project.tools.map(t => <span key={t} className={styles.toolPill}>{t}</span>)}
                     </div>
 
                     <div className={styles.popupDivider} />
@@ -202,7 +194,7 @@ function ProjectPopup({ project, onClose }) {
     )
 }
 
-/* ── Project card ────────────────────────────────────────────── */
+/* ── Project card — always visible, no scroll animation ──────── */
 function ProjectCard({ project, onClick }) {
     const accent = CATEGORY_COLOR[project.category] || '#A855F7'
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
@@ -256,68 +248,15 @@ export default function Projects() {
     const [selected, setSelected] = useState(null)
     const sectionRef = useRef(null)
 
-    useEffect(() => {
-        const PRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        if (PRM) return
-        const section = sectionRef.current
-        if (!section) return
-
-        const cards = section.querySelectorAll('[class*="card"]')
-        const header = section.querySelector('[class*="sectionHeader"]')
-        const termBar = section.querySelector('[class*="terminalBar"]')
-        const rule = section.querySelector('[class*="headingRule"]')
-
-        // Start everything invisible
-        gsap.set([header, termBar, ...cards], { opacity: 0, y: 30 })
-        gsap.set(rule, { scaleX: 0, transformOrigin: 'left center' })
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: section,
-                start: 'top 72%',
-                once: true,
-            }
-        })
-
-        tl
-            // 1. Eyebrow + heading sweep in
-            .to(header, {
-                opacity: 1, y: 0,
-                duration: 0.7,
-                ease: 'power3.out',
-            })
-            // 2. Rule draws itself left → right
-            .to(rule, {
-                scaleX: 1,
-                duration: 0.5,
-                ease: 'power2.out',
-            }, '-=0.3')
-            // 3. Terminal bar slides up
-            .to(termBar, {
-                opacity: 1, y: 0,
-                duration: 0.45,
-                ease: 'power2.out',
-            }, '-=0.2')
-            // 4. Cards stagger in with a slight scale pop
-            .fromTo(cards,
-                { opacity: 0, y: 40, scale: 0.96 },
-                {
-                    opacity: 1, y: 0, scale: 1,
-                    duration: 0.55,
-                    ease: 'power3.out',
-                    stagger: {
-                        each: 0.09,
-                        from: 'start',
-                    },
-                },
-                '-=0.15'
-            )
-
-    }, [])
-
     return (
         <section ref={sectionRef} className={styles.section} id="projects" style={{ position: 'relative', overflow: 'hidden' }}>
-            <SectionAtmosphere variant="projects" sectionRef={sectionRef} />
+            {/*
+                SectionAtmosphere removed — the canvas RAF startup was causing
+                the lag spike when transitioning from Domains.
+                GSAP card stagger animation also removed — cards are now
+                immediately visible, no scroll-triggered opacity/transform.
+            */}
+
             <div className={styles.sectionHeader}>
                 <p className={styles.watermark} aria-hidden>PROJECTS</p>
                 <p className={styles.eyebrow}>Spring 2026</p>
