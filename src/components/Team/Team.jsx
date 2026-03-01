@@ -34,7 +34,7 @@ const ROW1 = [
         initials: 'RM',
         name: 'Raagmanas Madhukar',
         photo: '/manas.jpeg',
-        photoPosition: 'center 20%',
+
         oneLiner: 'Co-founder. Building VED from the ground up.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/raagmanasmadhukar',
@@ -47,7 +47,7 @@ const ROW1 = [
         initials: 'SG',
         name: 'Siddharth Gaur',
         photo: '/sid.jpeg',
-        photoPosition: 'center 12%',
+
         oneLiner: 'Co-founder. Steering vision into execution.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/siddharth-gaur-471084266',
@@ -60,7 +60,7 @@ const ROW1 = [
         initials: 'AA',
         name: 'Akshansh Alawa',
         photo: '/akshansh.jpeg',
-        photoPosition: 'center 30%',
+        photoPosition: 'center 35%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/akshansh-alawa-96a82a20a',
@@ -70,6 +70,75 @@ const ROW1 = [
 ]
 
 const ROW2 = [
+    {
+        id: 'hk',
+        role: 'Events Head',
+        initials: 'HK',
+        name: 'Hafiz Khan G J',
+        photo: '/hafiz.jpeg',
+
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
+        github: null,
+        instagram: null,
+    },
+    {
+        id: 'kt',
+        role: 'Treasurer',
+        initials: 'KT',
+        name: 'Karthik Deepak Narayan',
+        photo: '/karthik.jpeg',
+        photoPosition: 'center 35%',
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/karthik-deepak-narayan-5524a4393',
+        github: null,
+        instagram: null,
+    },
+    {
+        id: 'rj',
+        role: 'Marketing Head',
+        initials: 'RJ',
+        name: 'Riya Joseph',
+        photo: '/riya.jpeg',
+        photoPosition: 'center 22%',
+        photoContain: true,
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
+        github: 'https://github.com/riyaelizabethjoseph',
+        instagram: null,
+    },
+    {
+        id: 'fm',
+        role: 'Graphic Design & Media Head',
+        initials: 'FM',
+        name: 'Farah Manikindi',
+        photo: '/farah.jpeg',
+
+        oneLiner: null,
+        tags: ['Design', 'Branding'],
+        linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
+        github: null,
+        instagram: null,
+    },
+]
+
+const ROW3 = [
+    {
+        id: 'nd',
+        role: 'Technical Head',
+        initials: 'ND',
+        name: "Nishanth D'Souza",
+        photo: '/nd.jpeg',
+        photoPosition: 'center 35%',
+        oneLiner: 'Turns silicon specs into pixels. Built this site.',
+        tags: ['Frontend', 'UI/UX', 'React'],
+        linkedin: 'https://www.linkedin.com/in/nishds30/',
+        github: 'https://github.com/NishDs-06',
+        instagram: null,
+    },
     {
         id: 'ak',
         role: 'Project Head',
@@ -102,80 +171,12 @@ const ROW2 = [
         initials: 'SC',
         name: 'Sharadhi CP',
         photo: '/sharadhi.jpeg',
-        photoPosition: 'center 28%',
-        photoContain: true,
+        photoPosition: 'center 25%',
+        photoZoom: 1.5,
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/sharadhi-cp-53791335a',
         github: 'https://github.com/sharadhi06',
-        instagram: null,
-    },
-    {
-        id: 'hk',
-        role: 'Events Head',
-        initials: 'HK',
-        name: 'Hafiz Khan G J',
-        photo: '/hafiz.jpeg',
-        photoPosition: 'center 40%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
-        github: null,
-        instagram: null,
-    },
-    {
-        id: 'vu',
-        role: 'Executive Head',
-        initials: 'VU',
-        name: 'Veer Upadhyay',
-        photo: '/veer.jpeg',
-        photoPosition: 'center 40%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/veer-upadhyay-2111b5318',
-        github: null,
-        instagram: null,
-    },
-    {
-        id: 'kt',
-        role: 'Treasurer',
-        initials: 'KT',
-        name: 'Karthik Deepak Narayan',
-        photo: '/karthik.jpeg',
-        photoPosition: 'center 35%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/karthik-deepak-narayan-5524a4393',
-        github: null,
-        instagram: null,
-    },
-]
-
-const ROW3 = [
-    {
-        id: 'nd',
-        role: 'Technical Head',
-        initials: 'ND',
-        name: "Nishanth D'Souza",
-        photo: '/nd.jpeg',
-        photoPosition: 'center 35%',
-        oneLiner: 'Turns silicon specs into pixels. Built this site.',
-        tags: ['Frontend', 'UI/UX', 'React'],
-        linkedin: 'https://www.linkedin.com/in/nishds30/',
-        github: 'https://github.com/NishDs-06',
-        instagram: null,
-    },
-    {
-        id: 'fm',
-        role: 'Graphic Design & Media Head',
-        initials: 'FM',
-        name: 'Farah Manikindi',
-        photo: '/farah.jpeg',
-        photoPosition: 'center 28%',
-        oneLiner: null,
-        tags: ['Design', 'Branding'],
-        linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
-        github: null,
         instagram: null,
     },
     {
@@ -192,17 +193,16 @@ const ROW3 = [
         instagram: null,
     },
     {
-        id: 'rj',
-        role: 'Marketing Head',
-        initials: 'RJ',
-        name: 'Riya Joseph',
-        photo: '/riya.jpeg',
-        photoPosition: 'center 22%',
-        photoContain: true,
+        id: 'vu',
+        role: 'Executive Head',
+        initials: 'VU',
+        name: 'Veer Upadhyay',
+        photo: '/veer.jpeg',
+        photoPosition: 'center 35%',
         oneLiner: null,
         tags: [],
-        linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
-        github: 'https://github.com/riyaelizabethjoseph',
+        linkedin: 'https://www.linkedin.com/in/veer-upadhyay-2111b5318',
+        github: null,
         instagram: null,
     },
     {
@@ -229,7 +229,7 @@ const ROW4 = [
         initials: 'SV',
         name: 'Dr. Shreshta Valasa',
         photo: '/shrestamam.jpeg',
-        photoPosition: 'center top',
+
         qual: 'Ph.D.',
         linkedin: 'https://www.linkedin.com/in/dr-shreshta-valasa-810999258',
         github: null,
@@ -243,7 +243,7 @@ const ROW4 = [
         initials: 'BS',
         name: 'Dr. Bharath Sreenivasulu V',
         photo: '/bharatsir.jpeg',
-        photoPosition: 'center top',
+        photoPosition: 'center 10%',
         qual: 'Ph.D. · Post-Doc (IIT Patna)',
         linkedin: 'https://www.linkedin.com/in/bharath-sreenivasulu-v-64b4a575',
         github: null,
@@ -471,6 +471,7 @@ function Card({ member, onClick, large }) {
                         style={{
                             ...(member.photoPosition ? { objectPosition: member.photoPosition } : {}),
                             ...(member.photoContain ? { objectFit: 'contain' } : {}),
+                            ...(member.photoZoom ? { transform: `scale(${member.photoZoom})`, transformOrigin: 'center top' } : {}),
                         }}
                     />
                     : (
@@ -541,8 +542,8 @@ export default function Team() {
             <SineWave />
 
             <Row label="Core Committee" sublabel="Co-founders & Leadership" members={ROW1} cols={3} onClick={setSelected} large={true} />
-            <Row members={ROW2} cols={3} onClick={setSelected} large={false} />
-            <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={5} onClick={setSelected} large={false} />
+            <Row members={ROW2} cols={4} onClick={setSelected} large={false} />
+            <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={4} onClick={setSelected} large={false} />
             <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={2} onClick={setSelected} large={false} constrained={true} />
 
             {selected && <Popup member={selected} onClose={() => setSelected(null)} />}
