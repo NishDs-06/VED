@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './Team.module.css'
-import SectionAtmosphere from '../SectionAtmosphere/SectionAtmosphere'
 
 /* ── Icons ─────────────────────────────────────────────────── */
 const LinkedInIcon = () => (
@@ -34,7 +33,8 @@ const ROW1 = [
         role: 'President',
         initials: 'RM',
         name: 'Raagmanas Madhukar',
-        photo: null,
+        photo: '/manas.jpeg',
+        photoPosition: 'center 20%',
         oneLiner: 'Co-founder. Building VED from the ground up.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/raagmanasmadhukar',
@@ -47,6 +47,7 @@ const ROW1 = [
         initials: 'SG',
         name: 'Siddharth Gaur',
         photo: '/sid.jpeg',
+        photoPosition: 'center 12%',
         oneLiner: 'Co-founder. Steering vision into execution.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/siddharth-gaur-471084266',
@@ -56,9 +57,10 @@ const ROW1 = [
     {
         id: 'gs',
         role: 'General Secretary',
-        initials: 'AK',
+        initials: 'AA',
         name: 'Akshansh Alawa',
-        photo: null,
+        photo: '/akshansh.jpeg',
+        photoPosition: 'center 30%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/akshansh-alawa-96a82a20a',
@@ -74,6 +76,7 @@ const ROW2 = [
         initials: 'AK',
         name: 'Akhil George Kurian',
         photo: '/akhil.jpeg',
+        photoPosition: 'center 15%',
         oneLiner: null,
         tags: [],
         linkedin: null,
@@ -86,6 +89,7 @@ const ROW2 = [
         initials: 'SP',
         name: 'Sreeparvathy M',
         photo: '/sree.jpeg',
+        photoPosition: 'center 38%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/sreeparvathy-m-4b064930b',
@@ -98,7 +102,8 @@ const ROW2 = [
         initials: 'SC',
         name: 'Sharadhi CP',
         photo: '/sharadhi.jpeg',
-        photoPosition: 'center top',
+        photoPosition: 'center 28%',
+        photoContain: true,
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/sharadhi-cp-53791335a',
@@ -110,7 +115,8 @@ const ROW2 = [
         role: 'Events Head',
         initials: 'HK',
         name: 'Hafiz Khan G J',
-        photo: null,
+        photo: '/hafiz.jpeg',
+        photoPosition: 'center 40%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
@@ -122,10 +128,24 @@ const ROW2 = [
         role: 'Executive Head',
         initials: 'VU',
         name: 'Veer Upadhyay',
-        photo: null,
+        photo: '/veer.jpeg',
+        photoPosition: 'center 40%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/veer-upadhyay-2111b5318',
+        github: null,
+        instagram: null,
+    },
+    {
+        id: 'kt',
+        role: 'Treasurer',
+        initials: 'KT',
+        name: 'Karthik Deepak Narayan',
+        photo: '/karthik.jpeg',
+        photoPosition: 'center 35%',
+        oneLiner: null,
+        tags: [],
+        linkedin: 'https://www.linkedin.com/in/karthik-deepak-narayan-5524a4393',
         github: null,
         instagram: null,
     },
@@ -150,7 +170,8 @@ const ROW3 = [
         role: 'Graphic Design & Media Head',
         initials: 'FM',
         name: 'Farah Manikindi',
-        photo: null,
+        photo: '/farah.jpeg',
+        photoPosition: 'center 28%',
         oneLiner: null,
         tags: ['Design', 'Branding'],
         linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
@@ -162,7 +183,8 @@ const ROW3 = [
         role: 'Vice Project Head',
         initials: 'JT',
         name: 'Jeevan Thanu',
-        photo: null,
+        photo: '/jeevan.jpeg',
+        photoPosition: 'center 30%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/jeevan-thanu-399b65375',
@@ -174,7 +196,9 @@ const ROW3 = [
         role: 'Marketing Head',
         initials: 'RJ',
         name: 'Riya Joseph',
-        photo: null,
+        photo: '/riya.jpeg',
+        photoPosition: 'center 22%',
+        photoContain: true,
         oneLiner: null,
         tags: [],
         linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
@@ -185,13 +209,13 @@ const ROW3 = [
         id: 'vk',
         role: 'Social Media Head',
         initials: 'VK',
-        name: 'Varshini',
+        name: 'Varshini V',
         photo: '/varshini.jpeg',
         photoPosition: 'center 15%',
         oneLiner: null,
         tags: [],
-        linkedin: null,
-        github: null,
+        linkedin: 'https://www.linkedin.com/in/varshini-v-5a45a736a',
+        github: 'https://github.com/varshini-v20',
         instagram: null,
     },
 ]
@@ -204,7 +228,8 @@ const ROW4 = [
         role: 'Faculty Adviser',
         initials: 'SV',
         name: 'Dr. Shreshta Valasa',
-        photo: null,
+        photo: '/shrestamam.jpeg',
+        photoPosition: 'center top',
         qual: 'Ph.D.',
         linkedin: 'https://www.linkedin.com/in/dr-shreshta-valasa-810999258',
         github: null,
@@ -217,7 +242,8 @@ const ROW4 = [
         role: 'Faculty Adviser',
         initials: 'BS',
         name: 'Dr. Bharath Sreenivasulu V',
-        photo: null,
+        photo: '/bharatsir.jpeg',
+        photoPosition: 'center top',
         qual: 'Ph.D. · Post-Doc (IIT Patna)',
         linkedin: 'https://www.linkedin.com/in/bharath-sreenivasulu-v-64b4a575',
         github: null,
@@ -442,7 +468,10 @@ function Card({ member, onClick, large }) {
                         alt={member.name || member.role}
                         className={styles.photoImg}
                         loading="lazy"
-                        style={member.photoPosition ? { objectPosition: member.photoPosition } : undefined}
+                        style={{
+                            ...(member.photoPosition ? { objectPosition: member.photoPosition } : {}),
+                            ...(member.photoContain ? { objectFit: 'contain' } : {}),
+                        }}
                     />
                     : (
                         <div className={styles.photoPlaceholder}>
@@ -471,9 +500,11 @@ function Card({ member, onClick, large }) {
 }
 
 /* ── Row ───────────────────────────────────────────────────── */
-function Row({ label, sublabel, members, cols, onClick, large }) {
+function Row({ label, sublabel, members, cols, onClick, large, constrained }) {
     const gridClass = cols === 3 ? styles.grid3 : cols === 2 ? styles.grid2 : cols === 5 ? styles.grid5 : styles.grid4
-    const wrapClass = label ? styles.rowWrap : styles.rowWrapPlain
+    const wrapClass = label
+        ? (constrained ? styles.rowWrapConstrained : styles.rowWrap)
+        : (constrained ? styles.rowWrapPlainConstrained : styles.rowWrapPlain)
 
     return (
         <div className={wrapClass}>
@@ -500,7 +531,6 @@ export default function Team() {
 
     return (
         <section className={styles.section} id="team" ref={sectionRef} style={{ position: 'relative', overflow: 'hidden' }}>
-            <SectionAtmosphere variant="team" sectionRef={sectionRef} />
             <div className={styles.header}>
                 <p className={styles.eyebrow}>Our Team</p>
                 <h2 className={styles.heading}>The People Behind VED</h2>
@@ -511,9 +541,9 @@ export default function Team() {
             <SineWave />
 
             <Row label="Core Committee" sublabel="Co-founders & Leadership" members={ROW1} cols={3} onClick={setSelected} large={true} />
-            <Row members={ROW2} cols={4} onClick={setSelected} large={false} />
+            <Row members={ROW2} cols={3} onClick={setSelected} large={false} />
             <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={5} onClick={setSelected} large={false} />
-            <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={2} onClick={setSelected} large={false} />
+            <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={2} onClick={setSelected} large={false} constrained={true} />
 
             {selected && <Popup member={selected} onClose={() => setSelected(null)} />}
         </section>

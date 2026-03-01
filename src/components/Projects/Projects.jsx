@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './Projects.module.css'
 
 const GitHubIcon = () => (
@@ -278,7 +279,10 @@ export default function Projects() {
                 ))}
             </div>
 
-            {selected && <ProjectPopup project={selected} onClose={() => setSelected(null)} />}
+            {selected && createPortal(
+                <ProjectPopup project={selected} onClose={() => setSelected(null)} />,
+                document.body
+            )}
         </section>
     )
 }
