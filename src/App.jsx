@@ -14,8 +14,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const SNAP_IDS = ['hero', 'domains', 'projects', 'team']
 const SNAP_EASE = (t) => 1 - Math.pow(1 - t, 4)
-const SNAP_DUR = 1.1
-const SNAP_ZONE = 180
+const SNAP_DUR = 0.6
+const SNAP_ZONE = 100
 
 function getSnapPoints() {
     return SNAP_IDS.map(id => {
@@ -34,7 +34,7 @@ export default function App() {
         if (loading) return
 
         const lenis = new Lenis({
-            duration: 1.4,
+            duration: 1.0,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smooth: true,
             smoothTouch: true,
@@ -62,7 +62,7 @@ export default function App() {
             clearTimeout(snapTimer)
             if (!isSnapping) {
                 snapTimer = setTimeout(() => {
-                    if (Math.abs(lastVelocity) < 0.8) trySnap(e.scroll)
+                    if (Math.abs(lastVelocity) < 0.3) trySnap(e.scroll)
                 }, 80)
             }
         })

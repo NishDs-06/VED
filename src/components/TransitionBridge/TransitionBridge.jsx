@@ -48,7 +48,20 @@ export default function TransitionBridge() {
             }
             rafId = requestAnimationFrame(draw)
         }
-        draw()
+
+        // Only run the RAF loop when the bridge is actually visible
+        const visObserver = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    if (!rafId && alive) rafId = requestAnimationFrame(draw)
+                } else {
+                    cancelAnimationFrame(rafId)
+                    rafId = null
+                }
+            },
+            { threshold: 0 }
+        )
+        visObserver.observe(canvas)
 
         // Animate the whole bridge in on scroll enter
         ScrollTrigger.create({
@@ -75,6 +88,7 @@ export default function TransitionBridge() {
         return () => {
             alive = false
             cancelAnimationFrame(rafId)
+            visObserver.disconnect()
             window.removeEventListener('resize', resize)
         }
     }, [])

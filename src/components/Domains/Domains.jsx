@@ -239,17 +239,11 @@ export default function Domains() {
                 invalidateOnRefresh: true,
                 start: 'top top',
                 end: () => `+=${window.innerWidth * (DOMAINS.length - 1) * 1.05}`,
-                scrub: 0.4,
+                scrub: 0.15,
                 onUpdate(self) {
                     const progress = Math.max(0, Math.min(1, self.progress))
-                    gsap.set(track, { x: -progress * window.innerWidth * (DOMAINS.length - 1) })
-
-                    if (progress > 0.85) {
-                        const tiltProg = (progress - 0.85) / 0.15
-                        gsap.set(track, { rotateX: tiltProg * 4, transformPerspective: 800 })
-                    } else {
-                        gsap.set(track, { rotateX: 0 })
-                    }
+                    const xVal = -progress * window.innerWidth * (DOMAINS.length - 1)
+                    track.style.transform = `translateX(${xVal}px)`
 
                     const currentPanel = Math.round(progress * (DOMAINS.length - 1))
                     progressRef.current.forEach((sq, i) => {
@@ -268,16 +262,12 @@ export default function Domains() {
                     }
                 },
                 onLeave() {
-                    // Kill any in-flight scrub tween so the track is at rest
-                    // before the scroll continues into Projects — prevents jitter
-                    gsap.set(track, {
-                        x: -window.innerWidth * (DOMAINS.length - 1),
-                        rotateX: 0,
-                    })
+                    const xMax = -window.innerWidth * (DOMAINS.length - 1)
+                    track.style.transform = `translateX(${xMax}px)`
                 },
                 onEnterBack() {
                     lastPanel = 0
-                    gsap.set(track, { x: 0, rotateX: 0 })
+                    track.style.transform = 'translateX(0px)'
                 },
             })
         }

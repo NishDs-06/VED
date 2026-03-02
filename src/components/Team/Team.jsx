@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './Team.module.css'
 
 /* ── Icons ─────────────────────────────────────────────────── */
@@ -19,22 +20,14 @@ const InstagramIcon = () => (
 )
 
 /* ── Data ──────────────────────────────────────────────────── */
-
-// ── IMPORTANT: Copy the 4 photos into your project's public/ folder:
-//   public/sid.jpeg      → Siddharth Gaur
-//   public/sree.jpeg     → Sreeparvathy M
-//   public/akhil.jpeg    → Akhil George Kurian
-//   public/sharadhi.jpeg → Sharadhi CP
-// Then the src="/sid.jpeg" etc. paths below will work automatically.
-
 const ROW1 = [
     {
         id: 'rm',
         role: 'President',
         initials: 'RM',
         name: 'Raagmanas Madhukar',
-        photo: '/manas.jpeg',
-
+        photo: '/manas.webp',
+        photoPosition: 'center bottom',
         oneLiner: 'Co-founder. Building VED from the ground up.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/raagmanasmadhukar',
@@ -46,8 +39,9 @@ const ROW1 = [
         role: 'Vice President',
         initials: 'SG',
         name: 'Siddharth Gaur',
-        photo: '/sid.jpeg',
-
+        photo: '/sid2.webp',
+        useBackground: true,
+        bgPos: 'center top',
         oneLiner: 'Co-founder. Steering vision into execution.',
         tags: [],
         linkedin: 'https://www.linkedin.com/in/siddharth-gaur-471084266',
@@ -59,8 +53,8 @@ const ROW1 = [
         role: 'General Secretary',
         initials: 'AA',
         name: 'Akshansh Alawa',
-        photo: '/akshansh.jpeg',
-        photoPosition: 'center 35%',
+        photo: '/akshansh.webp',
+        photoPosition: 'center 50%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/akshansh-alawa-96a82a20a',
@@ -75,8 +69,8 @@ const ROW2 = [
         role: 'Events Head',
         initials: 'HK',
         name: 'Hafiz Khan G J',
-        photo: '/hafiz.jpeg',
-
+        photo: '/hafiz.webp',
+        photoPosition: 'center bottom',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
@@ -88,8 +82,8 @@ const ROW2 = [
         role: 'Treasurer',
         initials: 'KT',
         name: 'Karthik Deepak Narayan',
-        photo: '/karthik.jpeg',
-        photoPosition: 'center 35%',
+        photo: '/karthik.webp',
+        photoPosition: 'center 20%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/karthik-deepak-narayan-5524a4393',
@@ -101,9 +95,8 @@ const ROW2 = [
         role: 'Marketing Head',
         initials: 'RJ',
         name: 'Riya Joseph',
-        photo: '/riya.jpeg',
-        photoPosition: 'center 22%',
-        photoContain: true,
+        photo: '/riya.webp',
+        photoPosition: 'center bottom',
         oneLiner: null,
         tags: [],
         linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
@@ -115,8 +108,8 @@ const ROW2 = [
         role: 'Graphic Design & Media Head',
         initials: 'FM',
         name: 'Farah Manikindi',
-        photo: '/farah.jpeg',
-
+        photo: '/farah2.webp',
+        photoPosition: 'center bottom',
         oneLiner: null,
         tags: ['Design', 'Branding'],
         linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
@@ -131,8 +124,8 @@ const ROW3 = [
         role: 'Technical Head',
         initials: 'ND',
         name: "Nishanth D'Souza",
-        photo: '/nd.jpeg',
-        photoPosition: 'center 35%',
+        photo: '/nd.webp',
+        photoPosition: 'center 20%',
         oneLiner: 'Turns silicon specs into pixels. Built this site.',
         tags: ['Frontend', 'UI/UX', 'React'],
         linkedin: 'https://www.linkedin.com/in/nishds30/',
@@ -144,8 +137,8 @@ const ROW3 = [
         role: 'Project Head',
         initials: 'AK',
         name: 'Akhil George Kurian',
-        photo: '/akhil.jpeg',
-        photoPosition: 'center 15%',
+        photo: '/akhil.webp',
+        photoPosition: 'center 10%',
         oneLiner: null,
         tags: [],
         linkedin: null,
@@ -157,8 +150,8 @@ const ROW3 = [
         role: 'Research Head',
         initials: 'SP',
         name: 'Sreeparvathy M',
-        photo: '/sree.jpeg',
-        photoPosition: 'center 38%',
+        photo: '/sree.webp',
+        photoPosition: 'center 22%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/sreeparvathy-m-4b064930b',
@@ -170,9 +163,9 @@ const ROW3 = [
         role: 'Vice Research Head',
         initials: 'SC',
         name: 'Sharadhi CP',
-        photo: '/sharadhi.jpeg',
-        photoPosition: 'center 25%',
-        photoZoom: 1.5,
+        photo: '/sharadhi.webp',
+        photoPosition: 'center 15%',
+        // Removed photoZoom — causes harsh cropping. Use CSS scale if needed.
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/sharadhi-cp-53791335a',
@@ -184,8 +177,8 @@ const ROW3 = [
         role: 'Vice Project Head',
         initials: 'JT',
         name: 'Jeevan Thanu',
-        photo: '/jeevan.jpeg',
-        photoPosition: 'center 30%',
+        photo: '/jeevan.webp',
+        photoPosition: 'center 18%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/jeevan-thanu-399b65375',
@@ -197,7 +190,7 @@ const ROW3 = [
         role: 'Executive Head',
         initials: 'VU',
         name: 'Veer Upadhyay',
-        photo: '/veer.jpeg',
+        photo: '/veer.webp',
         photoPosition: 'center 35%',
         oneLiner: null,
         tags: [],
@@ -210,8 +203,8 @@ const ROW3 = [
         role: 'Social Media Head',
         initials: 'VK',
         name: 'Varshini V',
-        photo: '/varshini.jpeg',
-        photoPosition: 'center 15%',
+        photo: '/varshini.webp',
+        photoPosition: 'center 10%',
         oneLiner: null,
         tags: [],
         linkedin: 'https://www.linkedin.com/in/varshini-v-5a45a736a',
@@ -220,16 +213,14 @@ const ROW3 = [
     },
 ]
 
-// ── Faculty: 2 only. Photos & full qual to be filled in once you get them.
-// Ask faculty personally for a headshot — LinkedIn scraping isn't possible.
 const ROW4 = [
     {
         id: 'fa1',
         role: 'Faculty Adviser',
         initials: 'SV',
         name: 'Dr. Shreshta Valasa',
-        photo: '/shrestamam.jpeg',
-
+        photo: '/shrestamam.webp',
+        photoPosition: 'center 15%',
         qual: 'Ph.D.',
         linkedin: 'https://www.linkedin.com/in/dr-shreshta-valasa-810999258',
         github: null,
@@ -242,8 +233,8 @@ const ROW4 = [
         role: 'Faculty Adviser',
         initials: 'BS',
         name: 'Dr. Bharath Sreenivasulu V',
-        photo: '/bharatsir.jpeg',
-        photoPosition: 'center 10%',
+        photo: '/bharatsir.webp',
+        photoPosition: 'center 8%',
         qual: 'Ph.D. · Post-Doc (IIT Patna)',
         linkedin: 'https://www.linkedin.com/in/bharath-sreenivasulu-v-64b4a575',
         github: null,
@@ -264,7 +255,10 @@ function SineWave() {
         const ctx = canvas.getContext('2d')
         let t = 0
         const trail = []
-        const TRAIL_LEN = 48
+        const TRAIL_LEN = 16
+        const STEP = 8
+        let frameCount = 0
+        let startTimer = null
 
         const resize = () => {
             canvas.width = canvas.offsetWidth
@@ -274,78 +268,70 @@ function SineWave() {
         window.addEventListener('resize', resize)
 
         const draw = () => {
+            frameCount++
+            // 30fps cap on all devices — wave looks identical, half the GPU work
+            if (frameCount % 2 !== 0) {
+                raf.current = requestAnimationFrame(draw)
+                return
+            }
+
             const W = canvas.width, H = canvas.height
             ctx.clearRect(0, 0, W, H)
             const amp = 22, freq = (2 * Math.PI) / (W * 0.42)
 
             const waves = [
-                { ph: 0, a: 0.65, w: 1.8, glow: 8 },
-                { ph: 1.1, a: 0.28, w: 0.9, glow: 0 },
-                { ph: -0.7, a: 0.12, w: 0.5, glow: 0 },
+                { ph: 0, a: 0.65, w: 1.8 },
+                { ph: 1.1, a: 0.28, w: 0.9 },
+                { ph: -0.7, a: 0.12, w: 0.5 },
             ]
-
-            waves.forEach(({ ph, a, w, glow }) => {
+            for (const { ph, a, w } of waves) {
                 ctx.beginPath()
                 ctx.strokeStyle = `rgba(168,85,247,${a})`
                 ctx.lineWidth = w
-                ctx.shadowBlur = glow
-                ctx.shadowColor = 'rgba(168,85,247,0.7)'
-                for (let x = 0; x <= W; x += 3) {
+                for (let x = 0; x <= W; x += STEP) {
                     const y = H / 2 + amp * Math.sin(freq * x + t + ph)
                     x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
                 }
                 ctx.stroke()
-                ctx.shadowBlur = 0
-            })
+            }
 
             const dotX = (t * 55) % W
             const dotY = H / 2 + amp * Math.sin(freq * dotX + t)
-
             trail.push({ x: dotX, y: dotY })
             if (trail.length > TRAIL_LEN) trail.shift()
 
-            const tLen = trail.length
-            for (let i = 0; i < tLen - 1; i++) {
-                const prog = i / tLen
-                if (prog < 0.1) continue
-                const alpha = prog * prog * 0.8
-                const r = Math.round(168 + 87 * prog)
-                const g = Math.round(85 + 170 * prog)
+            if (trail.length > 2) {
                 ctx.beginPath()
-                ctx.moveTo(trail[i].x, trail[i].y)
-                ctx.lineTo(trail[i + 1].x, trail[i + 1].y)
-                ctx.strokeStyle = `rgba(${r},${g},247,${alpha})`
-                ctx.lineWidth = 1 + prog * 2
-                ctx.shadowBlur = 0
+                ctx.moveTo(trail[0].x, trail[0].y)
+                for (let i = 1; i < trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y)
+                ctx.strokeStyle = 'rgba(192,132,252,0.5)'
+                ctx.lineWidth = 2
                 ctx.stroke()
             }
 
             ctx.beginPath()
-            ctx.arc(dotX, dotY, 6, 0, Math.PI * 2)
-            ctx.fillStyle = 'rgba(216,180,254,0.45)'
-            ctx.shadowBlur = 14
-            ctx.shadowColor = '#A855F7'
+            ctx.arc(dotX, dotY, 4, 0, Math.PI * 2)
+            ctx.fillStyle = 'rgba(216,180,254,0.6)'
             ctx.fill()
 
             ctx.beginPath()
-            ctx.arc(dotX, dotY, 2.5, 0, Math.PI * 2)
-            ctx.fillStyle = '#ffffff'
-            ctx.shadowBlur = 10
-            ctx.shadowColor = 'rgba(255,255,255,0.9)'
+            ctx.arc(dotX, dotY, 2, 0, Math.PI * 2)
+            ctx.fillStyle = '#fff'
             ctx.fill()
-            ctx.shadowBlur = 0
 
             t += 0.020
             raf.current = requestAnimationFrame(draw)
         }
 
-        draw()
-
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    if (!raf.current) raf.current = requestAnimationFrame(draw)
+                    // Delay start so canvas doesn't fire during scroll momentum
+                    startTimer = setTimeout(() => {
+                        if (!raf.current) raf.current = requestAnimationFrame(draw)
+                    }, 120)
                 } else {
+                    clearTimeout(startTimer)
                     cancelAnimationFrame(raf.current)
                     raf.current = null
                 }
@@ -355,6 +341,7 @@ function SineWave() {
         observer.observe(canvas)
 
         return () => {
+            clearTimeout(startTimer)
             cancelAnimationFrame(raf.current)
             observer.disconnect()
             window.removeEventListener('resize', resize)
@@ -395,7 +382,14 @@ function Popup({ member, onClose }) {
                 <div className={styles.popupTop}>
                     <div className={styles.popupPhotoBox}>
                         {member.photo
-                            ? <img src={member.photo} alt={member.name} className={styles.popupImg} loading="lazy" />
+                            ? <img
+                                src={member.photo}
+                                alt={member.name}
+                                className={styles.popupImg}
+                                loading="lazy"
+                                decoding="async"
+                                style={member.photoPosition ? { objectPosition: member.photoPosition } : {}}
+                            />
                             : <span className={styles.popupInitials}>{member.initials}</span>
                         }
                     </div>
@@ -461,25 +455,41 @@ function Card({ member, onClick, large }) {
         >
             <div className={styles.cardAccentLine} />
 
-            <div className={styles.photoBox}>
+            <div className={styles.photoBox} style={member.photoBackground ? { background: member.photoBackground } : {}}>
                 {member.photo
-                    ? <img
-                        src={member.photo}
-                        alt={member.name || member.role}
-                        className={styles.photoImg}
-                        loading="lazy"
-                        style={{
-                            ...(member.photoPosition ? { objectPosition: member.photoPosition } : {}),
-                            ...(member.photoContain ? { objectFit: 'contain' } : {}),
-                            ...(member.photoZoom ? { transform: `scale(${member.photoZoom})`, transformOrigin: 'center top' } : {}),
-                        }}
-                    />
+                    ? member.useBackground
+                        ? <div
+                            className={styles.photoImg}
+                            style={{
+                                backgroundImage: `url(${member.photo})`,
+                                backgroundSize: member.bgSize || 'cover',
+                                backgroundPosition: member.bgPos || 'center 15%',
+                                backgroundRepeat: 'no-repeat',
+                            }}
+                        />
+                        : <img
+                            src={member.photo}
+                            alt={member.name || member.role}
+                            className={styles.photoImg}
+                            loading="lazy"
+                            decoding="async"
+                            style={{
+                                objectPosition: member.photoPosition || 'center 15%',
+                                objectFit: 'cover',
+                                ...(member.photoZoom
+                                    ? { transform: `scale(${member.photoZoom})`, transformOrigin: 'center top' }
+                                    : member.photoScale
+                                        ? { transform: `scale(${member.photoScale})`, transformOrigin: 'center center' }
+                                        : {}),
+                            }}
+                        />
                     : (
                         <div className={styles.photoPlaceholder}>
                             <span className={styles.photoInitials}>{member.initials}</span>
                         </div>
                     )
                 }
+                <div className={styles.photoOverlay} />
                 <div className={styles.scanLine} />
             </div>
 
@@ -530,8 +540,38 @@ export default function Team() {
     const [selected, setSelected] = useState(null)
     const sectionRef = useRef(null)
 
+    // Preload all member photos when Team is 2 viewports away
+    // so images are already decoded by the time the user arrives
+    useEffect(() => {
+        const section = sectionRef.current
+        if (!section) return
+
+        let preloaded = false
+        const allPhotos = [...ROW1, ...ROW2, ...ROW3, ...ROW4]
+            .map(m => m.photo)
+            .filter(Boolean)
+
+        const preload = () => {
+            if (preloaded) return
+            preloaded = true
+            allPhotos.forEach(src => {
+                const img = new Image()
+                img.decoding = 'async'
+                img.src = src
+            })
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) preload() },
+            { rootMargin: '200% 0px' } // fires when section is 2 viewports away
+        )
+        observer.observe(section)
+
+        return () => observer.disconnect()
+    }, [])
+
     return (
-        <section className={styles.section} id="team" ref={sectionRef} style={{ position: 'relative', overflow: 'hidden' }}>
+        <section className={styles.section} id="team" ref={sectionRef} style={{ position: 'relative' }}>
             <div className={styles.header}>
                 <p className={styles.eyebrow}>Our Team</p>
                 <h2 className={styles.heading}>The People Behind VED</h2>
@@ -546,7 +586,10 @@ export default function Team() {
             <Row label="Working Committee" sublabel="Builders & Makers" members={ROW3} cols={4} onClick={setSelected} large={false} />
             <Row label="Faculty Advisers" sublabel="Mentors & Guides" members={ROW4} cols={2} onClick={setSelected} large={false} constrained={true} />
 
-            {selected && <Popup member={selected} onClose={() => setSelected(null)} />}
+            {selected && createPortal(
+                <Popup member={selected} onClose={() => setSelected(null)} />,
+                document.body
+            )}
         </section>
     )
 }
