@@ -2,7 +2,7 @@
 
 **[ved-sand.vercel.app](https://ved-sand.vercel.app/)**
 
-VED is a student-run technical club at MIT Bangalore focused on emerging technologies, research, and building real-world projects. The club brings together students interested in AI/ML, software development, and adjacent fields.
+VED is a student-run technical club at MIT Bangalore focused on VLSI design, embedded systems, and electronics. The club brings together students interested in chip design, digital/analog circuits, PCB design, FPGAs, and related hardware domains.
 
 This is the official club website — a single-page site built to introduce the club, showcase domains and active projects, and put faces to names on the team.
 
