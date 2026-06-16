@@ -712,6 +712,7 @@
 @media (max-width: 768px) {
     .section {
         padding: 60px 24px 60px;
+        overflow: visible !important;
     }
 
     .timeline {
@@ -760,20 +761,22 @@
     }
 
     .overlay {
-        padding: 16px;
-        align-items: center;
-        justify-content: center;
+        padding: 12px;
+        align-items: flex-start;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .popup {
         width: 100%;
         max-width: 100%;
-        margin: auto;
-        max-height: 85vh;
+        max-height: none;
+        margin: 24px auto;
     }
 
     .metaRow {
         gap: 16px;
+        flex-direction: column;
     }
 }
 
