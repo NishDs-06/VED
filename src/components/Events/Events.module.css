@@ -1,0 +1,802 @@
+/* ── Section ─────────────────────────────────────────────────── */
+.section {
+    background: #000;
+    padding: 80px 64px 100px;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    will-change: transform;
+    transform: translateZ(0);
+    contain: layout paint;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.sectionHeader {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    color: rgba(168, 85, 247, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    position: relative;
+}
+
+.heading {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(30px, 5vw, 56px);
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    position: relative;
+}
+
+.headingRule {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, #A855F7, transparent);
+    margin: 16px 0 0;
+    border-radius: 2px;
+}
+
+.headerDivider {
+    width: 100%;
+    height: 1px;
+    background: rgba(168, 85, 247, 0.1);
+    margin-top: 24px;
+}
+
+/* ── Terminal bar ─────────────────────────────────────────────── */
+.terminalBar {
+    background: #0b0814;
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    border-radius: 16px;
+    padding: 11px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.prompt {
+    color: #A855F7;
+    margin-right: 7px;
+}
+
+.termRight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(192, 132, 252, 0.6);
+}
+
+.liveDot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #A855F7;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
+    animation: livePulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes livePulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* ── Timeline list ───────────────────────────────────────────── */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-left: 32px;
+}
+
+/* Vertical spine — the connecting line */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    width: 1px;
+    background: linear-gradient(
+        180deg,
+        rgba(168, 85, 247, 0.06) 0%,
+        rgba(168, 85, 247, 0.18) 15%,
+        rgba(168, 85, 247, 0.18) 85%,
+        rgba(168, 85, 247, 0.06) 100%
+    );
+}
+
+/* ── Event row ───────────────────────────────────────────────── */
+.eventRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition:
+        background 200ms ease,
+        border-left-color 200ms ease;
+    border-left: 2px solid transparent;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+
+.eventRow:first-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.eventRow:hover,
+.eventRow:focus-visible {
+    background: rgba(168, 85, 247, 0.03);
+    border-left-color: rgba(168, 85, 247, 0.4);
+}
+
+/* ── Rarity colour tint — fills the row with a subtle gradient ── */
+.rarityGlow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+    transition: opacity 250ms ease;
+}
+
+.eventRow:hover .rarityGlow {
+    opacity: 0.75;
+}
+
+.eventRowPast .rarityGlow {
+    opacity: 0.28;
+}
+
+.eventRowPast:hover .rarityGlow {
+    opacity: 0.45;
+}
+
+/* ── Timeline node — the dot on the spine ────────────────────── */
+.timelineNode {
+    position: absolute;
+    left: -22px;
+    top: 42px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(168, 85, 247, 0.3);
+    background: #000;
+    transform: translateX(-50%);
+    z-index: 1;
+    transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+}
+
+.eventRow:hover .timelineNode {
+    border-color: rgba(168, 85, 247, 0.7);
+    background: rgba(168, 85, 247, 0.15);
+}
+
+/* Past node — dim */
+.timelineNodePast {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.eventRowPast:hover .timelineNodePast {
+    border-color: rgba(168, 85, 247, 0.4);
+    background: rgba(168, 85, 247, 0.08);
+}
+
+/* Upcoming node — filled + pulse */
+.timelineNodeUpcoming {
+    border-color: rgba(168, 85, 247, 0.6);
+    background: rgba(168, 85, 247, 0.25);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+    animation: nodePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes nodePulse {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 14px rgba(168, 85, 247, 0.5), 0 0 4px rgba(168, 85, 247, 0.2);
+    }
+}
+
+/* ── Past styling ─────────────────────────────────────────────── */
+.eventRowPast {
+    opacity: 0.7;
+}
+
+.eventRowPast .dayNumber {
+    color: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Upcoming styling ─────────────────────────────────────────── */
+.eventRowUpcoming {
+    box-shadow: inset 2px 0 0 rgba(168, 85, 247, 0.5);
+    opacity: 1;
+}
+
+.eventRowUpcoming .dayNumber {
+    color: rgba(168, 85, 247, 0.35);
+}
+
+/* Upcoming label badge */
+.upcomingBadge {
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(168, 85, 247, 0.85);
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+}
+
+.upcomingDot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #A855F7;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+/* ── Hover accent reveal — accent line slides in from left ────── */
+.accentReveal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(168, 85, 247, 0.6) 30%,
+        rgba(192, 132, 252, 0.8) 50%,
+        rgba(168, 85, 247, 0.6) 70%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 250ms ease;
+    pointer-events: none;
+}
+
+.eventRow:hover .accentReveal {
+    opacity: 1;
+}
+
+
+
+/* ── Left column: date metadata ──────────────────────────────── */
+.dateCol {
+    width: 180px;
+    min-width: 180px;
+    padding: 4px 28px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.monthLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.dayNumber {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 300;
+    color: rgba(168, 85, 247, 0.25);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    transition: color 200ms ease;
+}
+
+.eventRow:hover .dayNumber {
+    color: rgba(168, 85, 247, 0.45);
+}
+
+.eventRowPast:hover .dayNumber {
+    color: rgba(255, 255, 255, 0.18);
+}
+
+/* ── Right column: event content ─────────────────────────────── */
+.contentCol {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.typeBadge {
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+    display: inline-block;
+    width: fit-content;
+    transition: background 200ms ease;
+    position: relative;
+    z-index: 1;
+}
+
+.eventRow:hover .typeBadge {
+    filter: brightness(1.15);
+}
+
+.eventName {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(16px, 1.5vw, 22px);
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    transition: color 200ms ease;
+}
+
+.eventRow:hover .eventName {
+    color: rgba(255, 255, 255, 1);
+}
+
+.eventDesc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.42);
+    line-height: 1.55;
+    max-width: 560px;
+}
+
+.hostLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(168, 85, 247, 0.6);
+    text-transform: uppercase;
+}
+
+/* ── Index counter ───────────────────────────────────────────── */
+.eventIndex {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.08);
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    user-select: none;
+}
+
+.eventRow:hover .eventIndex {
+    color: rgba(168, 85, 247, 0.2);
+}
+
+/* ── Overlay ─────────────────────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 2, 10, 0.93);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayIn 150ms ease forwards;
+    padding: 24px;
+    will-change: opacity;
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── Popup ───────────────────────────────────────────────────── */
+.popup {
+    background: #08060f;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 24px;
+    width: min(580px, 100%);
+    max-height: 88vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 85, 247, 0.25) transparent;
+    will-change: transform, opacity;
+}
+
+@keyframes popupIn {
+    from {
+        transform: scale(0.93) translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.popupShimmer {
+    height: 2px;
+    background: linear-gradient(90deg, #7B2FFF, #C084FC, #E879F9, #C084FC, #7B2FFF);
+    background-size: 300%;
+    animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200%;
+    }
+
+    100% {
+        background-position: -200%;
+    }
+}
+
+.closeBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.3);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 150ms, border-color 150ms, color 150ms;
+    z-index: 2;
+}
+
+.closeBtn:hover {
+    background: rgba(168, 85, 247, 0.12);
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #C084FC;
+}
+
+.popupInner {
+    padding: 28px 28px 24px;
+}
+
+.popupBadgeRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.popupTypeBadge {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    padding: 3px 11px;
+    border-radius: 20px;
+    border: 1px solid;
+}
+
+.popupStatusDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+.popupStatusLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(168, 85, 247, 0.85);
+}
+
+.popupName {
+    font-family: 'DM Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 6px;
+}
+
+.popupDivider {
+    width: 100%;
+    height: 1px;
+    background: rgba(168, 85, 247, 0.1);
+    margin: 20px 0;
+}
+
+.metaRow {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.metaBox {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.metaLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+}
+
+.metaVal {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.toolsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.toolPill {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: rgba(192, 132, 252, 0.65);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    background: rgba(168, 85, 247, 0.06);
+    padding: 4px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.popupSectionLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.26em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.popupAbout {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.58);
+    line-height: 1.85;
+}
+
+.popupActions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.registerBtn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(216, 180, 254, 0.9);
+    text-decoration: none;
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    padding: 12px 24px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 200ms, border-color 200ms, background 200ms;
+}
+
+.registerBtn:hover {
+    color: #fff;
+    border-color: rgba(168, 85, 247, 0.6);
+    background: rgba(168, 85, 247, 0.2);
+}
+
+/* ── Countdown timer ────────────────────────────────────────── */
+.countdown {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: rgba(168, 85, 247, 0.04);
+    border: 1px solid rgba(168, 85, 247, 0.12);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.countdownLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+}
+
+.countdownBlocks {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.countdownUnit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 44px;
+    padding: 6px 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(168, 85, 247, 0.1);
+    border-radius: 8px;
+}
+
+.countdownNum {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: #C084FC;
+    line-height: 1;
+    letter-spacing: 0.04em;
+}
+
+.countdownSub {
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+}
+
+.countdownSep {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: rgba(168, 85, 247, 0.3);
+    margin: 0 2px;
+    padding-bottom: 12px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .section {
+        padding: 60px 24px 60px;
+    }
+
+    .timeline {
+        padding-left: 24px;
+    }
+
+    .timeline::before {
+        left: 8px;
+    }
+
+    .timelineNode {
+        left: -16px;
+        width: 7px;
+        height: 7px;
+    }
+
+    .eventRow {
+        flex-direction: column;
+        gap: 12px;
+        padding: 24px 0;
+    }
+
+    .dateCol {
+        width: 100%;
+        min-width: 0;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 12px;
+        padding: 0 16px;
+    }
+
+    .dayNumber {
+        font-size: 32px;
+    }
+
+    .monthLabel {
+        font-size: 9px;
+    }
+
+    .contentCol {
+        padding: 0 16px;
+    }
+
+    .eventIndex {
+        display: none;
+    }
+
+    .overlay {
+        padding: 16px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .popup {
+        width: 100%;
+        max-width: 100%;
+        margin: auto;
+        max-height: 85vh;
+    }
+
+    .metaRow {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dateCol {
+        padding: 0 12px;
+    }
+
+    .contentCol {
+        padding: 0 12px;
+    }
+
+    .terminalBar {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .popupInner {
+        padding: 20px 18px 18px;
+    }
+
+    .popupName {
+        font-size: 20px;
+    }
+}

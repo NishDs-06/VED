@@ -5,6 +5,8 @@ import Lenis from '@studio-freight/lenis'
 import Hero from './components/Hero/Hero'
 import Domains from './components/Domains/Domains'
 import Projects from './components/Projects/Projects'
+import Events from './components/Events/Events'
+import Newsletter from './components/Newsletter/Newsletter'
 import Team from './components/Team/Team'
 import Footer from './components/Footer/Footer'
 import ChipLoader from './components/ChipLoader/ChipLoader'
@@ -12,7 +14,7 @@ import TransitionBridge from './components/TransitionBridge/TransitionBridge'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const SNAP_IDS = ['hero', 'domains', 'projects', 'team']
+const SNAP_IDS = ['hero', 'domains', 'projects', 'events', 'newsletter', 'team']
 const SNAP_EASE = (t) => 1 - Math.pow(1 - t, 4)
 const SNAP_DUR = 0.6
 const SNAP_ZONE = 100
@@ -118,6 +120,8 @@ export default function App() {
                 <Domains />
                 <TransitionBridge />
                 <Projects />
+                <Events />
+                <Newsletter />
                 <Team />
                 <Footer />
             </main>

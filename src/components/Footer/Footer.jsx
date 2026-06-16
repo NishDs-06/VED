@@ -28,6 +28,8 @@ export default function Footer() {
                     <span className={styles.colLabel}>Explore</span>
                     <a href="#domains">Domains</a>
                     <a href="#system-board">Projects</a>
+                    <a href="#events">Events</a>
+                    <a href="#newsletter">Signal</a>
                     <a href="#team">Team</a>
                 </div>
 

@@ -1,0 +1,46 @@
+VED WEBSITE — EDITABLE CONTENT GUIDE
+=====================================
+
+1. EVENTS SECTION
+   File: src/components/Events/Events.jsx
+
+   ADD EVENT    → Add a new object to the EVENTS array (copy any existing one)
+   REMOVE EVENT → Delete its object from the array
+   EDIT EVENT   → Change any field directly (title, date, description, etc.)
+
+   TOGGLE UPCOMING:
+     isUpcoming: true   → Shows "UPCOMING" badge, enables registration
+     isUpcoming: false  → Past event, no registration
+
+   TOGGLE REGISTRATION:
+     registrationEnabled: true  → Shows "Register Now" button (only if isUpcoming is also true)
+     registrationEnabled: false → Hides registration button
+     registrationLink: 'url'   → Where the button points
+
+   CHANGE RARITY COLOUR:
+     rarity: 'legendary'  → Gold tint    (#FFD700)
+     rarity: 'epic'       → Purple tint  (#A855F7)
+     rarity: 'rare'       → Blue tint    (#3B82F6)
+     rarity: 'uncommon'   → Green tint   (#22C55E)
+     rarity: 'simple'     → Grey tint    (#6B7280)
+
+   EDIT/ADD RARITY COLOURS:
+     Edit the RARITY_COLORS object at the top of the file.
+     Add a new key + hex colour. Use that key in any event's rarity field.
+
+2. SIGNAL / BLOG SECTION
+   File: src/components/Newsletter/Newsletter.jsx
+
+   ADD POST    → Add a new object to SIGNAL_POSTS array
+   REMOVE POST → Delete its object (keep exactly 3 for layout)
+   EDIT POST   → Change title, teaser, or link directly
+   link: ''    → Omits "Read More" if link is empty
+
+3. FOOTER LINKS
+   File: src/components/Footer/Footer.jsx
+   Edit the <a> tags in the Explore/Connect sections directly.
+
+4. SNAP SCROLL IDS
+   File: src/App.jsx
+   The SNAP_IDS array controls scroll-snapping. If you add/remove a section,
+   update this array to match the section's id attribute.

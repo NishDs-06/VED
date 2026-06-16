@@ -65,16 +65,12 @@
     width: 100%;
     padding: 0 64px;
     margin-bottom: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
 }
 
 .rowWrapPlain {
     width: 100%;
     padding: 32px 64px 0;
     margin-bottom: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
 }
 
 .rowHeader {
@@ -659,16 +655,12 @@
     width: 100%;
     padding: 0 64px;
     margin-bottom: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 400px;
 }
 
 .rowWrapPlainConstrained {
     width: 100%;
     padding: 32px 64px 0;
     margin-bottom: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 400px;
 }
 
 /* Faculty grid caps at 860px so 2 cards don't stretch absurdly wide */
