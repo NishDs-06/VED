@@ -111,7 +111,7 @@ export default function Newsletter() {
 
                 {/* ── Footnote ───────────────────────────────── */}
                 <p className={styles.footnote}>
-                    MIT BANGALORE · VED · ved.mitblr@gmail.com
+                    MIT BANGALORE · VED · vedclub.mit@manipal.edu
                 </p>
             </div>
         </section>
