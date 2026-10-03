@@ -6,25 +6,6 @@ import styles from './Events.module.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/* ── RARITY COLOR SYSTEM ─────────────────────────────────────────
-   Visual tier system for event importance. Each key maps to a hex color
-   used as the accent tint on the event row and its popup shimmer bar.
-
-   ► Add a new rarity tier: add a new key below with a hex color.
-   ► Remove a rarity tier: delete its line below (update any events
-     using that key in the EVENTS array, or they will fall back to
-     RARITY_COLORS.default).
-   ► Apply a rarity to an event: set event.rarity to match a key here.
-──────────────────────────────────────────────────────────────────── */
-const RARITY_COLORS = {
-    legendary:  '#FFD700',   // gold — reserved for flagship events
-    epic:       '#A855F7',   // purple — major workshops, talks, hackathons
-    rare:       '#3B82F6',   // blue — notable seminars, guest lectures
-    uncommon:   '#22C55E',   // green — regular events, meetups
-    simple:     '#6B7280',   // grey — minor or administrative events
-    default:    '#A855F7',   // fallback if an event's rarity key isn't found above
-}
-
 const TYPE_COLOR = {
     WORKSHOP:    '#C084FC',
     TALK:        '#A855F7',
@@ -33,29 +14,6 @@ const TYPE_COLOR = {
     SEMINAR:     '#6D28D9',
 }
 
-/* ── EVENTS DATA ─────────────────────────────────────────────────
-   Each event object defines one entry in the timeline.
-
-   EDITABLE FIELDS FOR THE CODE MAINTAINER:
-   ─────────────────────────────────────────
-   • isUpcoming:          Set to true for future events, false for past events.
-                          Controls whether the row shows the UPCOMING badge
-                          and whether the "Register Now" button can appear.
-                          No other code changes needed to toggle this.
-
-   • registrationEnabled: Set to true to show a "Register Now" button inside
-                          the popup. The button ONLY appears when BOTH
-                          isUpcoming=true AND registrationEnabled=true.
-                          Set to false to hide it — no other changes needed.
-
-   • registrationLink:    URL for the registration form. Only used when
-                          registrationEnabled=true and isUpcoming=true.
-
-   • rarity:              Must match a key in RARITY_COLORS above (e.g.
-                          'legendary', 'epic', 'rare', 'uncommon', 'simple').
-                          If the key doesn't exist, falls back to 'default'.
-                          Controls the colour tint on the event row.
-──────────────────────────────────────────────────────────────────── */
 const EVENTS = [
     {
         id: 'e1',
@@ -69,13 +27,9 @@ const EVENTS = [
         location: 'EC Lab 3, AB-2, MIT Bangalore',
         host: 'Raagmanas Madhukar',
         tags: ['VERILOG', 'VIVADO', 'FPGA'],
-        // Set to true/false to toggle this event's upcoming status — no other code changes needed.
         isUpcoming: false,
-        // Set to true/false to toggle this event's registration button — no other code changes needed.
         registrationEnabled: false,
         registrationLink: '',
-        // Must match a key in RARITY_COLORS ('legendary', 'epic', 'rare', 'uncommon', 'simple')
-        rarity: 'epic',
     },
     {
         id: 'e2',
@@ -92,7 +46,6 @@ const EVENTS = [
         isUpcoming: false,
         registrationEnabled: false,
         registrationLink: '',
-        rarity: 'rare',
     },
     {
         id: 'e3',
@@ -109,7 +62,6 @@ const EVENTS = [
         isUpcoming: false,
         registrationEnabled: false,
         registrationLink: '',
-        rarity: 'uncommon',
     },
     {
         id: 'e4',
@@ -126,7 +78,6 @@ const EVENTS = [
         isUpcoming: false,
         registrationEnabled: false,
         registrationLink: '',
-        rarity: 'rare',
     },
     {
         id: 'e5',
@@ -143,7 +94,6 @@ const EVENTS = [
         isUpcoming: false,
         registrationEnabled: false,
         registrationLink: '',
-        rarity: 'legendary',
     },
     {
         id: 'e6',
@@ -157,12 +107,9 @@ const EVENTS = [
         location: 'EC Lab 3, AB-2, MIT Bangalore',
         host: "Nishanth D'Souza",
         tags: ['OPENROAD', 'RISC-V', 'PNR'],
-        // Set to true/false to toggle this event's upcoming status — no other code changes needed.
         isUpcoming: true,
-        // Set to true/false to toggle this event's registration button — no other code changes needed.
         registrationEnabled: true,
         registrationLink: 'https://forms.google.com',
-        rarity: 'epic',
     },
     {
         id: 'e7',
@@ -179,7 +126,6 @@ const EVENTS = [
         isUpcoming: true,
         registrationEnabled: true,
         registrationLink: 'https://forms.google.com',
-        rarity: 'rare',
     },
 ]
 
@@ -188,7 +134,6 @@ function useCountdown(dateString) {
     const [timeLeft, setTimeLeft] = useState(null)
 
     useEffect(() => {
-        // Parse "Month DD, YYYY" format
         const target = new Date(dateString).getTime()
         if (isNaN(target)) return
 
@@ -248,35 +193,46 @@ function CountdownTimer({ dateString }) {
 
 /* ── Event Popup ─────────────────────────────────────────────── */
 function EventPopup({ event, onClose }) {
-    // Resolved rarity color — pulls from RARITY_COLORS, falls back to default
-    const accent = RARITY_COLORS[event.rarity] || RARITY_COLORS.default
+    const [isClosing, setIsClosing] = useState(false)
     const typeColor = TYPE_COLOR[event.type] || '#A855F7'
 
     useEffect(() => {
         window.dispatchEvent(new Event('ved:popup:open'))
         document.body.style.overflow = 'hidden'
-        const onKey = e => { if (e.key === 'Escape') onClose() }
+        document.documentElement.style.overflow = 'hidden'
+        
+        const handleClose = () => {
+            setIsClosing(true)
+            setTimeout(onClose, 250)
+        }
+        
+        const onKey = e => e.key === 'Escape' && handleClose()
         document.addEventListener('keydown', onKey)
         return () => {
             window.dispatchEvent(new Event('ved:popup:close'))
             document.body.style.overflow = ''
+            document.documentElement.style.overflow = ''
             document.removeEventListener('keydown', onKey)
         }
     }, [onClose])
 
-    return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.popup} onClick={e => e.stopPropagation()}>
-                <div className={styles.popupShimmer} style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)`, backgroundSize: '300%' }} />
+    const handleOverlayClick = () => {
+        setIsClosing(true)
+        setTimeout(onClose, 250)
+    }
 
-                <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+    return (
+        <div className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ''}`} onClick={handleOverlayClick}>
+            <div className={`${styles.popup} ${isClosing ? styles.popupClosing : ''}`} onClick={e => e.stopPropagation()}>
+                <div className={styles.popupShimmer} />
+
+                <button className={styles.closeBtn} onClick={handleOverlayClick} aria-label="Close">
                     <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                         <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                 </button>
 
                 <div className={styles.popupInner}>
-                    {/* Badge row — type only */}
                     <div className={styles.popupBadgeRow}>
                         <span
                             className={styles.popupTypeBadge}
@@ -286,7 +242,7 @@ function EventPopup({ event, onClose }) {
                         </span>
                         {event.isUpcoming && (
                             <>
-                                <span className={styles.popupStatusDot} style={{ background: accent }} />
+                                <span className={styles.popupStatusDot} />
                                 <span className={styles.popupStatusLabel}>Upcoming</span>
                             </>
                         )}
@@ -296,12 +252,10 @@ function EventPopup({ event, onClose }) {
 
                     <div className={styles.popupDivider} />
 
-                    {/* Countdown timer — only for upcoming events with registration */}
                     {event.isUpcoming && event.registrationEnabled && (
                         <CountdownTimer dateString={event.date} />
                     )}
 
-                    {/* Meta row */}
                     <div className={styles.metaRow}>
                         <div className={styles.metaBox}>
                             <span className={styles.metaLabel}>Date</span>
@@ -319,7 +273,6 @@ function EventPopup({ event, onClose }) {
                         )}
                     </div>
 
-                    {/* Tags */}
                     {event.tags && event.tags.length > 0 && (
                         <div className={styles.toolsRow}>
                             {event.tags.map(t => (
@@ -330,11 +283,9 @@ function EventPopup({ event, onClose }) {
 
                     <div className={styles.popupDivider} />
 
-                    {/* Description */}
                     <p className={styles.popupSectionLabel}>About This Event</p>
                     <p className={styles.popupAbout}>{event.description}</p>
 
-                    {/* Register Now — only if upcoming AND registration enabled */}
                     {event.isUpcoming && event.registrationEnabled && event.registrationLink && (
                         <>
                             <div className={styles.popupDivider} />
@@ -360,28 +311,24 @@ function EventPopup({ event, onClose }) {
 export default function Events() {
     const [selected, setSelected] = useState(null)
     const sectionRef = useRef(null)
-    const rowRefs = useRef([])
+    
+    const upcomingEvents = EVENTS.filter(e => e.isUpcoming)
+    const pastEvents = EVENTS.filter(e => !e.isUpcoming)
 
-    const upcomingCount = EVENTS.filter(e => e.isUpcoming).length
-
-    /* ── GSAP enter animation ────────────────────────────────── */
     useEffect(() => {
-        const rows = rowRefs.current.filter(Boolean)
-        if (rows.length === 0) return
-
         const ctx = gsap.context(() => {
             gsap.fromTo(
-                rows,
-                { opacity: 0, x: -16 },
+                `.${styles.heroCard}, .${styles.cascadeCard}`,
+                { opacity: 0, y: 60, scale: 0.95 },
                 {
                     opacity: 1,
-                    x: 0,
-                    duration: 0.5,
-                    stagger: 0.06,
-                    ease: 'power2.out',
+                    y: 0,
+                    duration: 1.2,
+                    stagger: 0.15,
+                    ease: 'cubic-bezier(0.32,0.72,0,1)',
                     scrollTrigger: {
                         trigger: sectionRef.current,
-                        start: 'top 80%',
+                        start: 'top 85%',
                         once: true,
                     },
                 }
@@ -396,128 +343,99 @@ export default function Events() {
             ref={sectionRef}
             className={styles.section}
             id="events"
-            style={{ position: 'relative', overflow: 'hidden' }}
         >
-            {/* ── Header ─────────────────────────────────────── */}
             <div className={styles.sectionHeader}>
                 <p className={styles.eyebrow}>Event Log</p>
                 <h2 className={styles.heading}>What's Happening</h2>
                 <div className={styles.headingRule} />
-                <div className={styles.headerDivider} />
             </div>
 
-            {/* ── Terminal bar ────────────────────────────────── */}
-            <div className={styles.terminalBar}>
-                <span>
-                    <span className={styles.prompt}>&gt;</span>
-                    {' '}EVENT LOG — VED · MIT BANGALORE
-                </span>
-                <span className={styles.termRight}>
-                    {upcomingCount > 0 && <span className={styles.liveDot} />}
-                    {EVENTS.length} EVENTS
-                </span>
-            </div>
-
-            {/* ── Timeline ───────────────────────────────────── */}
-            <div className={styles.timeline}>
-                {EVENTS.map((evt, i) => {
-                    // Rarity accent — pulls from RARITY_COLORS, falls back to default.
-                    // To reassign an event's rarity, change event.rarity to any key in RARITY_COLORS.
-                    const accent = RARITY_COLORS[evt.rarity] || RARITY_COLORS.default
-                    const typeColor = TYPE_COLOR[evt.type] || '#A855F7'
-                    const isPast = !evt.isUpcoming
-                    const isUpcoming = evt.isUpcoming
-
-                    const rowClasses = [
-                        styles.eventRow,
-                        isPast ? styles.eventRowPast : '',
-                        isUpcoming ? styles.eventRowUpcoming : '',
-                    ].filter(Boolean).join(' ')
-
-                    const nodeClasses = [
-                        styles.timelineNode,
-                        isPast ? styles.timelineNodePast : '',
-                        isUpcoming ? styles.timelineNodeUpcoming : '',
-                    ].filter(Boolean).join(' ')
-
-                    return (
-                        <div
-                            key={evt.id}
-                            ref={el => { rowRefs.current[i] = el }}
-                            className={rowClasses}
-                            style={{ '--rarity-color': accent }}
-                            onClick={() => setSelected(evt)}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={e => e.key === 'Enter' && setSelected(evt)}
-                        >
-                            {/* Rarity tint glow — fills the row background */}
-                            <div
-                                className={styles.rarityGlow}
-                                style={{
-                                    background: `linear-gradient(90deg, ${accent}12, ${accent}26 30%, ${accent}1A 70%, transparent)`,
-                                }}
-                            />
-
-                            {/* Timeline node — colored by rarity */}
-                            <div
-                                className={nodeClasses}
-                                style={isUpcoming ? {
-                                    borderColor: accent + '99',
-                                    background: accent + '40',
-                                    boxShadow: `0 0 8px ${accent}4D`,
-                                } : {}}
-                            />
-
-                            {/* Hover accent line */}
-                            <div
-                                className={styles.accentReveal}
-                                style={{ background: `linear-gradient(180deg, transparent 0%, ${accent}99 30%, ${accent}CC 50%, ${accent}99 70%, transparent 100%)` }}
-                            />
-
-                            {/* Date column */}
-                            <div className={styles.dateCol}>
-                                <span className={styles.monthLabel}>{evt.month}</span>
-                                <span className={styles.dayNumber}>{evt.day}</span>
-                            </div>
-
-                            {/* Content column */}
-                            <div className={styles.contentCol}>
-                                <span
-                                    className={styles.typeBadge}
-                                    style={{
-                                        color: typeColor,
-                                        borderColor: typeColor + '40',
-                                        background: typeColor + '0f',
-                                    }}
+            {upcomingEvents.length > 0 && (
+                <div className={styles.eventGroup}>
+                    <h3 className={styles.groupLabel}>Upcoming</h3>
+                    <div className={styles.heroGrid}>
+                        {upcomingEvents.map(evt => {
+                            const typeColor = TYPE_COLOR[evt.type] || '#A855F7'
+                            return (
+                                <div 
+                                    key={evt.id} 
+                                    className={styles.heroCard}
+                                    onClick={() => setSelected(evt)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={e => e.key === 'Enter' && setSelected(evt)}
                                 >
-                                    {evt.type}
-                                </span>
-                                <h3 className={styles.eventName}>{evt.title}</h3>
-                                <p className={styles.eventDesc}>{evt.summary}</p>
-                                {evt.host && (
-                                    <span className={styles.hostLabel}>
-                                        Hosted by {evt.host}
-                                    </span>
-                                )}
-                                {isUpcoming && (
-                                    <span className={styles.upcomingBadge}>
-                                        <span className={styles.upcomingDot} />
-                                        UPCOMING
-                                    </span>
-                                )}
-                            </div>
+                                    <div className={styles.heroGlow} />
+                                    <div className={styles.heroInner}>
+                                        <div className={styles.heroTop}>
+                                            <span 
+                                                className={styles.typeBadge}
+                                                style={{ color: typeColor, borderColor: typeColor + '40', background: typeColor + '0f' }}
+                                            >
+                                                {evt.type}
+                                            </span>
+                                            <span className={styles.liveIndicator}>
+                                                <span className={styles.liveDot} />
+                                                LIVE
+                                            </span>
+                                        </div>
+                                        <h3 className={styles.heroTitle}>{evt.title}</h3>
+                                        <p className={styles.heroSummary}>{evt.summary}</p>
+                                        
+                                        <div className={styles.heroMeta}>
+                                            <span className={styles.heroDate}>{evt.month} {evt.day}</span>
+                                            <div className={styles.cardCtaWrapper}>
+                                                <span className={styles.heroCta}>View Details</span>
+                                                <span className={styles.ctaIconWrapper} style={{ background: `${typeColor}22`, color: typeColor }}>↗</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
 
-                            {/* Index counter */}
-                            <span className={styles.eventIndex}>
-                                {String(i + 1).padStart(2, '0')}
-                            </span>
-                        </div>
-                    )
-                })}
-            </div>
+            {pastEvents.length > 0 && (
+                <div className={styles.eventGroup}>
+                    <h3 className={styles.groupLabel}>Archive</h3>
+                    <div className={styles.cascadeStack}>
+                        {pastEvents.map((evt, i) => {
+                            const typeColor = TYPE_COLOR[evt.type] || '#A855F7'
+                            const rotation = i % 2 === 0 ? '-2deg' : '2deg'
+                            const xOffset = i % 2 === 0 ? '-10px' : '10px'
+                            
+                            return (
+                                <div 
+                                    key={evt.id} 
+                                    className={styles.cascadeCard}
+                                    style={{ zIndex: i, '--rot': rotation, '--x': xOffset }}
+                                    onClick={() => setSelected(evt)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={e => e.key === 'Enter' && setSelected(evt)}
+                                >
+                                    <div className={styles.cascadeInner}>
+                                        <div className={styles.bentoTop}>
+                                            <span className={styles.bentoDate}>{evt.month} {evt.day}</span>
+                                            <span 
+                                                className={styles.typeBadge}
+                                                style={{ color: typeColor, borderColor: typeColor + '40', background: typeColor + '0f' }}
+                                            >
+                                                {evt.type}
+                                            </span>
+                                        </div>
+                                        <h4 className={styles.bentoTitle}>{evt.title}</h4>
+                                        <p className={styles.bentoSummary}>{evt.summary}</p>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
 
-            {/* ── Popup via portal ────────────────────────────── */}
             {selected && createPortal(
                 <EventPopup event={selected} onClose={() => setSelected(null)} />,
                 document.body

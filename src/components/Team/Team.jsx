@@ -268,11 +268,6 @@ function SineWave() {
 
         const draw = () => {
             frameCount++
-            // 30fps cap on all devices — wave looks identical, half the GPU work
-            if (frameCount % 2 !== 0) {
-                raf.current = requestAnimationFrame(draw)
-                return
-            }
 
             const W = canvas.width, H = canvas.height
             ctx.clearRect(0, 0, W, H)
@@ -352,11 +347,19 @@ function SineWave() {
 
 /* ── Popup ─────────────────────────────────────────────────── */
 function Popup({ member, onClose }) {
+    const [isClosing, setIsClosing] = useState(false)
+
     useEffect(() => {
         window.dispatchEvent(new Event('ved:popup:open'))
         document.body.style.overflow = 'hidden'
         document.documentElement.style.overflow = 'hidden'
-        const onKey = e => e.key === 'Escape' && onClose()
+        
+        const handleClose = () => {
+            setIsClosing(true)
+            setTimeout(onClose, 250)
+        }
+        
+        const onKey = e => e.key === 'Escape' && handleClose()
         document.addEventListener('keydown', onKey)
         return () => {
             window.dispatchEvent(new Event('ved:popup:close'))
@@ -366,13 +369,18 @@ function Popup({ member, onClose }) {
         }
     }, [onClose])
 
+    const handleOverlayClick = () => {
+        setIsClosing(true)
+        setTimeout(onClose, 250)
+    }
+
     const isFaculty = member.qual !== undefined
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.popup} onClick={e => e.stopPropagation()}>
+        <div className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ''}`} onClick={handleOverlayClick}>
+            <div className={`${styles.popup} ${isClosing ? styles.popupClosing : ''}`} onClick={e => e.stopPropagation()}>
 
-                <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+                <button className={styles.closeBtn} onClick={handleOverlayClick} aria-label="Close">
                     <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                         <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>

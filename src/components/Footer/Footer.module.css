@@ -79,6 +79,7 @@
     color: rgba(255, 255, 255, 0.85);
     display: block;
     line-height: 1.7;
+    text-wrap: pretty;
 }
 
 .brandLocation {
@@ -98,6 +99,7 @@
     line-height: 1.9;
     display: block;
     margin-top: 20px;
+    text-wrap: pretty;
 }
 
 /* ── Made by credit ──────────────────────────────────────────── */
@@ -112,7 +114,7 @@
 
 .madeByLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.30em;
     color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
@@ -138,7 +140,7 @@
 /* ── Nav columns ─────────────────────────────────────────────── */
 .colLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.28em;
     color: rgba(168, 85, 247, 0.7);
     text-transform: uppercase;

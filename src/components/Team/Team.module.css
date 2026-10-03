@@ -34,6 +34,7 @@
     color: #fff;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    text-wrap: balance;
 }
 
 .headingRule {
@@ -83,7 +84,7 @@
 
 .rowLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.3em;
     color: rgba(168, 85, 247, 0.8);
@@ -145,12 +146,16 @@
     flex-direction: column;
     height: 380px;
     transition:
-        border-color 250ms ease,
-        transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 250ms ease;
+        border-color 300ms cubic-bezier(0.25, 1, 0.5, 1),
+        transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 300ms cubic-bezier(0.25, 1, 0.5, 1);
     outline: none;
     will-change: transform;
     contain: layout style paint;
+}
+
+.card:active {
+    transform: scale(0.98);
 }
 
 .cardLarge {
@@ -347,7 +352,7 @@
 
 .cardRole {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.28em;
     color: rgba(192, 132, 252, 0.9);
     text-transform: uppercase;
@@ -362,6 +367,7 @@
     line-height: 1.25;
     letter-spacing: -0.01em;
     margin-top: 2px;
+    text-wrap: balance;
 }
 
 .cardPlaceholder {
@@ -391,7 +397,7 @@
 
 .ctaText {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     color: rgba(168, 85, 247, 0.55);
     text-transform: uppercase;
@@ -426,6 +432,19 @@
     }
 }
 
+.overlayClosing {
+    animation: overlayOut 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes overlayOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 /* ── POPUP ──────────────────────────────────────────────────── */
 .popup {
     background: #08060f;
@@ -448,6 +467,21 @@
     to {
         transform: scale(1) translateY(0);
         opacity: 1
+    }
+}
+
+.popupClosing {
+    animation: popupOut 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popupOut {
+    from {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.94) translateY(20px);
+        opacity: 0;
     }
 }
 
@@ -484,8 +518,18 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 150ms, border-color 150ms, color 150ms;
+    transition: background 150ms cubic-bezier(0.25, 1, 0.5, 1), border-color 150ms cubic-bezier(0.25, 1, 0.5, 1), color 150ms cubic-bezier(0.25, 1, 0.5, 1), transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1;
+}
+
+.closeBtn::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+}
+
+.closeBtn:active {
+    transform: scale(0.9);
 }
 
 .closeBtn:hover {
@@ -539,7 +583,7 @@
 
 .popupRoleBadge {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.22em;
     color: rgba(168, 85, 247, 0.9);
     text-transform: uppercase;
@@ -559,6 +603,7 @@
     line-height: 1.15;
     margin: 0;
     letter-spacing: -0.02em;
+    text-wrap: balance;
 }
 
 .popupQuote {
@@ -568,6 +613,7 @@
     color: rgba(255, 255, 255, 0.32);
     line-height: 1.65;
     margin: 0;
+    text-wrap: pretty;
 }
 
 .popupQual {
@@ -589,7 +635,7 @@
 
 .popupSectionLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.26em;
     color: rgba(255, 255, 255, 0.2);
     text-transform: uppercase;
@@ -609,7 +655,7 @@
 
 .tag {
     font-family: 'DM Mono', monospace;
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: 0.08em;
     color: rgba(192, 132, 252, 0.65);
     border: 1px solid rgba(168, 85, 247, 0.22);
@@ -641,7 +687,7 @@
 
 .popupHint {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.08);
     text-align: center;

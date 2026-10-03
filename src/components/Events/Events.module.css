@@ -1,19 +1,17 @@
 /* ── Section ─────────────────────────────────────────────────── */
 .section {
     background: #000;
-    padding: 80px 64px 100px;
+    padding: 160px 64px 200px;
     position: relative;
     z-index: 2;
     width: 100%;
-    will-change: transform;
-    transform: translateZ(0);
     contain: layout paint;
 }
 
 /* ── Header ──────────────────────────────────────────────────── */
 .sectionHeader {
     position: relative;
-    margin-bottom: 40px;
+    margin-bottom: 64px;
 }
 
 .eyebrow {
@@ -23,7 +21,6 @@
     color: rgba(168, 85, 247, 0.7);
     text-transform: uppercase;
     margin-bottom: 14px;
-    position: relative;
 }
 
 .heading {
@@ -33,7 +30,7 @@
     color: #fff;
     letter-spacing: -0.02em;
     line-height: 1.1;
-    position: relative;
+    text-wrap: balance;
 }
 
 .headingRule {
@@ -44,367 +41,274 @@
     border-radius: 2px;
 }
 
-.headerDivider {
-    width: 100%;
-    height: 1px;
-    background: rgba(168, 85, 247, 0.1);
-    margin-top: 24px;
+/* ── Groups ──────────────────────────────────────────────────── */
+.eventGroup {
+    margin-bottom: 80px;
 }
 
-/* ── Terminal bar ─────────────────────────────────────────────── */
-.terminalBar {
-    background: #0b0814;
-    border: 1px solid rgba(168, 85, 247, 0.15);
-    border-radius: 16px;
-    padding: 11px 20px;
+.groupLabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── Hero Card (Upcoming) ────────────────────────────────────── */
+.heroGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.heroCard {
+    background: #050505;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2.5rem;
+    padding: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 700ms cubic-bezier(0.32, 0.72, 0, 1),
+                border-color 700ms cubic-bezier(0.32, 0.72, 0, 1);
+    outline: none;
+}
+
+.heroInner {
+    background: #0a0a0a;
+    border-radius: calc(2.5rem - 8px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    padding: 48px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.heroGlow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 60%);
+    pointer-events: none;
+    transition: opacity 300ms ease;
+    opacity: 0.6;
+}
+
+.heroCard:hover {
+    border-color: rgba(168, 85, 247, 0.6);
+    transform: scale(0.98);
+}
+
+.heroCard:hover .heroGlow {
+    opacity: 1;
+}
+
+.heroTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.liveIndicator {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.14em;
-    color: rgba(255, 255, 255, 0.25);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-}
-
-.prompt {
-    color: #A855F7;
-    margin-right: 7px;
-}
-
-.termRight {
+    letter-spacing: 0.2em;
+    color: rgba(168, 85, 247, 0.9);
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: rgba(192, 132, 252, 0.6);
+    gap: 6px;
+    background: rgba(168, 85, 247, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
 .liveDot {
-    display: inline-block;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #A855F7;
-    box-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
     animation: livePulse 2s ease-in-out infinite;
-    flex-shrink: 0;
 }
 
 @keyframes livePulse {
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.3;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
 }
 
-/* ── Timeline list ───────────────────────────────────────────── */
-.timeline {
+.heroTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+.heroSummary {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 700px;
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+.heroMeta {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+}
+
+.heroDate {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+}
+
+.cardCtaWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.heroCta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #C084FC;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+}
+
+.ctaIconWrapper {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    transition: transform 700ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.heroCard:hover .heroCta {
+    color: #fff;
+}
+
+.heroCard:hover .ctaIconWrapper {
+    transform: translate(2px, -2px) scale(1.05);
+}
+
+/* ── Z-Axis Cascade (Archive) ────────────────────────────────── */
+.cascadeStack {
     display: flex;
     flex-direction: column;
-    position: relative;
-    padding-left: 32px;
+    align-items: center;
+    padding-top: 20px;
 }
 
-/* Vertical spine — the connecting line */
-.timeline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 10px;
-    width: 1px;
-    background: linear-gradient(
-        180deg,
-        rgba(168, 85, 247, 0.06) 0%,
-        rgba(168, 85, 247, 0.18) 15%,
-        rgba(168, 85, 247, 0.18) 85%,
-        rgba(168, 85, 247, 0.06) 100%
-    );
-}
-
-/* ── Event row ───────────────────────────────────────────────── */
-.eventRow {
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    padding: 28px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition:
-        background 200ms ease,
-        border-left-color 200ms ease;
-    border-left: 2px solid transparent;
-    position: relative;
+.cascadeCard {
+    background: #050505;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2rem;
+    padding: 8px;
     cursor: pointer;
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-top: -80px;
+    transform: rotate(var(--rot)) translateX(var(--x));
+    transition: transform 700ms cubic-bezier(0.32, 0.72, 0, 1),
+                border-color 700ms cubic-bezier(0.32, 0.72, 0, 1),
+                z-index 0s;
+    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.8);
     outline: none;
 }
 
-.eventRow:first-child {
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+.cascadeCard:first-child {
+    margin-top: 0;
 }
 
-.eventRow:hover,
-.eventRow:focus-visible {
-    background: rgba(168, 85, 247, 0.03);
-    border-left-color: rgba(168, 85, 247, 0.4);
+.cascadeCard:hover {
+    z-index: 50 !important;
+    border-color: rgba(168, 85, 247, 0.45);
+    transform: scale(1.03) rotate(0deg) translateY(-16px);
 }
 
-/* ── Rarity colour tint — fills the row with a subtle gradient ── */
-.rarityGlow {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.55;
-    transition: opacity 250ms ease;
-}
-
-.eventRow:hover .rarityGlow {
-    opacity: 0.75;
-}
-
-.eventRowPast .rarityGlow {
-    opacity: 0.28;
-}
-
-.eventRowPast:hover .rarityGlow {
-    opacity: 0.45;
-}
-
-/* ── Timeline node — the dot on the spine ────────────────────── */
-.timelineNode {
-    position: absolute;
-    left: -22px;
-    top: 42px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(168, 85, 247, 0.3);
-    background: #000;
-    transform: translateX(-50%);
-    z-index: 1;
-    transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
-}
-
-.eventRow:hover .timelineNode {
-    border-color: rgba(168, 85, 247, 0.7);
-    background: rgba(168, 85, 247, 0.15);
-}
-
-/* Past node — dim */
-.timelineNodePast {
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-.eventRowPast:hover .timelineNodePast {
-    border-color: rgba(168, 85, 247, 0.4);
-    background: rgba(168, 85, 247, 0.08);
-}
-
-/* Upcoming node — filled + pulse */
-.timelineNodeUpcoming {
-    border-color: rgba(168, 85, 247, 0.6);
-    background: rgba(168, 85, 247, 0.25);
-    box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
-    animation: nodePulse 2.5s ease-in-out infinite;
-}
-
-@keyframes nodePulse {
-    0%, 100% {
-        box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 14px rgba(168, 85, 247, 0.5), 0 0 4px rgba(168, 85, 247, 0.2);
-    }
-}
-
-/* ── Past styling ─────────────────────────────────────────────── */
-.eventRowPast {
-    opacity: 0.7;
-}
-
-.eventRowPast .dayNumber {
-    color: rgba(255, 255, 255, 0.08);
-}
-
-/* ── Upcoming styling ─────────────────────────────────────────── */
-.eventRowUpcoming {
-    box-shadow: inset 2px 0 0 rgba(168, 85, 247, 0.5);
-    opacity: 1;
-}
-
-.eventRowUpcoming .dayNumber {
-    color: rgba(168, 85, 247, 0.35);
-}
-
-/* Upcoming label badge */
-.upcomingBadge {
-    font-family: 'DM Mono', monospace;
-    font-size: 7px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(168, 85, 247, 0.85);
-    background: rgba(168, 85, 247, 0.08);
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    padding: 2px 8px;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 2px;
-}
-
-.upcomingDot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #A855F7;
-    animation: livePulse 2s ease-in-out infinite;
-}
-
-/* ── Hover accent reveal — accent line slides in from left ────── */
-.accentReveal {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(
-        180deg,
-        transparent 0%,
-        rgba(168, 85, 247, 0.6) 30%,
-        rgba(192, 132, 252, 0.8) 50%,
-        rgba(168, 85, 247, 0.6) 70%,
-        transparent 100%
-    );
-    opacity: 0;
-    transition: opacity 250ms ease;
-    pointer-events: none;
-}
-
-.eventRow:hover .accentReveal {
-    opacity: 1;
-}
-
-
-
-/* ── Left column: date metadata ──────────────────────────────── */
-.dateCol {
-    width: 180px;
-    min-width: 180px;
-    padding: 4px 28px 0 16px;
+.cascadeInner {
+    background: #0a0a0a;
+    border-radius: calc(2rem - 8px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    padding: 40px 32px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 16px;
 }
 
-.monthLabel {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    color: rgba(255, 255, 255, 0.2);
-    text-transform: uppercase;
-    line-height: 1;
-}
-
-.dayNumber {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(36px, 4vw, 52px);
-    font-weight: 300;
-    color: rgba(168, 85, 247, 0.25);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    transition: color 200ms ease;
-}
-
-.eventRow:hover .dayNumber {
-    color: rgba(168, 85, 247, 0.45);
-}
-
-.eventRowPast:hover .dayNumber {
-    color: rgba(255, 255, 255, 0.18);
-}
-
-/* ── Right column: event content ─────────────────────────────── */
-.contentCol {
-    flex: 1;
-    min-width: 0;
+.bentoTop {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-top: 4px;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
+.bentoDate {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+}
+
+.bentoTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+}
+
+.bentoSummary {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+/* ── Type Badge ──────────────────────────────────────────────── */
 .typeBadge {
     font-family: 'DM Mono', monospace;
-    font-size: 7px;
-    letter-spacing: 0.22em;
+    font-size: 10px;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    padding: 3px 9px;
+    padding: 4px 12px;
     border-radius: 20px;
     border: 1px solid;
     display: inline-block;
-    width: fit-content;
-    transition: background 200ms ease;
-    position: relative;
-    z-index: 1;
+    transition: filter 300ms ease;
 }
 
-.eventRow:hover .typeBadge {
-    filter: brightness(1.15);
+.heroCard:hover .typeBadge,
+.cascadeCard:hover .typeBadge {
+    filter: brightness(1.2);
 }
 
-.eventName {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(16px, 1.5vw, 22px);
-    font-weight: 500;
-    color: #fff;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-    transition: color 200ms ease;
-}
-
-.eventRow:hover .eventName {
-    color: rgba(255, 255, 255, 1);
-}
-
-.eventDesc {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.42);
-    line-height: 1.55;
-    max-width: 560px;
-}
-
-.hostLabel {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: rgba(168, 85, 247, 0.6);
-    text-transform: uppercase;
-}
-
-/* ── Index counter ───────────────────────────────────────────── */
-.eventIndex {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.14em;
-    color: rgba(255, 255, 255, 0.08);
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    user-select: none;
-}
-
-.eventRow:hover .eventIndex {
-    color: rgba(168, 85, 247, 0.2);
-}
-
-/* ── Overlay ─────────────────────────────────────────────────── */
+/* ── Overlay & Popup ─────────────────────────────────────────── */
 .overlay {
     position: fixed;
     inset: 0;
@@ -413,22 +317,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: overlayIn 150ms ease forwards;
+    animation: overlayIn 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     padding: 24px;
-    will-change: opacity;
 }
 
 @keyframes overlayIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* ── Popup ───────────────────────────────────────────────────── */
+.overlayClosing {
+    animation: overlayOut 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes overlayOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
 .popup {
     background: #08060f;
     border: 1px solid rgba(168, 85, 247, 0.2);
@@ -438,22 +344,35 @@
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: popupIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
     scrollbar-width: thin;
     scrollbar-color: rgba(168, 85, 247, 0.25) transparent;
-    will-change: transform, opacity;
 }
 
 @keyframes popupIn {
     from {
-        transform: scale(0.93) translateY(20px);
+        transform: scale(0.94) translateY(20px);
         opacity: 0;
     }
-
     to {
         transform: scale(1) translateY(0);
         opacity: 1;
+    }
+}
+
+.popupClosing {
+    animation: popupOut 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popupOut {
+    from {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.94) translateY(20px);
+        opacity: 0;
     }
 }
 
@@ -465,13 +384,8 @@
 }
 
 @keyframes shimmer {
-    0% {
-        background-position: 200%;
-    }
-
-    100% {
-        background-position: -200%;
-    }
+    0% { background-position: 200%; }
+    100% { background-position: -200%; }
 }
 
 .closeBtn {
@@ -481,15 +395,21 @@
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.3);
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 150ms, border-color 150ms, color 150ms;
+    transition: background 200ms cubic-bezier(0.25, 1, 0.5, 1), border-color 200ms cubic-bezier(0.25, 1, 0.5, 1), transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 2;
+}
+
+.closeBtn::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
 }
 
 .closeBtn:hover {
@@ -498,308 +418,262 @@
     color: #C084FC;
 }
 
+.closeBtn:active {
+    transform: scale(0.9);
+}
+
 .popupInner {
-    padding: 28px 28px 24px;
+    padding: 32px;
 }
 
 .popupBadgeRow {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 12px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
 }
 
 .popupTypeBadge {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.24em;
+    font-size: 10px;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    padding: 3px 11px;
+    padding: 4px 12px;
     border-radius: 20px;
     border: 1px solid;
 }
 
 .popupStatusDot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    flex-shrink: 0;
+    background: #A855F7;
     animation: livePulse 2s ease-in-out infinite;
 }
 
 .popupStatusLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(168, 85, 247, 0.85);
+    color: rgba(168, 85, 247, 0.9);
 }
 
 .popupName {
-    font-family: 'DM Mono', monospace;
-    font-size: 26px;
-    font-weight: 500;
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
     color: #fff;
     letter-spacing: -0.02em;
     line-height: 1.15;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    text-wrap: balance;
 }
 
 .popupDivider {
     width: 100%;
     height: 1px;
-    background: rgba(168, 85, 247, 0.1);
-    margin: 20px 0;
+    background: rgba(168, 85, 247, 0.15);
+    margin: 24px 0;
 }
 
 .metaRow {
     display: flex;
-    gap: 28px;
-    margin-bottom: 16px;
+    gap: 32px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
 }
 
 .metaBox {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 .metaLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.28em;
-    color: rgba(255, 255, 255, 0.2);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.25);
     text-transform: uppercase;
 }
 
 .metaVal {
     font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.65);
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-variant-numeric: tabular-nums;
 }
 
 .toolsRow {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
 }
 
 .toolPill {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.1em;
-    color: rgba(192, 132, 252, 0.65);
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    background: rgba(168, 85, 247, 0.06);
-    padding: 4px 10px;
-    border-radius: 10px;
+    color: rgba(192, 132, 252, 0.8);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    background: rgba(168, 85, 247, 0.08);
+    padding: 6px 12px;
+    border-radius: 12px;
     text-transform: uppercase;
 }
 
 .popupSectionLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.26em;
-    color: rgba(255, 255, 255, 0.2);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.3);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: block;
 }
 
 .popupAbout {
     font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.58);
-    line-height: 1.85;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.8;
+    text-wrap: pretty;
 }
 
 .popupActions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
 .registerBtn {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.2em;
-    color: rgba(216, 180, 254, 0.9);
+    color: rgba(216, 180, 254, 1);
     text-decoration: none;
-    background: rgba(168, 85, 247, 0.12);
-    border: 1px solid rgba(168, 85, 247, 0.35);
-    padding: 12px 24px;
-    border-radius: 12px;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    padding: 14px 28px;
+    border-radius: 14px;
     text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: color 200ms, border-color 200ms, background 200ms;
+    transition: color 250ms cubic-bezier(0.25, 1, 0.5, 1), border-color 250ms cubic-bezier(0.25, 1, 0.5, 1), background 250ms cubic-bezier(0.25, 1, 0.5, 1), transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .registerBtn:hover {
     color: #fff;
-    border-color: rgba(168, 85, 247, 0.6);
-    background: rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.7);
+    background: rgba(168, 85, 247, 0.25);
+}
+
+.registerBtn:active {
+    transform: scale(0.96);
 }
 
 /* ── Countdown timer ────────────────────────────────────────── */
 .countdown {
-    margin-bottom: 20px;
-    padding: 16px 20px;
-    background: rgba(168, 85, 247, 0.04);
-    border: 1px solid rgba(168, 85, 247, 0.12);
-    border-radius: 14px;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    background: rgba(168, 85, 247, 0.06);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    align-items: center;
+    gap: 12px;
+    align-items: flex-start;
 }
 
 .countdownLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.28em;
-    color: rgba(255, 255, 255, 0.2);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.3);
     text-transform: uppercase;
 }
 
 .countdownBlocks {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 }
 
 .countdownUnit {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    min-width: 44px;
-    padding: 6px 8px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(168, 85, 247, 0.1);
-    border-radius: 8px;
+    gap: 4px;
+    min-width: 52px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    border-radius: 10px;
 }
 
 .countdownNum {
     font-family: 'DM Mono', monospace;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 500;
     color: #C084FC;
     line-height: 1;
     letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
 }
 
 .countdownSub {
     font-family: 'DM Mono', monospace;
-    font-size: 7px;
-    letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.2);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.3);
     text-transform: uppercase;
 }
 
 .countdownSep {
     font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    color: rgba(168, 85, 247, 0.3);
-    margin: 0 2px;
-    padding-bottom: 12px;
+    font-size: 20px;
+    color: rgba(168, 85, 247, 0.4);
+    margin: 0 4px;
+    padding-bottom: 14px;
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
-@media (max-width: 768px) {
-    .section {
-        padding: 60px 24px 60px;
-        overflow: visible !important;
-    }
-
-    .timeline {
-        padding-left: 24px;
-    }
-
-    .timeline::before {
-        left: 8px;
-    }
-
-    .timelineNode {
-        left: -16px;
-        width: 7px;
-        height: 7px;
-    }
-
-    .eventRow {
-        flex-direction: column;
-        gap: 12px;
-        padding: 24px 0;
-    }
-
-    .dateCol {
-        width: 100%;
-        min-width: 0;
-        flex-direction: row;
-        align-items: baseline;
-        gap: 12px;
-        padding: 0 16px;
-    }
-
-    .dayNumber {
-        font-size: 32px;
-    }
-
-    .monthLabel {
-        font-size: 9px;
-    }
-
-    .contentCol {
-        padding: 0 16px;
-    }
-
-    .eventIndex {
-        display: none;
-    }
-
-    .overlay {
-        padding: 12px;
-        align-items: flex-start;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .popup {
-        width: 100%;
-        max-width: 100%;
-        max-height: none;
-        margin: 24px auto;
-    }
-
-    .metaRow {
-        gap: 16px;
-        flex-direction: column;
+@media (max-width: 1024px) {
+    .bentoGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 480px) {
-    .dateCol {
-        padding: 0 12px;
+@media (max-width: 768px) {
+    .section {
+        padding: 60px 24px 60px;
     }
 
-    .contentCol {
-        padding: 0 12px;
+    .heroCard {
+        padding: 32px;
     }
 
-    .terminalBar {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
+    .heroTitle {
+        font-size: 32px;
     }
 
+    .cascadeCard {
+        transform: none !important;
+        margin-top: -40px;
+    }
+    
+    .cascadeCard:first-child {
+        margin-top: 0;
+    }
+
+    .popup {
+        margin: 24px auto;
+    }
+    
     .popupInner {
-        padding: 20px 18px 18px;
-    }
-
-    .popupName {
-        font-size: 20px;
+        padding: 24px;
     }
 }

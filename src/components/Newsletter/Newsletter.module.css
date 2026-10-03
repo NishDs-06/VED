@@ -37,6 +37,7 @@
     color: #fff;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    text-wrap: balance;
 }
 
 .headingRule {
@@ -102,6 +103,7 @@
     color: #ffffff;
     line-height: 1.3;
     letter-spacing: -0.01em;
+    text-wrap: balance;
 }
 
 /* ── Card teaser — clamped to 2 lines ────────────────────────── */
@@ -114,6 +116,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-wrap: pretty;
 }
 
 /* ── Card footer ─────────────────────────────────────────────── */
@@ -124,7 +127,7 @@
 
 .readMore {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     color: rgba(168, 85, 247, 0.55);
     text-decoration: none;
@@ -138,7 +141,7 @@
 
 .readMoreDisabled {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     color: rgba(255, 255, 255, 0.12);
     text-transform: uppercase;
@@ -147,7 +150,7 @@
 /* ── Footnote ────────────────────────────────────────────────── */
 .footnote {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.2em;
     color: rgba(255, 255, 255, 0.12);
     text-align: center;

@@ -168,6 +168,7 @@
     line-height: 1.05;
     color: var(--text);
     letter-spacing: -0.02em;
+    text-wrap: balance;
 }
 
 .panelDesc {
@@ -176,6 +177,7 @@
     line-height: 1.75;
     color: var(--muted);
     max-width: 420px;
+    text-wrap: pretty;
 }
 
 .panelTools {

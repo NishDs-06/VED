@@ -1,7 +1,7 @@
 /* ── Section ─────────────────────────────────────────────────── */
 .section {
     background: #000;
-    padding: 80px 64px 100px;
+    padding: 160px 64px 200px;
     position: relative;
     z-index: 2;
     width: 100%;
@@ -49,6 +49,7 @@
     letter-spacing: -0.02em;
     line-height: 1.1;
     position: relative;
+    text-wrap: balance;
 }
 
 .headingRule {
@@ -110,24 +111,54 @@
     }
 }
 
-/* ── Grid ─────────────────────────────────────────────────────── */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+/* ── Editorial Split ────────────────────────────────────────────── */
+.splitContainer {
+    display: flex;
+    gap: 120px;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+.splitLeft {
+    flex: 0 0 45%;
+    position: sticky;
+    top: 120px;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
+.leftDesc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.75);
+    text-wrap: pretty;
+    max-width: 480px;
+    margin-bottom: 40px;
+}
+
+.splitRight {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 240px;
+}
+
 @media (max-width: 1100px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
+    .splitContainer {
+        flex-direction: column;
+        gap: 60px;
+    }
+    .splitLeft {
+        position: relative;
+        top: 0;
+        flex: 0 0 100%;
     }
 }
 
 @media (max-width: 640px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
     .section {
         padding: 60px 24px 60px;
     }
@@ -148,20 +179,18 @@
 
 /* ── Card ─────────────────────────────────────────────────────── */
 .card {
-    background: #0b0814;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 20px;
-    padding: 26px 24px 20px;
+    background: #050505;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2rem;
+    padding: 8px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     min-height: 270px;
-    transition:
-        border-color 250ms ease,
-        transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 700ms cubic-bezier(0.32, 0.72, 0, 1),
+                border-color 700ms cubic-bezier(0.32, 0.72, 0, 1);
     outline: none;
     will-change: transform;
     contain: layout style paint;
@@ -170,7 +199,19 @@
 .card:hover,
 .card:focus-visible {
     border-color: rgba(168, 85, 247, 0.45);
-    transform: translateY(-4px);
+    transform: scale(0.98);
+}
+
+.cardInner {
+    background: #0a0a0a;
+    border-radius: calc(2rem - 8px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    padding: 32px 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
 }
 
 .cardTopLine {
@@ -216,7 +257,7 @@
 
 .cardCategory {
     font-family: 'DM Mono', monospace;
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     padding: 3px 9px;
@@ -233,30 +274,33 @@
 
 .cardStatusLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
 }
 
 .cardName {
     font-family: 'Syne', 'DM Mono', monospace;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.2;
     letter-spacing: -0.01em;
     position: relative;
     z-index: 1;
-    margin-top: 2px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    text-wrap: balance;
 }
 
 .cardDomain {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.38);
-    line-height: 1.4;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
     position: relative;
     z-index: 1;
+    text-wrap: pretty;
 }
 
 .cardDivider {
@@ -274,11 +318,12 @@
     gap: 5px;
     position: relative;
     z-index: 1;
+    margin-bottom: 24px;
 }
 
 .toolChip {
     font-family: 'DM Mono', monospace;
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: 0.1em;
     color: rgba(192, 132, 252, 0.55);
     border: 1px solid rgba(168, 85, 247, 0.18);
@@ -304,23 +349,44 @@
 
 .cardMembers {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     color: rgba(255, 255, 255, 0.2);
     text-transform: uppercase;
 }
 
+.cardCtaWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .cardCta {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     color: rgba(168, 85, 247, 0.55);
     text-transform: uppercase;
     transition: color 200ms ease;
 }
 
+.ctaIconWrapper {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    transition: transform 700ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
 .card:hover .cardCta {
     color: #C084FC;
+}
+
+.card:hover .ctaIconWrapper {
+    transform: translate(2px, -2px) scale(1.05);
 }
 
 /* ── Overlay ─────────────────────────────────────────────────── */
@@ -430,7 +496,7 @@
 
 .popupCategoryBadge {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     padding: 3px 11px;
@@ -447,7 +513,7 @@
 
 .popupStatusLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
 }
@@ -460,12 +526,14 @@
     letter-spacing: -0.02em;
     line-height: 1.15;
     margin-bottom: 6px;
+    text-wrap: balance;
 }
 
 .popupDomain {
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     color: rgba(255, 255, 255, 0.35);
+    text-wrap: pretty;
 }
 
 .popupDivider {
@@ -489,7 +557,7 @@
 
 .metaLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.28em;
     color: rgba(255, 255, 255, 0.2);
     text-transform: uppercase;
@@ -499,6 +567,7 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
     color: rgba(255, 255, 255, 0.65);
+    font-variant-numeric: tabular-nums;
 }
 
 .toolsRow {
@@ -509,7 +578,7 @@
 
 .toolPill {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.1em;
     color: rgba(192, 132, 252, 0.65);
     border: 1px solid rgba(168, 85, 247, 0.2);
@@ -521,7 +590,7 @@
 
 .sectionLabel {
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.26em;
     color: rgba(255, 255, 255, 0.2);
     text-transform: uppercase;
@@ -534,6 +603,7 @@
     font-size: 14px;
     color: rgba(255, 255, 255, 0.58);
     line-height: 1.85;
+    text-wrap: pretty;
 }
 
 .learnList {
@@ -566,7 +636,7 @@
 
 .actionGhost {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.14em;
     color: rgba(255, 255, 255, 0.4);
     text-decoration: none;

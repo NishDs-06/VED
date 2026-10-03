@@ -49,7 +49,7 @@ export default function Hero() {
             >
                 <p style={{
                     fontFamily: "'DM Mono', monospace",
-                    fontSize: '9px',
+                    fontSize: '10px',
                     letterSpacing: '0.38em',
                     color: 'rgba(123,53,232,0.6)',
                     textTransform: 'uppercase',
@@ -59,7 +59,7 @@ export default function Hero() {
                 </p>
                 <p style={{
                     fontFamily: "'DM Mono', monospace",
-                    fontSize: '8px',
+                    fontSize: '10px',
                     letterSpacing: '0.22em',
                     color: 'rgba(255,255,255,0.15)',
                     textTransform: 'uppercase',

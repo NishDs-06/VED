@@ -1,0 +1,128 @@
+{
+  "package.json": {
+    "mtime": 1780575622.1710436,
+    "seen": 1789125963.1675644,
+    "ast_hash": "04f940e487a017bef7c59cba279cb482",
+    "semantic_hash": "04f940e487a017bef7c59cba279cb482"
+  },
+  "src/App.jsx": {
+    "mtime": 1780578926.7507708,
+    "seen": 1789125963.1675787,
+    "ast_hash": "4e8d24fb854492821664b58351011ed2",
+    "semantic_hash": "4e8d24fb854492821664b58351011ed2"
+  },
+  "src/components/ChipLoader/ChipLoader.jsx": {
+    "mtime": 1780575622.2459207,
+    "seen": 1789125963.1675851,
+    "ast_hash": "6685f9d40d703d0286214ed2a3eb2031",
+    "semantic_hash": "6685f9d40d703d0286214ed2a3eb2031"
+  },
+  "src/components/Cursor/MagneticCursor.jsx": {
+    "mtime": 1780575622.2465582,
+    "seen": 1789125963.1675892,
+    "ast_hash": "7ba08328a78e52898d64d86d980bf6d4",
+    "semantic_hash": "7ba08328a78e52898d64d86d980bf6d4"
+  },
+  "src/components/Domains/Domains.jsx": {
+    "mtime": 1780575622.2477083,
+    "seen": 1789125963.1675928,
+    "ast_hash": "bffd1749dd0b7e22573210bc5c4f0356",
+    "semantic_hash": "bffd1749dd0b7e22573210bc5c4f0356"
+  },
+  "src/components/Events/Events.jsx": {
+    "mtime": 1781633924.1515634,
+    "seen": 1789125963.1675959,
+    "ast_hash": "e7cdb23db29709a516571e7157212d00",
+    "semantic_hash": "e7cdb23db29709a516571e7157212d00"
+  },
+  "src/components/Footer/Footer.jsx": {
+    "mtime": 1781686668.4721808,
+    "seen": 1789125963.1675992,
+    "ast_hash": "9ed38557190df0d8c0506cf42ea4fc1b",
+    "semantic_hash": "9ed38557190df0d8c0506cf42ea4fc1b"
+  },
+  "src/components/Hero/AmbientCanvas.jsx": {
+    "mtime": 1780575622.2511413,
+    "seen": 1789125963.1676016,
+    "ast_hash": "253fac79e6fc0a759664025eac3a41aa",
+    "semantic_hash": "253fac79e6fc0a759664025eac3a41aa"
+  },
+  "src/components/Hero/BackgroundGrid.jsx": {
+    "mtime": 1780575622.2515624,
+    "seen": 1789125963.1676044,
+    "ast_hash": "a9ea91f645743980b39eb7c83a539cca",
+    "semantic_hash": "a9ea91f645743980b39eb7c83a539cca"
+  },
+  "src/components/Hero/Hero.jsx": {
+    "mtime": 1780575622.2521765,
+    "seen": 1789125963.1676075,
+    "ast_hash": "29186f070c29126e885c39920909a748",
+    "semantic_hash": "29186f070c29126e885c39920909a748"
+  },
+  "src/components/Hero/HeroAtmosphere.jsx": {
+    "mtime": 1780575622.2535858,
+    "seen": 1789125963.1676106,
+    "ast_hash": "2ed6201bd7b07e29e45b9daa0d33ef25",
+    "semantic_hash": "2ed6201bd7b07e29e45b9daa0d33ef25"
+  },
+  "src/components/Hero/HeroText.jsx": {
+    "mtime": 1780575622.2539716,
+    "seen": 1789125963.1676145,
+    "ast_hash": "f2d6f3cfb7e2a676b17567854aecd73e",
+    "semantic_hash": "f2d6f3cfb7e2a676b17567854aecd73e"
+  },
+  "src/components/Hero/ScrollCue.jsx": {
+    "mtime": 1780575622.2544692,
+    "seen": 1789125963.1676176,
+    "ast_hash": "c2c262e9359479bf30e356d7f2f9299f",
+    "semantic_hash": "c2c262e9359479bf30e356d7f2f9299f"
+  },
+  "src/components/Hero/VEDLogoCanvas.jsx": {
+    "mtime": 1780575622.2558024,
+    "seen": 1789125963.1676204,
+    "ast_hash": "36c9a2e725373c2105fc759be4387a38",
+    "semantic_hash": "36c9a2e725373c2105fc759be4387a38"
+  },
+  "src/components/Newsletter/Newsletter.jsx": {
+    "mtime": 1781686677.5488715,
+    "seen": 1789125963.1676233,
+    "ast_hash": "921d7ad2ccce62ade5ea695d82d00d05",
+    "semantic_hash": "921d7ad2ccce62ade5ea695d82d00d05"
+  },
+  "src/components/Projects/Projects.jsx": {
+    "mtime": 1780575622.257194,
+    "seen": 1789125963.1676264,
+    "ast_hash": "ce1198abc744b5ef7e2ca936ef134f4f",
+    "semantic_hash": "ce1198abc744b5ef7e2ca936ef134f4f"
+  },
+  "src/components/SectionAtmosphere/SectionAtmosphere.jsx": {
+    "mtime": 1780575622.2588525,
+    "seen": 1789125963.1676295,
+    "ast_hash": "f80731eebe9a90b9ecea80aa8d43bb81",
+    "semantic_hash": "f80731eebe9a90b9ecea80aa8d43bb81"
+  },
+  "src/components/Team/Team.jsx": {
+    "mtime": 1787670905.5477097,
+    "seen": 1789125963.1676323,
+    "ast_hash": "a24d735327e9ab61be0047971ffe38ed",
+    "semantic_hash": "a24d735327e9ab61be0047971ffe38ed"
+  },
+  "src/components/TransitionBridge/TransitionBridge.jsx": {
+    "mtime": 1780575622.262786,
+    "seen": 1789125963.1676354,
+    "ast_hash": "76b4fb229f565eaf5309a847b7abdbc7",
+    "semantic_hash": "76b4fb229f565eaf5309a847b7abdbc7"
+  },
+  "src/main.jsx": {
+    "mtime": 1780575622.2641096,
+    "seen": 1789125963.1676383,
+    "ast_hash": "eba989b726c6c26b51455489b57ef91d",
+    "semantic_hash": "eba989b726c6c26b51455489b57ef91d"
+  },
+  "vite.config.js": {
+    "mtime": 1780575622.2646616,
+    "seen": 1789125963.1676412,
+    "ast_hash": "1df26c1e3d2286fd7da9fae693938a12",
+    "semantic_hash": "1df26c1e3d2286fd7da9fae693938a12"
+  }
+}

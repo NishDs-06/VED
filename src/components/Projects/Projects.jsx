@@ -196,20 +196,23 @@ function ProjectPopup({ project, onClose }) {
 }
 
 /* ── Project card — always visible, no scroll animation ──────── */
-function ProjectCard({ project, onClick }) {
+function ProjectCard({ project, onClick, index }) {
     const accent = CATEGORY_COLOR[project.category] || '#A855F7'
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
+
+    const staggerStyle = index % 2 === 1 ? { marginTop: '80px' } : {}
 
     return (
         <div
             className={styles.card}
-            style={{ '--accent': accent }}
+            style={{ '--accent': accent, ...staggerStyle }}
             onClick={() => onClick(project)}
             role="button"
             tabIndex={0}
             onKeyDown={e => e.key === 'Enter' && onClick(project)}
         >
-            <div className={styles.cardTopLine} style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }} />
+            <div className={styles.cardInner}>
+
 
             <div className={styles.cardTagRow}>
                 <span className={styles.cardCategory} style={{ color: accent, borderColor: accent + '40', background: accent + '0f' }}>
@@ -236,10 +239,15 @@ function ProjectCard({ project, onClick }) {
 
             <div className={styles.cardFooter}>
                 <span className={styles.cardMembers}>{project.members} members</span>
-                <span className={styles.cardCta}>View →</span>
+                <div className={styles.cardCtaWrapper}>
+                    <span className={styles.cardCta}>View</span>
+                    <span className={styles.ctaIconWrapper} style={{ background: `${accent}22`, color: accent }}>
+                        ↗
+                    </span>
+                </div>
             </div>
 
-            <div className={styles.cardGlow} style={{ background: `radial-gradient(ellipse at 50% 100%, ${accent}22 0%, transparent 70%)` }} />
+            </div>
         </div>
     )
 }
@@ -258,25 +266,30 @@ export default function Projects() {
                 immediately visible, no scroll-triggered opacity/transform.
             */}
 
-            <div className={styles.sectionHeader}>
-                <p className={styles.watermark} aria-hidden>PROJECTS</p>
-                <p className={styles.eyebrow}>Spring 2026</p>
-                <h2 className={styles.heading}>What We're Building</h2>
-                <div className={styles.headingRule} />
-            </div>
+            <div className={styles.splitContainer}>
+                <div className={styles.splitLeft}>
+                    <div className={styles.sectionHeader}>
+                        <p className={styles.watermark} aria-hidden>PROJECTS</p>
+                        <p className={styles.eyebrow}>Spring 2026</p>
+                        <h2 className={styles.heading}>Our Silicon.<br/>Our Systems.</h2>
+                        <div className={styles.headingRule} />
+                        <p className={styles.leftDesc}>Active problem statements we are building. The next generation of edge compute, low-power design, and hardware security.</p>
+                    </div>
 
-            <div className={styles.terminalBar}>
-                <span><span className={styles.prompt}>&gt;</span> ACTIVE PROBLEM STATEMENTS — SPRING 2026</span>
-                <span className={styles.termRight}>
-                    <span className={styles.liveDot} />
-                    {PROJECTS.length} PROJECTS
-                </span>
-            </div>
+                    <div className={styles.terminalBar}>
+                        <span><span className={styles.prompt}>&gt;</span> ACTIVE PROBLEM STATEMENTS</span>
+                        <span className={styles.termRight}>
+                            <span className={styles.liveDot} />
+                            {PROJECTS.length} PROJECTS
+                        </span>
+                    </div>
+                </div>
 
-            <div className={styles.grid}>
-                {PROJECTS.map(p => (
-                    <ProjectCard key={p.id} project={p} onClick={setSelected} />
-                ))}
+                <div className={styles.splitRight}>
+                    {PROJECTS.map((p, index) => (
+                        <ProjectCard key={p.id} project={p} onClick={setSelected} index={index} />
+                    ))}
+                </div>
             </div>
 
             {selected && createPortal(
