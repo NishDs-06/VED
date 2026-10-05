@@ -1,7 +1,8 @@
 import Navigation from '../Navigation/Navigation';
 import Footer from '../Footer/Footer';
 import ChipLoader from '../ChipLoader/ChipLoader';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,7 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Layout({ children }) {
     const [loading, setLoading] = useState(false);
+    const location = useLocation();
+    const lenisRef = useRef(null);
+    const tickerFnRef = useRef(null);
+    const isFirstMount = useRef(true);
 
+    // Create Lenis once on mount
     useEffect(() => {
         if (loading) return;
 
@@ -20,6 +26,7 @@ export default function Layout({ children }) {
             smooth: true,
             smoothTouch: true,
         });
+        lenisRef.current = lenis;
 
         lenis.on('scroll', (e) => {
             window.__lenisY = e.scroll;
@@ -27,15 +34,47 @@ export default function Layout({ children }) {
         });
 
         const tickerFn = (time) => lenis.raf(time * 1000);
+        tickerFnRef.current = tickerFn;
         gsap.ticker.add(tickerFn);
         gsap.ticker.lagSmoothing(0);
 
         return () => {
             lenis.destroy();
-            gsap.ticker.remove(tickerFn);
+            lenisRef.current = null;
+            if (tickerFnRef.current) {
+                gsap.ticker.remove(tickerFnRef.current);
+                tickerFnRef.current = null;
+            }
             ScrollTrigger.killAll();
         };
     }, [loading]);
+
+    // useLayoutEffect runs synchronously before paint.
+    // We snap Lenis to the top here. Child components' useLayoutEffect
+    // might run slightly before this, but GSAP waits for refresh() anyway.
+    useLayoutEffect(() => {
+        if (isFirstMount.current) {
+            isFirstMount.current = false;
+            return;
+        }
+
+        // Snap Lenis to the top. The old page's components have unmounted
+        // and cleaned up their own ScrollTriggers.
+        if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { immediate: true });
+        }
+    }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // After new page components have mounted + registered their triggers,
+    // do one final refresh so all start/end positions are correctly calculated.
+    useEffect(() => {
+        if (!isFirstMount.current) {
+            const raf = requestAnimationFrame(() => {
+                ScrollTrigger.refresh();
+            });
+            return () => cancelAnimationFrame(raf);
+        }
+    }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -380,7 +380,7 @@ function drawPixel(ctx, x, y, baseR, shape, sizeScale, bri, alpha) {
 export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
     const canvasRef = useRef(null)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
         const ctx = canvas.getContext('2d')
@@ -464,7 +464,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
         let heroST = null
         function setupScrollTrigger() {
             const heroEl = heroRef?.current
-            ScrollTrigger.create({
+            heroST = ScrollTrigger.create({
                 trigger: heroEl || '#hero',
                 start: 'top top', end: '+=380%', scrub: 1.2, pin: true, refreshPriority: 2,
                 onUpdate(self) {

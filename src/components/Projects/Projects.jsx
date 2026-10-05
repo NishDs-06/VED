@@ -1,112 +1,23 @@
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Projects.module.css'
 
-const GitHubIcon = () => (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-    </svg>
-)
-
-const PROJECTS = [
-    {
-        id: 'mosfet',
-        name: 'Low-Leakage MOSFET',
-        domain: 'Device Physics / Low-Power Design',
-        category: 'DEVICE',
-        status: 'DESIGNING',
-        members: 3,
-        tools: ['SPICE', 'CADENCE', 'SPECTRE', 'MATLAB'],
-        about: 'Simulation and performance analysis of a modified MOSFET structure targeting ultra-low leakage for IoT applications. As IoT devices demand sub-threshold operation, conventional MOSFETs suffer from leakage currents and short-channel effects. This project simulates and characterises a novel gate structure to reduce leakage while maintaining adequate drive current.',
-        learn: [
-            'MOSFET short-channel effects and leakage mechanisms',
-            'SPICE-level device simulation and characterisation',
-            'Low-power design tradeoffs for embedded IoT nodes',
-        ],
-        github: 'https://github.com',
-    },
-    {
-        id: 'comparator',
-        name: 'Dynamic Comparator',
-        domain: 'Analog / Mixed-Signal',
-        category: 'CIRCUIT',
-        status: 'BUILDING',
-        members: 2,
-        tools: ['CADENCE', 'SPECTRE', 'MATLAB', 'SPICE'],
-        about: 'A low-offset dynamic latch comparator for energy-efficient SAR ADCs. Designed for high-speed operation with minimised offset voltage through systematic offset cancellation. Focuses on kickback noise reduction at the input, Monte Carlo mismatch analysis across process corners, and full characterisation of dynamic power vs. accuracy tradeoffs.',
-        learn: [
-            'Dynamic latch comparator architecture and offset sources',
-            'Kickback noise modelling and mitigation techniques',
-            'Monte Carlo analysis for mismatch and yield estimation',
-        ],
-        github: 'https://github.com',
-    },
-    {
-        id: 'puf-boot',
-        name: 'PUF Secure Boot',
-        domain: 'Embedded Systems / Security',
-        category: 'EMBEDDED',
-        status: 'BUILDING',
-        members: 4,
-        tools: ['VERILOG', 'VIVADO', 'ARTIX-7', 'C/C++'],
-        about: "Replacing static eFuse/BBRAM key storage with a PUF-based root of trust on the Artix-7 XC7A100T. Cryptographic keys are derived dynamically from the device's intrinsic SRAM power-up behaviour, integrated into a complete soft-core processor secure boot pipeline, and validated for reliability under real-world temperature and voltage stress.",
-        learn: [
-            'Physical Unclonable Functions (PUF) design and evaluation',
-            'FPGA secure boot pipeline integration',
-            'Reliability testing under environmental stress conditions',
-        ],
-        github: 'https://github.com',
-    },
-    {
-        id: 'drone-sensor',
-        name: 'Drone Pathogen Sensor',
-        domain: 'IoT / Sensor Systems',
-        category: 'IOT',
-        status: 'DESIGNING',
-        members: 4,
-        tools: ['RASPBERRY PI', 'LORAWAN', 'PYTHON', 'C/C++'],
-        about: 'A drone-based autonomous bio-polymer sensor system for real-time airborne pathogen detection. Current monitoring relies on manual lab sampling with delayed results. This system integrates stable bio-polymer sensors, Raspberry Pi-based processing, and LoRaWAN communication for continuous, long-range environmental surveillance with real-time remote data transmission.',
-        learn: [
-            'Bio-polymer sensor integration and signal conditioning',
-            'Autonomous drone payload and power budgeting',
-            'LoRaWAN protocol design for long-range IoT telemetry',
-        ],
-        github: 'https://github.com',
-    },
-    {
-        id: 'neuromorphic',
-        name: 'Neuromorphic Core',
-        domain: 'Neuromorphics / Edge AI',
-        category: 'NEUROMORPHIC',
-        status: 'PLANNING',
-        members: 3,
-        tools: ['VERILOG', 'PYTHON', 'MATLAB', 'CADENCE'],
-        about: 'Design and evaluation of a simplified low-power neuromorphic computing model to overcome the von Neumann bottleneck. Inspired by biological neurons and synapses, this architecture enables massively parallel, event-driven, low-power computation suited to real-time sensory data, pattern recognition, and edge intelligence where latency and energy efficiency are critical.',
-        learn: [
-            'Spiking neural network (SNN) models and spike encoding',
-            'In-memory and near-memory compute architectures',
-            'Hardware implementation of STDP learning rules',
-        ],
-        github: 'https://github.com',
-    },
-]
-
-const CATEGORY_COLOR = {
-    DEVICE: '#FFFFFF',
-    CIRCUIT: '#FFFFFF',
-    EMBEDDED: '#9333EA',
-    IOT: '#7C3AED',
-    NEUROMORPHIC: '#6D28D9',
-}
+gsap.registerPlugin(ScrollTrigger)
 
 const STATUS_CONFIG = {
-    BUILDING: { color: '#FFFFFF', label: 'Building' },
-    DESIGNING: { color: 'rgba(255, 255, 255, 0.55)', label: 'Designing' },
-    PLANNING: { color: 'rgba(255, 255, 255, 0.3)', label: 'Planning' },
-    TESTING: { color: '#ffffff', label: 'Testing' },
+    'DESIGNING': { color: '#FF3366', label: 'Designing' },
+    'BUILDING': { color: '#00E5FF', label: 'Building' },
+    'TESTING': { color: '#00FF66', label: 'Testing' },
+}
+const CATEGORY_COLOR = {
+    'DEVICE': '#FF3366',
+    'CIRCUIT': '#00E5FF',
+    'EMBEDDED': '#00FF66',
+    'DIGITAL': '#BF00FF'
 }
 
-/* ── Popup ───────────────────────────────────────────────────── */
 function ProjectPopup({ project, onClose }) {
     const accent = CATEGORY_COLOR[project.category] || '#FFFFFF'
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
@@ -195,99 +106,215 @@ function ProjectPopup({ project, onClose }) {
     )
 }
 
-/* ── Project card — always visible, no scroll animation ──────── */
-function ProjectCard({ project, onClick, index }) {
-    const accent = CATEGORY_COLOR[project.category] || '#FFFFFF'
-    const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
+const PROJECTS = [
+    {
+        id: 'mosfet',
+        name: 'Low-Leakage MOSFET',
+        domain: 'Device Physics / Low-Power Design',
+        category: 'DEVICE',
+        status: 'DESIGNING',
+        members: 3,
+        tools: ['SPICE', 'CADENCE', 'SPECTRE', 'MATLAB'],
+        about: 'Simulation and performance analysis of a modified MOSFET structure targeting ultra-low leakage for IoT applications.',
+    },
+    {
+        id: 'comparator',
+        name: 'Dynamic Comparator',
+        domain: 'Analog / Mixed-Signal',
+        category: 'CIRCUIT',
+        status: 'BUILDING',
+        members: 2,
+        tools: ['CADENCE', 'SPECTRE', 'MATLAB', 'SPICE'],
+        about: 'A low-offset dynamic latch comparator for energy-efficient SAR ADCs. Focuses on kickback noise reduction.',
+    },
+    {
+        id: 'puf-boot',
+        name: 'PUF Secure Boot',
+        domain: 'Embedded Systems / Security',
+        category: 'EMBEDDED',
+        status: 'BUILDING',
+        members: 4,
+        tools: ['VIVADO', 'C', 'ARM', 'VERILOG'],
+        about: 'Implementation of a physically unclonable function (PUF) to derive a root of trust for embedded system secure boot.',
+    },
+    {
+        id: 'accelerator',
+        name: 'NN Accelerator',
+        domain: 'Digital VLSI',
+        category: 'DIGITAL',
+        status: 'TESTING',
+        members: 5,
+        tools: ['VERILOG', 'PYTHON', 'VIVADO'],
+        about: 'RTL implementation of a systolic array based neural network accelerator targeting real-time edge inference.',
+    }
+]
 
-    const staggerStyle = index % 2 === 1 ? { marginTop: '80px' } : {}
-
-    return (
-        <div
-            className={styles.card}
-            style={{ '--accent': accent, ...staggerStyle }}
-            onClick={() => onClick(project)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={e => e.key === 'Enter' && onClick(project)}
-        >
-            <div className={styles.cardInner}>
-
-
-            <div className={styles.cardTagRow}>
-                <span className={styles.cardCategory} style={{ color: accent, borderColor: accent + '40', background: accent + '0f' }}>
-                    {project.category}
-                </span>
-                <span className={styles.cardStatusDot} style={{ background: statusCfg.color }} />
-                <span className={styles.cardStatusLabel} style={{ color: statusCfg.color }}>
-                    {statusCfg.label}
-                </span>
-            </div>
-
-            <h3 className={styles.cardName}>{project.name}</h3>
-            <p className={styles.cardDomain}>{project.domain}</p>
-            <div className={styles.cardDivider} />
-
-            <div className={styles.cardTools}>
-                {project.tools.slice(0, 3).map(t => (
-                    <span key={t} className={styles.toolChip}>{t}</span>
-                ))}
-                {project.tools.length > 3 && (
-                    <span className={styles.toolChip}>+{project.tools.length - 3}</span>
-                )}
-            </div>
-
-            <div className={styles.cardFooter}>
-                <span className={styles.cardMembers}>{project.members} members</span>
-                <div className={styles.cardCtaWrapper}>
-                    <span className={styles.cardCta}>View</span>
-                    <span className={styles.ctaIconWrapper} style={{ background: `${accent}22`, color: accent }}>
-                        ↗
-                    </span>
-                </div>
-            </div>
-
-            </div>
-        </div>
-    )
-}
-
-/* ── Main ────────────────────────────────────────────────────── */
 export default function Projects() {
     const [selected, setSelected] = useState(null)
-    const sectionRef = useRef(null)
+    const containerRef = useRef(null)
+    const introRef = useRef(null)
+    const listRef = useRef(null)
+    const itemsRef = useRef([])
+    const canvasRef = useRef(null)
+    const camera = useRef({ x: 0, y: 0, z: 0 })
+
+    useEffect(() => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        
+        const ctx2d = canvas.getContext('2d', { alpha: false })
+        let width = canvas.width = window.innerWidth
+        let height = canvas.height = window.innerHeight
+
+        const handleResize = () => {
+            width = canvas.width = window.innerWidth
+            height = canvas.height = window.innerHeight
+        }
+        window.addEventListener('resize', handleResize)
+
+        const stars = []
+        for (let i = 0; i < 4000; i++) {
+            stars.push({
+                x: (Math.random() - 0.5) * 4000,
+                y: (Math.random() - 0.5) * 4000,
+                z: Math.random() * 4000,
+                size: Math.random() * 1.5 + 0.5,
+                opacity: Math.random()
+            })
+        }
+
+        const dotCanvas = document.createElement('canvas')
+        dotCanvas.width = 16
+        dotCanvas.height = 16
+        const dotCtx = dotCanvas.getContext('2d')
+        dotCtx.fillStyle = '#ffffff'
+        dotCtx.beginPath()
+        dotCtx.arc(8, 8, 8, 0, Math.PI * 2)
+        dotCtx.fill()
+
+        let raf;
+        const render = () => {
+            ctx2d.fillStyle = '#000000'
+            ctx2d.fillRect(0, 0, width, height)
+
+            const cx = width / 2
+            const cy = height / 2
+            const fl = 800
+            const camZ = camera.current.z
+
+            // Continuous slow forward drift even when not scrolling
+            camera.current.z += 0.5;
+
+            ctx2d.fillStyle = '#ffffff'
+            for (let i = 0; i < stars.length; i++) {
+                const s = stars[i]
+                
+                // Wrap stars so they loop endlessly
+                let z = s.z - camZ
+                while (z < -100) z += 4000;
+                while (z > 3900) z -= 4000;
+                
+                if (z >= fl) continue;
+
+                const scale = fl / (fl - z)
+                const px = cx + s.x * scale
+                const py = cy + s.y * scale
+
+                if (px < 0 || px > canvas.width || py < 0 || py > canvas.height) continue;
+
+                ctx2d.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
+                const r = s.size * scale * 0.5
+                const size = Math.max(1, r * 2)
+                ctx2d.drawImage(dotCanvas, 0, 0, 16, 16, px - r, py - r, size, size)
+            }
+            raf = requestAnimationFrame(render)
+        }
+        raf = requestAnimationFrame(render)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+            cancelAnimationFrame(raf)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top top',
+                end: '+=150%',
+                scrub: 1,
+                pin: true,
+            }
+        })
+
+        // Fly camera through stars on scroll
+        tl.to(camera.current, {
+            z: '+=2000', // Move 2000px forward on scroll
+            duration: 2,
+            ease: 'power2.inOut'
+        })
+
+        // Fade out intro like a cinematic flight
+        tl.to(introRef.current, {
+            opacity: 0,
+            scale: 1.5, // Fly towards screen
+            filter: 'blur(20px)',
+            duration: 1,
+            ease: 'power2.in'
+        }, 0)
+        
+        // Staggered reveal of list items from lower middle
+        tl.fromTo(itemsRef.current, {
+            opacity: 0,
+            y: 150,
+            scale: 0.95
+        }, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'power2.out'
+        }, 0.5)
+        
+        return () => {
+            ScrollTrigger.getAll().forEach(t => t.kill())
+        }
+    }, [])
 
     return (
-        <section ref={sectionRef} className={styles.section} id="projects" style={{ position: 'relative', overflow: 'hidden' }}>
-            {/*
-                SectionAtmosphere removed — the canvas RAF startup was causing
-                the lag spike when transitioning from Domains.
-                GSAP card stagger animation also removed — cards are now
-                immediately visible, no scroll-triggered opacity/transform.
-            */}
+                <section className={styles.section} id="projects" ref={containerRef}>
+            <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }} />
+            <div className={styles.introText} ref={introRef}>
+                <h2 className={styles.title}>OUR</h2>
+                <h2 className={styles.titleOutline}>PROJECTS</h2>
+            </div>
 
-            <div className={styles.splitContainer}>
-                <div className={styles.splitLeft}>
-                    <div className={styles.sectionHeader}>
-                        <p className={styles.watermark} aria-hidden>PROJECTS</p>
-                        <p className={styles.eyebrow}>Spring 2026</p>
-                        <h2 className={styles.heading}>Our Silicon.<br/>Our Systems.</h2>
-                        <div className={styles.headingRule} />
-                        <p className={styles.leftDesc}>Active problem statements we are building. The next generation of edge compute, low-power design, and hardware security.</p>
-                    </div>
-
-                    <div className={styles.terminalBar}>
-                        <span><span className={styles.prompt}>&gt;</span> ACTIVE PROBLEM STATEMENTS</span>
-                        <span className={styles.termRight}>
-                            <span className={styles.liveDot} />
-                            {PROJECTS.length} PROJECTS
-                        </span>
-                    </div>
-                </div>
-
-                <div className={styles.splitRight}>
-                    {PROJECTS.map((p, index) => (
-                        <ProjectCard key={p.id} project={p} onClick={setSelected} index={index} />
+            <div className={styles.listWrapper} ref={listRef}>
+                <div className={styles.listContainer}>
+                    {PROJECTS.map((project, i) => (
+                        <div 
+                            key={project.id} 
+                            className={styles.listItem}
+                            ref={el => itemsRef.current[i] = el}
+                            onClick={() => setSelected(project)}
+                            style={{cursor: 'pointer'}}
+                        >
+                            <div className={styles.itemCategory}>
+                                {project.category}
+                            </div>
+                            <div>
+                                <h3 className={styles.itemName}>{project.name}</h3>
+                                <p className={styles.itemDesc}>{project.about}</p>
+                            </div>
+                            <div className={styles.itemMeta}>
+                                <div>{project.status}</div>
+                                <div style={{ color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>{project.members} Team Members</div>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>

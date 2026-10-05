@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -552,7 +552,6 @@ export default function Team() {
     const stageRef     = useRef(null)
     const introTextRef = useRef(null)
     const chunkRefs    = useRef([])
-    const canvasRef    = useRef(null)
 
     const regularMembers = [...ROW1, ...ROW2, ...ROW3].filter(m => m.name)
     const facultyAdvisors = ROW4.filter(m => m.name)
@@ -583,131 +582,61 @@ export default function Team() {
 
     const DEPTH_STEP = 1200  
 
-    const camera = useRef({ x: 0, y: 0, z: 0 })
+    const stars = useMemo(() => {
+        const starCount = 4000;
+        const field = [];
+        const minZ = -(chunks.length + 3) * DEPTH_STEP;
+        const maxZ = 2000; 
 
-    useLayoutEffect(() => {
-        let timeoutId;
-        let ctx;
-        timeoutId = setTimeout(() => {
-        ctx = gsap.context(() => {
+        for (let i = 0; i < starCount; i++) {
+            const x = (Math.random() - 0.5) * 8000;
+            const y = (Math.random() - 0.5) * 8000;
+            const z = Math.random() * (maxZ - minZ) + minZ;
+            
+            const sizeRandom = Math.random();
+            const size = sizeRandom > 0.90 ? Math.random() * 4 + 2 : Math.random() * 2 + 1;
+            const opacity = Math.random() * 0.8 + 0.4;
+            
+            field.push({ id: i, x, y, z, size, opacity });
+        }
+        return field;
+    }, [chunks.length]);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: cinematicRef.current,
                     start: 'top top',
-                    end: `+=${(chunks.length + 1.5) * 800}`,
-                    scrub: 1.5,
+                    end: `+=${(chunks.length + 1.5) * DEPTH_STEP * 1.0}`,
+                    scrub: 1,
                     pin: true,
                 }
             })
 
-            
-            const canvas = canvasRef.current
-            const ctx2d = canvas.getContext('2d')
-            const stars = []
-            const maxZ = 2000
-            const minZ = -(chunks.length + 3) * DEPTH_STEP
-            for (let i = 0; i < 8000; i++) {
-                stars.push({
-                    x: (Math.random() - 0.5) * 8000,
-                    y: (Math.random() - 0.5) * 8000,
-                    z: Math.random() * (maxZ - minZ) + minZ,
-                    size: Math.random() > 0.90 ? Math.random() * 4 + 2 : Math.random() * 2 + 1,
-                    opacity: Math.random() * 0.8 + 0.4
-                })
-            }
-
-            const dotCanvas = document.createElement('canvas')
-            dotCanvas.width = 16
-            dotCanvas.height = 16
-            const dotCtx = dotCanvas.getContext('2d')
-            dotCtx.fillStyle = '#ffffff'
-            dotCtx.beginPath()
-            dotCtx.arc(8, 8, 8, 0, Math.PI * 2)
-            dotCtx.fill()
-
-            let raf;
-            const render = () => {
-                if (!canvas) return;
-                if (canvas.width !== window.innerWidth) canvas.width = window.innerWidth;
-                if (canvas.height !== window.innerHeight) canvas.height = window.innerHeight;
-                
-                ctx2d.clearRect(0, 0, canvas.width, canvas.height)
-                const cx = canvas.width / 2
-                const cy = canvas.height / 2
-                const fl = 900 // matches CSS perspective
-                const camX = camera.current.x
-                const camY = camera.current.y
-                const camZ = camera.current.z
-                
-                ctx2d.fillStyle = '#ffffff'
-                for (let i = 0; i < stars.length; i++) {
-                    const s = stars[i]
-                    const z = s.z + camZ
-                    if (z >= fl) continue;
-                    
-                    const scale = fl / (fl - z)
-                    const px = cx + s.x * scale
-                    const py = cy + s.y * scale
-                    
-                    if (px < 0 || px > canvas.width || py < 0 || py > canvas.height) continue;
-                    
-                    ctx2d.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
-                    const r = s.size * scale * 0.5
-                    
-                    const size = Math.max(1, r * 2)
-                    ctx2d.drawImage(dotCanvas, 0, 0, 16, 16, px - r, py - r, size, size)
-                }
-                window.__teamRaf = requestAnimationFrame(render)
-            }
-            window.__teamRaf = requestAnimationFrame(render)
-
             tl.to(introTextRef.current, {
                 opacity: 0,
                 y: -50,
-                scale: 1.05,
+                scale: 1.1,
                 duration: 1.5,
                 ease: 'power2.in',
             })
 
             chunks.forEach((chunk, i) => {
                 const targetZ = (i + 1) * DEPTH_STEP
-                // Meander paths for realism
-                
                 const chunkEl = chunkRefs.current[i]
 
                 tl.to(stageRef.current, {
-                    
                     z: targetZ,
-                    duration: 2.5,
-                    ease: 'power2.inOut',
-                }, i === 0 ? '-=0.2' : '-=0.8')
-
-                tl.to(camera.current, {
-                    
-                    z: targetZ,
-                    duration: 2.5,
-                    ease: 'power2.inOut',
-                }, '<')
-
-                tl.fromTo(chunkEl, {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    scale: 0.95,
-                }, {
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    scale: 1,
-                    duration: 1.0,
-                    ease: 'power2.out',
-                }, '<+0.4')
+                    duration: i === 0 ? 0.8 : 1.8,
+                    ease: 'power3.inOut',
+                }, i === 0 ? '-=0.2' : '+=0')
 
                 tl.to(chunkEl, {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    scale: 1.05,
-                    duration: 0.8,
-                    ease: 'power2.in',
-                }, '<+1.3')
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: 'power2.out',
+                }, '<+0.2')
 
                 if (chunk.type === 'members') {
                     const accents = chunkEl.querySelectorAll(`.${styles.memberAccentBar}`)
@@ -718,28 +647,28 @@ export default function Team() {
                     if (accents.length) {
                         tl.fromTo(accents,
                             { scaleX: 0 },
-                            { scaleX: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.2'
+                            { scaleX: 1, duration: 0.45, ease: 'power3.out', stagger: 0.1 },
+                            '<'
                         )
                     }
                     if (roles.length) {
                         tl.fromTo(roles,
-                            { y: 15, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.1'
+                            { y: 10, opacity: 0 },
+                            { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out', stagger: 0.1 },
+                            '<+0.05'
                         )
                     }
                     if (names.length) {
                         tl.fromTo(names,
-                            { clipPath: 'inset(110% 0% 0% 0%)', y: 20 },
-                            { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.1'
+                            { clipPath: 'inset(110% 0% 0% 0%)', y: 16 },
+                            { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 0.75, ease: 'power3.out', stagger: 0.1 },
+                            '<+0.06'
                         )
                     }
                     if (subs.length) {
                         tl.fromTo(subs,
-                            { y: 10, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
+                            { y: 8, opacity: 0 },
+                            { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', stagger: 0.1 },
                             '<+0.1'
                         )
                     }
@@ -747,35 +676,27 @@ export default function Team() {
                     const titleWord = chunkEl.querySelector(`.${styles.chunkTitle}`)
                     if (titleWord) {
                         tl.fromTo(titleWord,
-                            { clipPath: 'inset(110% 0% 0% 0%)', y: 30, filter: 'blur(10px)' },
-                            { clipPath: 'inset(0% 0% 0% 0%)', y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out' },
-                            '<+0.1'
+                            { clipPath: 'inset(110% 0% 0% 0%)', y: 20 },
+                            { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 1.0, ease: 'power3.out' },
+                            '<+0.06'
                         )
                     }
                 }
 
-                tl.to({}, { duration: 0.8 })
+                tl.to({}, { duration: 1.2 })
 
                 if (i < chunks.length - 1) {
                     tl.to(chunkEl, {
                         opacity: 0,
-                        filter: 'blur(15px)',
-                        scale: 1.05,
-                        duration: 0.8,
-                        ease: 'power2.inOut',
-                    }, '-=0.2')
+                        duration: 0.45,
+                        ease: 'power2.in',
+                    })
                 }
-
             })
 
         }, cinematicRef)
 
-        }, 100);
-        return () => {
-            clearTimeout(timeoutId);
-            if (ctx) ctx.revert();
-            if (typeof cancelAnimationFrame !== "undefined") cancelAnimationFrame(window.__teamRaf);
-        }
+        return () => ctx.revert()
     }, [chunks.length])
 
     return (
@@ -783,11 +704,6 @@ export default function Team() {
             <div className={styles.bgGlow1} />
             <div className={styles.bgGlow2} />
             <div className={styles.particles} />
-            <canvas 
-                ref={canvasRef} 
-                style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0 }}
-            />
-
 
             <div className={styles.introText} ref={introTextRef}>
                 <span className={styles.introEyebrow}>VED · MIT Bangalore · 2026</span>
@@ -801,7 +717,18 @@ export default function Team() {
                     ref={stageRef}
                     style={{ transform: 'translateZ(0px)' }}
                 >
-                    
+                    {stars.map(star => (
+                        <div
+                            key={star.id}
+                            className={styles.star}
+                            style={{
+                                transform: `translate3d(${star.x}px, ${star.y}px, ${star.z}px)`,
+                                width: `${star.size}px`,
+                                height: `${star.size}px`,
+                                opacity: star.opacity,
+                            }}
+                        />
+                    ))}
 
                     {chunks.map((chunk, i) => {
                         const worldZ = -(i + 1) * DEPTH_STEP

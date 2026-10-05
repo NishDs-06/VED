@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Domains.module.css'
@@ -195,7 +195,7 @@ export default function Domains() {
     const progressRef = useRef([])
     const panelRefs = useRef([])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const section = sectionRef.current
         const track = trackRef.current
         if (!section || !track) return

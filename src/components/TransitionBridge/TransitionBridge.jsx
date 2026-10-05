@@ -64,7 +64,7 @@ export default function TransitionBridge() {
         visObserver.observe(canvas)
 
         // Animate the whole bridge in on scroll enter
-        ScrollTrigger.create({
+        const st = ScrollTrigger.create({
             trigger: ref.current,
             start: 'top 90%',
             once: true,
@@ -90,6 +90,7 @@ export default function TransitionBridge() {
             cancelAnimationFrame(rafId)
             visObserver.disconnect()
             window.removeEventListener('resize', resize)
+            st.kill()
         }
     }, [])
 
