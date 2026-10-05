@@ -13,7 +13,7 @@ const HeroText = forwardRef(function HeroText(_, ref) {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '12px',
+                gap: '16px', // ── PREMIUM FIX: Balanced gap
                 visibility: 'hidden',
                 position: 'relative',
                 zIndex: 4,
@@ -23,12 +23,13 @@ const HeroText = forwardRef(function HeroText(_, ref) {
         >
             <p
                 style={{
-                    fontFamily: "'DM Mono', monospace",
+                    fontFamily: "'DM Mono', monospace", // Back to the hardware roots
                     fontWeight: 600,
-                    fontSize: 'clamp(16px, 2.2vw, 28px)',
-                    letterSpacing: '0.18em',
+                    fontSize: 'clamp(16px, 2vw, 24px)', 
+                    letterSpacing: '0.18em', 
                     color: '#FFFFFF',
                     textTransform: 'uppercase',
+                    textShadow: '0 0 24px rgba(255,255,255,0.15)' // Subtle premium bloom
                 }}
             >
                 VLSI &amp; Embedded Design Club
@@ -36,10 +37,10 @@ const HeroText = forwardRef(function HeroText(_, ref) {
             <p
                 style={{
                     fontFamily: "'DM Mono', monospace",
-                    fontWeight: 400,
-                    fontSize: 'clamp(12px, 1.4vw, 18px)',
-                    letterSpacing: '0.22em',
-                    color: 'rgba(255, 255, 255, 0.65)',
+                    fontWeight: 500,
+                    fontSize: 'clamp(10px, 0.9vw, 13px)',
+                    letterSpacing: '0.3em',
+                    color: 'rgba(255, 255, 255, 0.45)',
                     textTransform: 'uppercase',
                 }}
             >

@@ -37,7 +37,7 @@ export default function Hero() {
                 aria-hidden="true"
                 style={{
                     position: 'absolute',
-                    bottom: '17%',
+                    bottom: '8%',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     opacity: 0,
@@ -51,9 +51,10 @@ export default function Hero() {
                     fontFamily: "'DM Mono', monospace",
                     fontSize: '10px',
                     letterSpacing: '0.38em',
-                    color: 'rgba(123,53,232,0.6)',
+                    color: 'rgba(230,232,240,0.95)', // ── PREMIUM FIX: High-contrast icy silver
                     textTransform: 'uppercase',
                     marginBottom: '7px',
+                    textShadow: '0 0 12px rgba(255,255,255,0.3)', // Faint purple bloom for integration
                 }}>
                     System-on-Chip Architecture
                 </p>
@@ -61,7 +62,7 @@ export default function Hero() {
                     fontFamily: "'DM Mono', monospace",
                     fontSize: '10px',
                     letterSpacing: '0.22em',
-                    color: 'rgba(255,255,255,0.15)',
+                    color: 'rgba(255,255,255,0.4)', // ── PREMIUM FIX: Crisp silver subtitle
                     textTransform: 'uppercase',
                 }}>
                     SKY130 · 130nm · MIT Bangalore

@@ -18,7 +18,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.32em;
-    color: rgba(168, 85, 247, 0.7);
+    color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
     margin-bottom: 14px;
 }
@@ -36,7 +36,7 @@
 .headingRule {
     width: 40px;
     height: 2px;
-    background: linear-gradient(90deg, #A855F7, transparent);
+    background: linear-gradient(90deg, #FFFFFF, transparent);
     margin: 16px 0 0;
     border-radius: 2px;
 }
@@ -91,14 +91,14 @@
 .heroGlow {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 60%);
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.15), transparent 60%);
     pointer-events: none;
     transition: opacity 300ms ease;
     opacity: 0.6;
 }
 
 .heroCard:hover {
-    border-color: rgba(168, 85, 247, 0.6);
+    border-color: rgba(255, 255, 255, 0.6);
     transform: scale(0.98);
 }
 
@@ -117,21 +117,21 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.2em;
-    color: rgba(168, 85, 247, 0.9);
+    color: rgba(255, 255, 255, 0.9);
     display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(168, 85, 247, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     padding: 4px 12px;
     border-radius: 20px;
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .liveDot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #A855F7;
+    background: #FFFFFF;
     animation: livePulse 2s ease-in-out infinite;
 }
 
@@ -187,7 +187,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: #C084FC;
+    color: #FFFFFF;
     text-transform: uppercase;
     transition: color 200ms ease;
 }
@@ -243,7 +243,7 @@
 
 .cascadeCard:hover {
     z-index: 50 !important;
-    border-color: rgba(168, 85, 247, 0.45);
+    border-color: rgba(255, 255, 255, 0.45);
     transform: scale(1.03) rotate(0deg) translateY(-16px);
 }
 
@@ -337,7 +337,7 @@
 
 .popup {
     background: #08060f;
-    border: 1px solid rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     width: min(580px, 100%);
     max-height: 88vh;
@@ -347,7 +347,7 @@
     animation: popupIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
     scrollbar-width: thin;
-    scrollbar-color: rgba(168, 85, 247, 0.25) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 @keyframes popupIn {
@@ -378,7 +378,7 @@
 
 .popupShimmer {
     height: 2px;
-    background: linear-gradient(90deg, #7B2FFF, #C084FC, #E879F9, #C084FC, #7B2FFF);
+    background: linear-gradient(90deg, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF);
     background-size: 300%;
     animation: shimmer 4s linear infinite;
 }
@@ -413,9 +413,9 @@
 }
 
 .closeBtn:hover {
-    background: rgba(168, 85, 247, 0.12);
-    border-color: rgba(168, 85, 247, 0.4);
-    color: #C084FC;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #FFFFFF;
 }
 
 .closeBtn:active {
@@ -448,7 +448,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #A855F7;
+    background: #FFFFFF;
     animation: livePulse 2s ease-in-out infinite;
 }
 
@@ -457,7 +457,7 @@
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(168, 85, 247, 0.9);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .popupName {
@@ -474,7 +474,7 @@
 .popupDivider {
     width: 100%;
     height: 1px;
-    background: rgba(168, 85, 247, 0.15);
+    background: rgba(255, 255, 255, 0.15);
     margin: 24px 0;
 }
 
@@ -516,9 +516,9 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.1em;
-    color: rgba(192, 132, 252, 0.8);
-    border: 1px solid rgba(168, 85, 247, 0.25);
-    background: rgba(168, 85, 247, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
     padding: 6px 12px;
     border-radius: 12px;
     text-transform: uppercase;
@@ -552,10 +552,10 @@
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.2em;
-    color: rgba(216, 180, 254, 1);
+    color: rgba(255, 255, 255, 1);
     text-decoration: none;
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     padding: 14px 28px;
     border-radius: 14px;
     text-transform: uppercase;
@@ -567,8 +567,8 @@
 
 .registerBtn:hover {
     color: #fff;
-    border-color: rgba(168, 85, 247, 0.7);
-    background: rgba(168, 85, 247, 0.25);
+    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .registerBtn:active {
@@ -579,8 +579,8 @@
 .countdown {
     margin-bottom: 24px;
     padding: 20px 24px;
-    background: rgba(168, 85, 247, 0.06);
-    border: 1px solid rgba(168, 85, 247, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -610,7 +610,7 @@
     min-width: 52px;
     padding: 8px 12px;
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
 }
 
@@ -618,7 +618,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 24px;
     font-weight: 500;
-    color: #C084FC;
+    color: #FFFFFF;
     line-height: 1;
     letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
@@ -635,7 +635,7 @@
 .countdownSep {
     font-family: 'DM Mono', monospace;
     font-size: 20px;
-    color: rgba(168, 85, 247, 0.4);
+    color: rgba(255, 255, 255, 0.4);
     margin: 0 4px;
     padding-bottom: 14px;
 }

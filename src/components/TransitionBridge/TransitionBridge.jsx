@@ -36,8 +36,8 @@ export default function TransitionBridge() {
                 s.y += s.speed
                 if (s.y > H + s.length) s.y = -s.length
                 const grad = ctx.createLinearGradient(s.x, s.y - s.length, s.x, s.y)
-                grad.addColorStop(0, `rgba(123,53,232,0)`)
-                grad.addColorStop(0.6, `rgba(123,53,232,${s.opacity})`)
+                grad.addColorStop(0, `rgba(255, 255, 255, 0)`)
+                grad.addColorStop(0.6, `rgba(255, 255, 255, ${s.opacity})`)
                 grad.addColorStop(1, `rgba(255,255,255,${s.opacity * 0.4})`)
                 ctx.strokeStyle = grad
                 ctx.lineWidth = 1
@@ -141,7 +141,7 @@ export default function TransitionBridge() {
                     <rect x="8" y="8" width="24" height="24" rx="1"
                         fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
                     <rect x="11" y="11" width="18" height="18" rx="1"
-                        fill="rgba(255,255,255,0.03)" stroke="rgba(123,53,232,0.4)" strokeWidth="0.5" />
+                        fill="rgba(255,255,255,0.03)" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="0.5" />
                     {/* Pin marks */}
                     {[13, 18, 23, 27].map(y => (
                         <line key={`l${y}`} x1="4" y1={y} x2="8" y2={y}
@@ -161,7 +161,7 @@ export default function TransitionBridge() {
                     ))}
                     {/* Center dot */}
                     <circle cx="20" cy="20" r="2"
-                        fill="rgba(123,53,232,0.5)" />
+                        fill="rgba(255, 255, 255, 0.5)" />
                 </svg>
 
                 <p style={{
@@ -178,7 +178,7 @@ export default function TransitionBridge() {
                     fontFamily: "'DM Mono', monospace",
                     fontSize: '7px',
                     letterSpacing: '0.2em',
-                    color: 'rgba(123,53,232,0.2)',
+                    color: 'rgba(255, 255, 255, 0.2)',
                     textTransform: 'uppercase',
                 }}>
                     Domain Knowledge → Active Projects

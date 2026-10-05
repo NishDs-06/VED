@@ -7,8 +7,8 @@ import styles from './Events.module.css'
 gsap.registerPlugin(ScrollTrigger)
 
 const TYPE_COLOR = {
-    WORKSHOP:    '#C084FC',
-    TALK:        '#A855F7',
+    WORKSHOP:    '#FFFFFF',
+    TALK:        '#FFFFFF',
     COMPETITION: '#9333EA',
     HACKATHON:   '#7C3AED',
     SEMINAR:     '#6D28D9',
@@ -194,7 +194,7 @@ function CountdownTimer({ dateString }) {
 /* ── Event Popup ─────────────────────────────────────────────── */
 function EventPopup({ event, onClose }) {
     const [isClosing, setIsClosing] = useState(false)
-    const typeColor = TYPE_COLOR[event.type] || '#A855F7'
+    const typeColor = TYPE_COLOR[event.type] || '#FFFFFF'
 
     useEffect(() => {
         window.dispatchEvent(new Event('ved:popup:open'))
@@ -355,7 +355,7 @@ export default function Events() {
                     <h3 className={styles.groupLabel}>Upcoming</h3>
                     <div className={styles.heroGrid}>
                         {upcomingEvents.map(evt => {
-                            const typeColor = TYPE_COLOR[evt.type] || '#A855F7'
+                            const typeColor = TYPE_COLOR[evt.type] || '#FFFFFF'
                             return (
                                 <div 
                                     key={evt.id} 
@@ -402,7 +402,7 @@ export default function Events() {
                     <h3 className={styles.groupLabel}>Archive</h3>
                     <div className={styles.cascadeStack}>
                         {pastEvents.map((evt, i) => {
-                            const typeColor = TYPE_COLOR[evt.type] || '#A855F7'
+                            const typeColor = TYPE_COLOR[evt.type] || '#FFFFFF'
                             const rotation = i % 2 === 0 ? '-2deg' : '2deg'
                             const xOffset = i % 2 === 0 ? '-10px' : '10px'
                             

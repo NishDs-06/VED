@@ -92,23 +92,23 @@ const PROJECTS = [
 ]
 
 const CATEGORY_COLOR = {
-    DEVICE: '#C084FC',
-    CIRCUIT: '#A855F7',
+    DEVICE: '#FFFFFF',
+    CIRCUIT: '#FFFFFF',
     EMBEDDED: '#9333EA',
     IOT: '#7C3AED',
     NEUROMORPHIC: '#6D28D9',
 }
 
 const STATUS_CONFIG = {
-    BUILDING: { color: '#C084FC', label: 'Building' },
-    DESIGNING: { color: 'rgba(192,132,252,0.55)', label: 'Designing' },
-    PLANNING: { color: 'rgba(192,132,252,0.3)', label: 'Planning' },
+    BUILDING: { color: '#FFFFFF', label: 'Building' },
+    DESIGNING: { color: 'rgba(255, 255, 255, 0.55)', label: 'Designing' },
+    PLANNING: { color: 'rgba(255, 255, 255, 0.3)', label: 'Planning' },
     TESTING: { color: '#ffffff', label: 'Testing' },
 }
 
 /* ── Popup ───────────────────────────────────────────────────── */
 function ProjectPopup({ project, onClose }) {
-    const accent = CATEGORY_COLOR[project.category] || '#A855F7'
+    const accent = CATEGORY_COLOR[project.category] || '#FFFFFF'
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
 
     useEffect(() => {
@@ -197,7 +197,7 @@ function ProjectPopup({ project, onClose }) {
 
 /* ── Project card — always visible, no scroll animation ──────── */
 function ProjectCard({ project, onClick, index }) {
-    const accent = CATEGORY_COLOR[project.category] || '#A855F7'
+    const accent = CATEGORY_COLOR[project.category] || '#FFFFFF'
     const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
 
     const staggerStyle = index % 2 === 1 ? { marginTop: '80px' } : {}

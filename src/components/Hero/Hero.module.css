@@ -13,16 +13,28 @@
 }
 
 /*
- * FIX: The original vignette used radial-gradient with rgba(0,0,0,0.5)
- * at the edges — this was opaque enough to hide the faint purple glows
- * from HeroAtmosphere. Reduced to 0.25 so glows bleed through.
- * Also reduced the coverage from 40% → 55% so the center stays clear.
+ * FIX: High-end film grain texture. Essential for making a digital
+ * screen feel like a physical, tactile photograph.
+ */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 11;
+}
+
+/*
+ * FIX: Vignette allows purple glows to bleed through while keeping edges deep.
  */
 .hero::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.25) 100%);
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
     pointer-events: none;
     z-index: 10;
 }

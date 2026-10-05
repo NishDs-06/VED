@@ -41,7 +41,7 @@
     z-index: 10;
     pointer-events: none;
     animation: glitchBars 0.28s steps(1) forwards;
-    background: rgba(123, 53, 232, 0.03);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 @keyframes glitchBars {
@@ -118,9 +118,12 @@
 
 .vizSvg {
     width: 100%;
+    background: #060608;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
     max-width: 480px;
     height: auto;
-    filter: drop-shadow(0 0 12px rgba(123, 53, 232, 0.08));
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.05));
 }
 
 /* ── Text area ──────────────────────────────────────────────── */
@@ -137,7 +140,7 @@
     font-size: clamp(28px, 4vw, 56px);
     font-weight: 900;
     letter-spacing: -0.02em;
-    color: rgba(168, 85, 247, 0.45);
+    color: rgba(255, 255, 255, 0.45);
     text-transform: uppercase;
     line-height: 1.05;
     margin-bottom: 0;
@@ -184,7 +187,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.22em;
-    color: rgba(123, 53, 232, 0.6);
+    color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     margin-top: var(--sp-1);
 }
@@ -203,7 +206,7 @@
 .progressSq {
     width: 12px;
     height: 12px;
-    border: 1px solid rgba(123, 53, 232, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     transition: background 0.3s, box-shadow 0.3s;
 }
 
@@ -434,8 +437,8 @@
     }
 
     50% {
-        fill: rgba(123, 53, 232, 0.9);
-        filter: drop-shadow(0 0 6px rgba(123, 53, 232, 0.5));
+        fill: rgba(255, 255, 255, 0.9);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
     }
 }
 
@@ -475,7 +478,7 @@
         padding: 80px 20px 56px;
         gap: 28px;
         justify-content: center;
-        border-bottom: 1px solid rgba(168, 85, 247, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .panel:last-child {

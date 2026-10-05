@@ -280,7 +280,7 @@ function SineWave() {
             ]
             for (const { ph, a, w } of waves) {
                 ctx.beginPath()
-                ctx.strokeStyle = `rgba(168,85,247,${a})`
+                ctx.strokeStyle = `rgba(255, 255, 255, ${a})`
                 ctx.lineWidth = w
                 for (let x = 0; x <= W; x += STEP) {
                     const y = H / 2 + amp * Math.sin(freq * x + t + ph)
@@ -298,14 +298,14 @@ function SineWave() {
                 ctx.beginPath()
                 ctx.moveTo(trail[0].x, trail[0].y)
                 for (let i = 1; i < trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y)
-                ctx.strokeStyle = 'rgba(192,132,252,0.5)'
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'
                 ctx.lineWidth = 2
                 ctx.stroke()
             }
 
             ctx.beginPath()
             ctx.arc(dotX, dotY, 4, 0, Math.PI * 2)
-            ctx.fillStyle = 'rgba(216,180,254,0.6)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)'
             ctx.fill()
 
             ctx.beginPath()

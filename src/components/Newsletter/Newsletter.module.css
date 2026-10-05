@@ -25,7 +25,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.32em;
-    color: rgba(168, 85, 247, 0.7);
+    color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
     margin-bottom: 14px;
 }
@@ -43,7 +43,7 @@
 .headingRule {
     width: 40px;
     height: 2px;
-    background: linear-gradient(90deg, #A855F7, transparent);
+    background: linear-gradient(90deg, #FFFFFF, transparent);
     margin: 16px 0 0;
     border-radius: 2px;
 }
@@ -57,7 +57,7 @@
 
 /* ── Card ────────────────────────────────────────────────────── */
 .card {
-    background: #0b0814;
+    background: #050507;
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 20px;
     padding: 26px 24px 20px;
@@ -74,7 +74,7 @@
 }
 
 .card:hover {
-    border-color: rgba(168, 85, 247, 0.45);
+    border-color: rgba(255, 255, 255, 0.45);
     transform: translateY(-4px);
 }
 
@@ -84,7 +84,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #A855F7, transparent);
+    background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
     opacity: 0;
     transition: opacity 280ms ease;
     pointer-events: none;
@@ -129,14 +129,14 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.18em;
-    color: rgba(168, 85, 247, 0.55);
+    color: rgba(255, 255, 255, 0.55);
     text-decoration: none;
     text-transform: uppercase;
     transition: color 200ms ease;
 }
 
 .card:hover .readMore {
-    color: #C084FC;
+    color: #FFFFFF;
 }
 
 .readMoreDisabled {

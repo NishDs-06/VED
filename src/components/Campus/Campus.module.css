@@ -1,0 +1,102 @@
+.campusSection {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.videoWrapper {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    clip-path: inset(0% 0% 0% 0% round 0px);
+    z-index: 1;
+    will-change: clip-path, transform, opacity;
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.textContainer {
+    position: absolute;
+    left: 6vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38vw;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.title {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(48px, 6.5vw, 84px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0;
+    text-wrap: balance;
+    margin-bottom: 12px;
+}
+
+.lead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.4;
+    color: #fff;
+    max-width: 560px;
+    text-wrap: pretty;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
+.description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(16px, 1.5vw, 18px);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 480px;
+    text-wrap: pretty;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .textContainer {
+        width: 90vw;
+        right: 5vw;
+        left: 5vw;
+        top: 50%;
+        transform: translateY(0);
+        gap: 16px;
+    }
+    
+    .title {
+        margin-bottom: 0;
+    }
+    
+    .lead {
+        font-size: 18px;
+    }
+    
+    .description {
+        font-size: 14px;
+    }
+}

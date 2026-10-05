@@ -15,6 +15,24 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const GRID = 2
 
+// ── OPTIMIZATION: Cached sprites for dots. Replaces expensive path geometry.
+const CIRCLE_SPRITE = document.createElement('canvas')
+CIRCLE_SPRITE.width = 16
+CIRCLE_SPRITE.height = 16
+const cctx = CIRCLE_SPRITE.getContext('2d')
+cctx.fillStyle = '#fff'
+cctx.beginPath(); cctx.arc(8, 8, 8, 0, Math.PI * 2); cctx.fill()
+// Shiny inner core
+cctx.fillStyle = 'rgba(255,255,255,0.8)'
+cctx.beginPath(); cctx.arc(8, 8, 3, 0, Math.PI * 2); cctx.fill()
+
+const SQUARE_SPRITE = document.createElement('canvas')
+SQUARE_SPRITE.width = 16
+SQUARE_SPRITE.height = 16
+const sctx = SQUARE_SPRITE.getContext('2d')
+sctx.fillStyle = '#fff'
+sctx.fillRect(0, 0, 16, 16)
+
 /* ─── VED dot positions ─────────────────────────────────────── */
 // ─────────────────────────────────────────────────────────────
 // DROP-IN REPLACEMENT for the generateDots function in VEDLogoCanvas.jsx
@@ -27,8 +45,10 @@ const GRID = 2
 // ─────────────────────────────────────────────────────────────
 
 function generateDots(vpW, vpH) {
-    const spacing = 7
     const isMobileView = vpW < 768
+    // ── PREMIUM FIX: Wider spacing. A sparse, intentional dot-matrix feels 
+    // like an expensive mechanical interface. Dense dots feel like TV static.
+    const spacing = isMobileView ? 7 : 10 
 
     // On mobile (portrait) the visual centre of the canvas feels higher
     // because the subtitle sits below — push VED up slightly less than desktop
@@ -81,10 +101,12 @@ function generateDots(vpW, vpH) {
             const dx = (x - textW / 2) / (textW / 2)
             const dy = (y - textH / 2) / (textH / 2)
             const bri = Math.max(0.3, Math.min(1, ef * (1 - Math.hypot(dx, dy) * 0.22)))
+            const isShiny = Math.random() < 0.03 // ✨ 3% of dots are shiny
             dots.push({
                 finalX: fx, finalY: fy, scatterX: 0, scatterY: 0,
                 chipX: 0, chipY: 0, shape, sizeScale: ss, brightness: bri,
-                stagger: 0, phase: Math.random() * Math.PI * 2
+                stagger: 0, phase: Math.random() * Math.PI * 2,
+                mOffX: 0, mOffY: 0, isShiny
             })
         }
     }
@@ -158,61 +180,47 @@ function drawSolidChip(ctx, vpW, vpH, alpha, smirkPhase) {
     const chamfer = size * 0.052
     const pad = size * 0.10
 
-    // ── Package body — dark with subtle silver sheen ──────────
-    // Base fill
+    // ── PREMIUM FIX: Base substrate - Deep physical graphite, no purple wash ──
     ctx.globalAlpha = alpha
     const pkgGrad = ctx.createLinearGradient(L - pinLen, T - pinLen, R + pinLen, B + pinLen)
-    pkgGrad.addColorStop(0, '#0e0a1a')
-    pkgGrad.addColorStop(0.4, '#0b0816')
-    pkgGrad.addColorStop(0.7, '#110d1f')
-    pkgGrad.addColorStop(1, '#0a0714')
+    pkgGrad.addColorStop(0, '#15161A')
+    pkgGrad.addColorStop(0.4, '#101115')
+    pkgGrad.addColorStop(0.7, '#131418')
+    pkgGrad.addColorStop(1, '#0C0D10')
     ctx.fillStyle = pkgGrad
     rrect(ctx, L - pinLen, T - pinLen, size + pinLen * 2, size + pinLen * 2, chamfer)
     ctx.fill()
 
-    // Silver outer border — bolder, metallic
+    // Outer border — Crisp structural silver
     ctx.globalAlpha = alpha
     const pkgBorder = ctx.createLinearGradient(L - pinLen, T - pinLen, R + pinLen, B + pinLen)
-    pkgBorder.addColorStop(0, 'rgba(200,200,220,0.70)')  // silver top-left
-    pkgBorder.addColorStop(0.35, 'rgba(168, 85,247,0.65)')  // purple mid
-    pkgBorder.addColorStop(0.65, 'rgba(120,100,180,0.55)')
-    pkgBorder.addColorStop(1, 'rgba(160,160,190,0.50)')  // silver bottom-right
+    pkgBorder.addColorStop(0, 'rgba(255,255,255,0.40)')  
+    pkgBorder.addColorStop(0.35, 'rgba(255,255,255,0.15)')  
+    pkgBorder.addColorStop(0.65, 'rgba(255,255,255,0.08)')
+    pkgBorder.addColorStop(1, 'rgba(255,255,255,0.25)')  
     ctx.strokeStyle = pkgBorder
-    ctx.lineWidth = 2.0
+    ctx.lineWidth = 1.5
     rrect(ctx, L - pinLen, T - pinLen, size + pinLen * 2, size + pinLen * 2, chamfer)
     ctx.stroke()
 
-    // Inner package ring — faint silver
-    ctx.globalAlpha = alpha * 0.35
-    ctx.strokeStyle = 'rgba(200,200,220,0.30)'
-    ctx.lineWidth = 0.8
-    rrect(ctx, L - pinLen + 6, T - pinLen + 6, size + pinLen * 2 - 12, size + pinLen * 2 - 12, chamfer - 4)
-    ctx.stroke()
-
-    // ── Die body ──────────────────────────────────────────────
+    // ── Die body — Carbon core ──────────────────────────────────────────────
     ctx.globalAlpha = alpha
     const dieGrad = ctx.createLinearGradient(L, T, R, B)
-    dieGrad.addColorStop(0, '#0f0b1e')
-    dieGrad.addColorStop(0.5, '#0b0718')
-    dieGrad.addColorStop(1, '#100c1c')
+    dieGrad.addColorStop(0, '#090A0D')
+    dieGrad.addColorStop(0.5, '#060709')
+    dieGrad.addColorStop(1, '#08090C')
     ctx.fillStyle = dieGrad
     ctx.beginPath(); ctx.rect(L, T, size, size); ctx.fill()
 
-    // Die border — bolder silver-to-purple
+    // Die border — Laser cut silver
     ctx.globalAlpha = alpha
     const dieBorder = ctx.createLinearGradient(L, T, R, B)
-    dieBorder.addColorStop(0, 'rgba(210,210,230,0.85)')
-    dieBorder.addColorStop(0.4, 'rgba(168, 85,247,0.75)')
-    dieBorder.addColorStop(1, 'rgba(180,160,220,0.65)')
+    dieBorder.addColorStop(0, 'rgba(255,255,255,0.5)')
+    dieBorder.addColorStop(0.5, 'rgba(255,255,255,0.1)')
+    dieBorder.addColorStop(1, 'rgba(255,255,255,0.3)')
     ctx.strokeStyle = dieBorder
-    ctx.lineWidth = 2.2
+    ctx.lineWidth = 2.0
     ctx.beginPath(); ctx.rect(L, T, size, size); ctx.stroke()
-
-    // Die inner border — subtle
-    ctx.globalAlpha = alpha * 0.28
-    ctx.strokeStyle = 'rgba(200,200,220,0.4)'
-    ctx.lineWidth = 0.6
-    ctx.beginPath(); ctx.rect(L + 7, T + 7, size - 14, size - 14); ctx.stroke()
 
     // ── Pins — metallic silver fill + purple stroke ───────────
     ctx.globalAlpha = alpha
@@ -230,149 +238,138 @@ function drawSolidChip(ctx, vpW, vpH, alpha, smirkPhase) {
         for (const p of configs) {
             // Metallic silver-grey pin fill
             const pg = ctx.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.h)
-            pg.addColorStop(0, 'rgba(180,175,200,0.35)')
-            pg.addColorStop(0.5, 'rgba(140,130,170,0.20)')
-            pg.addColorStop(1, 'rgba(180,175,200,0.30)')
+            pg.addColorStop(0, 'rgba(230,235,245,0.6)')
+            pg.addColorStop(0.5, 'rgba(200,205,215,0.3)')
+            pg.addColorStop(1, 'rgba(230,235,245,0.6)')
             ctx.fillStyle = pg
-            ctx.strokeStyle = 'rgba(190,180,210,0.70)'
-            ctx.lineWidth = 1.0
+            ctx.strokeStyle = 'rgba(255,255,255,0.8)'
+            ctx.lineWidth = 0.8
             ctx.beginPath(); ctx.rect(p.x, p.y, p.w, p.h)
             ctx.fill(); ctx.stroke()
         }
     }
 
-    // ── Functional blocks ─────────────────────────────────────
+    // ── PREMIUM FIX: Functional blocks — Structural silver wireframes, no muddy fills
     const BLOCKS = [
-        { rx: 0.52, ry: 0.06, rw: 0.44, rh: 0.43, label: 'CPU CORE', fillA: 0.22, borderA: 0.55 },
-        { rx: 0.04, ry: 0.06, rw: 0.44, rh: 0.09, label: 'SRAM', fillA: 0.24, borderA: 0.50 },
-        { rx: 0.04, ry: 0.19, rw: 0.13, rh: 0.43, label: 'I/O', fillA: 0.14, borderA: 0.45 },
-        { rx: 0.21, ry: 0.19, rw: 0.27, rh: 0.27, label: 'ALU', fillA: 0.18, borderA: 0.50 },
-        { rx: 0.56, ry: 0.54, rw: 0.40, rh: 0.38, label: 'CACHE', fillA: 0.20, borderA: 0.50 },
-        { rx: 0.04, ry: 0.72, rw: 0.48, rh: 0.22, label: 'PWR / CLK', fillA: 0.16, borderA: 0.44 },
-        { rx: 0.21, ry: 0.50, rw: 0.27, rh: 0.17, label: 'CTRL', fillA: 0.14, borderA: 0.44 },
+        { rx: 0.52, ry: 0.06, rw: 0.44, rh: 0.43, label: 'CPU CORE' },
+        { rx: 0.04, ry: 0.06, rw: 0.44, rh: 0.09, label: 'SRAM' },
+        { rx: 0.04, ry: 0.19, rw: 0.13, rh: 0.43, label: 'I/O' },
+        { rx: 0.21, ry: 0.19, rw: 0.27, rh: 0.27, label: 'ALU' },
+        { rx: 0.56, ry: 0.54, rw: 0.40, rh: 0.38, label: 'CACHE' },
+        { rx: 0.04, ry: 0.72, rw: 0.48, rh: 0.22, label: 'PWR/CLK' },
+        { rx: 0.21, ry: 0.50, rw: 0.27, rh: 0.17, label: 'CTRL' },
     ]
 
     for (const b of BLOCKS) {
         const bx = L + b.rx * size + 2, by = T + b.ry * size + 2
         const bw = b.rw * size - 4, bh = b.rh * size - 4
 
-        ctx.globalAlpha = alpha * b.fillA
-        ctx.fillStyle = 'rgba(168,85,247,1)'
+        ctx.globalAlpha = alpha * 0.03
+        ctx.fillStyle = 'rgba(255,255,255,1)'
         ctx.beginPath(); ctx.rect(bx, by, bw, bh); ctx.fill()
 
-        ctx.globalAlpha = alpha * b.borderA
-        ctx.strokeStyle = 'rgba(180,160,220,0.9)'
+        ctx.globalAlpha = alpha * 0.25
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)'
         ctx.lineWidth = 1.0
         ctx.beginPath(); ctx.rect(bx, by, bw, bh); ctx.stroke()
 
         if (bw > 28 && bh > 14) {
             const fs = Math.max(5.5, Math.min(8.5, bw * 0.11))
-            ctx.globalAlpha = alpha * 0.60
-            ctx.fillStyle = 'rgba(200,185,240,1)'
-            ctx.font = `500 ${fs}px "DM Mono", monospace`
+            ctx.globalAlpha = alpha * 0.90
+            ctx.fillStyle = 'rgba(230,232,240,1)' // Stark white text
+            ctx.font = `600 ${fs}px "DM Mono", monospace`
             ctx.textAlign = 'left'; ctx.textBaseline = 'top'
-            ctx.fillText(b.label, bx + 4, by + 4)
+            ctx.fillText(b.label, bx + 5, by + 5)
         }
     }
 
-    // ── Internal routing traces ───────────────────────────────
-    ctx.globalAlpha = alpha * 0.28
-    ctx.strokeStyle = 'rgba(200,200,220,0.55)'
-    ctx.lineWidth = 0.7
-    const hBuses = [0.17, 0.49, 0.54, 0.73]
-    for (const ry of hBuses) {
-        const ly = T + ry * size
-        ctx.beginPath(); ctx.moveTo(L + 4, ly); ctx.lineTo(R - 4, ly); ctx.stroke()
-    }
-    ctx.globalAlpha = alpha * 0.22
-    const vBuses = [0.20, 0.50, 0.56]
-    for (const rx of vBuses) {
-        const lx = L + rx * size
-        ctx.beginPath(); ctx.moveTo(lx, T + 4); ctx.lineTo(lx, B - 4); ctx.stroke()
-    }
+    // ── PREMIUM FIX: The "Cool" Factor — Glowing Purple Laser Routing ──
+    ctx.globalAlpha = alpha * 0.85
+    ctx.strokeStyle = 'rgba(255,255,255,1)'
+    ctx.shadowColor = 'rgba(255,255,255,0.8)'
+    ctx.shadowBlur = 8
+    ctx.lineWidth = 1.5
 
-    // ── Pin-1 notch — silver dot ───────────────────────────────
-    ctx.globalAlpha = alpha * 0.90
-    ctx.fillStyle = 'rgba(210,205,230,0.95)'
-    ctx.beginPath()
-    ctx.arc(L + size * 0.055, T + size * 0.055, size * 0.020, 0, Math.PI * 2)
-    ctx.fill()
-
-    // ── Corner registration marks — bolder ────────────────────
-    ctx.globalAlpha = alpha * 0.55
-    ctx.strokeStyle = 'rgba(200,195,225,0.85)'
-    ctx.lineWidth = 1.2
-    const cmSize = size * 0.046
-    const corners2 = [[L, T], [R, T], [L, B], [R, B]]
-    const offsets2 = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
-    for (let i = 0; i < 4; i++) {
-        const [cx2, cy2] = corners2[i], [ox, oy] = offsets2[i]
+    // Draw some complex angular data pathways
+    const traces = [
+        [[0.17, 0.40], [0.17, 0.10], [0.48, 0.10]],
+        [[0.48, 0.35], [0.52, 0.35]],
+        [[0.21, 0.60], [0.17, 0.60], [0.17, 0.85], [0.52, 0.85], [0.52, 0.92]],
+        [[0.48, 0.58], [0.52, 0.58]],
+        [[0.04, 0.50], [0.10, 0.50], [0.10, 0.65], [0.21, 0.65]]
+    ]
+    
+    for (const line of traces) {
         ctx.beginPath()
-        ctx.moveTo(cx2 + ox * cmSize, cy2)
-        ctx.lineTo(cx2, cy2)
-        ctx.lineTo(cx2, cy2 + oy * cmSize)
+        for (let i = 0; i < line.length; i++) {
+            const px = L + line[i][0] * size
+            const py = T + line[i][1] * size
+            if (i === 0) ctx.moveTo(px, py)
+            else ctx.lineTo(px, py)
+        }
         ctx.stroke()
+        
+        // Draw photon node at start and end
+        ctx.fillStyle = '#FFFFFF'
+        const start = line[0], end = line[line.length - 1]
+        ctx.beginPath(); ctx.arc(L + start[0]*size, T + start[1]*size, 2, 0, Math.PI*2); ctx.fill()
+        ctx.beginPath(); ctx.arc(L + end[0]*size, T + end[1]*size, 2, 0, Math.PI*2); ctx.fill()
     }
+    
+    // Clear shadow for remainder
+    ctx.shadowBlur = 0
 
-    // ── SMIRK SHINE — diagonal glint from bottom-left → top-right ──
-    // A narrow bright band sweeping diagonally, like light catching a chip edge
+    //     // ── SMIRK SHINE — Shimmering glass reflection ──
     if (alpha > 0.30) {
-        // smirkPhase: 0→1 over ~6s, repeating
         const sp = smirkPhase % 1
-        // Band travels from (L, B) corner to (R, T) corner
-        // Parameterise as a diagonal slice: offset along the BL→TR diagonal
-        const diagLen = Math.hypot(size, size)           // diagonal length
-        const bandPos = sp * (diagLen + size * 0.5) - size * 0.25  // current offset along diagonal
-
-        // The shine is a thin perpendicular band across the die
-        // We clip to the die rect first
+        const diagLen = Math.hypot(size, size)
+        const bandPos = sp * (diagLen + size * 0.5) - size * 0.25
         ctx.save()
         ctx.beginPath(); ctx.rect(L, T, size, size); ctx.clip()
-
-        // Perpendicular to BL→TR diagonal means direction (-1, -1) normalised
-        // Band centre point along the diagonal from BL
         const normX = 1 / Math.SQRT2
-        const normY = -1 / Math.SQRT2   // diagonal from BL to TR
+        const normY = -1 / Math.SQRT2
         const bandCX = L + bandPos * normX
         const bandCY = B + bandPos * normY
-
-        const halfW = size * 0.09   // band half-width (thin glint)
+        const halfW = size * 0.12
 
         const p1x = bandCX - normX * halfW, p1y = bandCY - normY * halfW
         const p2x = bandCX + normX * halfW, p2y = bandCY + normY * halfW
 
         const shineGrad = ctx.createLinearGradient(p1x, p1y, p2x, p2y)
         shineGrad.addColorStop(0, 'rgba(255,255,255,0)')
-        shineGrad.addColorStop(0.35, 'rgba(230,225,255,0.04)')
-        shineGrad.addColorStop(0.50, 'rgba(255,252,255,0.14)')   // peak — silver-white
-        shineGrad.addColorStop(0.65, 'rgba(200,190,255,0.05)')
+        shineGrad.addColorStop(0.40, 'rgba(255,255,255,0.05)')
+        shineGrad.addColorStop(0.50, 'rgba(255,255,255,0.40)')   // peak — blinding white flash
+        shineGrad.addColorStop(0.60, 'rgba(255,255,255,0.05)')
         shineGrad.addColorStop(1, 'rgba(255,255,255,0)')
 
-        // Draw a large rect and let the gradient + clip do the work
         ctx.globalAlpha = alpha
         ctx.fillStyle = shineGrad
         ctx.fillRect(L - size, T - size, size * 3, size * 3)
-
         ctx.restore()
     }
 
     ctx.restore()
 }
 
-/* ─── Dot pixel renderer ─────────────────────────────────────── */
+/* ─── Dot pixel renderer (OPTIMIZED) ────────────────────────── */
 function drawPixel(ctx, x, y, baseR, shape, sizeScale, bri, alpha) {
     if (alpha < 0.02) return
     const r = baseR * sizeScale
-    const g = Math.round(178 + 72 * bri)
-    ctx.globalAlpha = alpha
-    ctx.fillStyle = `rgb(${g},${g},${g})`
+    const d = r * 2
+    
+    // Convert brightness to alpha scale on a white sprite
+    // This allows us to use one white sprite for all brightness levels
+    const g = 178 + 72 * bri
+    const brightnessAlpha = g / 255
+    ctx.globalAlpha = alpha * brightnessAlpha
+    
     if (shape === 'circle') {
-        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
-        ctx.globalAlpha = alpha * 0.15; ctx.fillStyle = '#fff'
-        ctx.beginPath(); ctx.arc(x, y, r * 0.3, 0, Math.PI * 2); ctx.fill()
+        ctx.drawImage(CIRCLE_SPRITE, x - r, y - r, d, d)
     } else if (shape === 'square') {
-        const h = r * 0.9; ctx.fillRect(x - h, y - h, h * 2, h * 2)
+        const h = r * 0.9
+        ctx.drawImage(SQUARE_SPRITE, x - h, y - h, h * 2, h * 2)
     } else {
+        ctx.fillStyle = '#fff'
         ctx.fillRect(x - 0.75, y - 0.75, 1.5, 1.5)
     }
     ctx.globalAlpha = 1
@@ -394,6 +391,16 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
         let entryDone = false, entryProg = 0, scrollProg = 0
         let breathTween = null
         let chipAlpha = 0, dotAlpha = 1
+
+        let mouseX = -1000, mouseY = -1000, isHovering = false
+        function onPointerMove(e) {
+            if (!canvasRef.current) return
+            const rect = canvasRef.current.getBoundingClientRect()
+            mouseX = e.clientX - rect.left
+            mouseY = e.clientY - rect.top
+            isHovering = true
+        }
+        window.addEventListener('pointermove', onPointerMove)
 
         /* ── Build ─────────────────────────────────────────── */
         function build() {
@@ -438,8 +445,15 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
         }
         function revealUI() {
             const t = heroTextRef?.current, c = scrollCueRef?.current
-            if (t) gsap.fromTo(t, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' })
-            if (c) gsap.fromTo(c, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, delay: 0.3 })
+            // ── PREMIUM FIX: Choreographed sequence. Stagger the lines of text.
+            if (t && t.children) {
+                gsap.set(t, { autoAlpha: 1 }) // Make container visible
+                gsap.fromTo(t.children, 
+                    { autoAlpha: 0, y: 20 }, 
+                    { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.2, ease: 'expo.out' }
+                )
+            }
+            if (c) gsap.fromTo(c, { autoAlpha: 0, y: -15 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'expo.out', delay: 0.5 })
         }
         function startBreathing() {
             if (!PRM) breathTween = gsap.to(canvas, { opacity: 0.88, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 })
@@ -484,6 +498,10 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                     }
                 },
             })
+            // ── PREMIUM FIX: Deterministic sync
+            // Notify downstream components (like Domains) that our massive pin-spacer 
+            // is now in the DOM so they can calculate their offsets accurately.
+            window.dispatchEvent(new Event('hero-st-ready'))
         }
 
         /* ── RAF loop ──────────────────────────────────────── */
@@ -509,6 +527,12 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                         alpha = p * dotAlpha; bri = d.brightness
                     } else {
                         bri = d.brightness
+                        
+                        // ✨ Premium Twinkle Effect
+                        if (d.isShiny) {
+                            bri = bri + Math.max(0, Math.sin(now * 0.003 + d.phase)) * 0.8
+                        }
+
                         if (sp < 0.02) {
                             x = d.finalX + Math.sin(now * .0005 + d.phase) * .4
                             y = d.finalY + Math.cos(now * .00063 + d.phase) * .4
@@ -536,6 +560,24 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                             alpha = dotAlpha
                         }
                     }
+
+                    // 💥 Splash Effect: Spring Mouse Repulsion
+                    let targetOffX = 0, targetOffY = 0
+                    if (isHovering && entryDone && alpha > 0.1) {
+                        const dx = x - mouseX
+                        const dy = y - mouseY
+                        const dist = Math.hypot(dx, dy)
+                        if (dist < 100 && dist > 0.1) {
+                            const force = Math.pow((100 - dist) / 100, 2) // Quadratic falloff for natural feel
+                            targetOffX = (dx / dist) * force * 35
+                            targetOffY = (dy / dist) * force * 35
+                        }
+                    }
+                    d.mOffX += (targetOffX - d.mOffX) * 0.12 // Spring damper
+                    d.mOffY += (targetOffY - d.mOffY) * 0.12
+                    x += d.mOffX
+                    y += d.mOffY
+
                     if (alpha < 0.02) continue
                     drawPixel(ctx, x, y, baseR, d.shape, d.sizeScale, bri, alpha)
                 }
@@ -576,6 +618,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             cancelAnimationFrame(rafId)
             breathTween?.kill()
             window.removeEventListener('resize', onResize)
+            window.removeEventListener('pointermove', onPointerMove)
             document.removeEventListener('visibilitychange', onVis)
             heroST?.kill()
         }

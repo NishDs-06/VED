@@ -51,16 +51,16 @@ function Oscilloscope() {
             {[0.25, 0.5, 0.75].map(f => (<line key={f} x1="10" y1={10 + 140 * f} x2="310" y2={10 + 140 * f} stroke="rgba(229,231,235,0.08)" strokeWidth="0.5" />))}
             {[0.2, 0.4, 0.6, 0.8].map(f => (<line key={f} x1={10 + 300 * f} y1="10" x2={10 + 300 * f} y2="150" stroke="rgba(229,231,235,0.08)" strokeWidth="0.5" />))}
             <polyline points="10,55 40,55 40,100 80,100 80,55 120,55 120,100 160,100 160,55 200,55 200,100 240,100 240,55 280,55 280,100 310,100" fill="none" stroke="rgba(229,231,235,0.9)" strokeWidth="1.5" className={styles.waveClk} />
-            <polyline points="10,130 50,130 50,80 90,80 90,130 110,130 110,80 170,80 170,130 210,130 210,80 265,80 265,130 310,130" fill="none" stroke="rgba(229,231,235,0.6)" strokeWidth="1" className={styles.waveDat} />
-            <line x1="10" y1="62" x2="310" y2="62" stroke="#FFB347" strokeWidth="1" strokeDasharray="4 6" className={styles.waveEn} />
+            <polyline points="10,130 50,130 50,80 90,80 90,130 110,130 110,80 170,80 170,130 210,130 210,80 265,80 265,130 310,130" fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" className={styles.waveDat} />
+            <line x1="10" y1="62" x2="310" y2="62" stroke="rgba(255,255,255,0.7)" strokeWidth="1" strokeDasharray="4 6" className={styles.waveEn} />
             <line x1="0" y1="10" x2="0" y2="150" stroke="rgba(229,231,235,0.7)" strokeWidth="1" className={styles.scanCursor} />
             <text x="14" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">0ns</text>
             <text x="84" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">10ns</text>
             <text x="154" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">20ns</text>
             <text x="224" y="168" fill="rgba(229,231,235,0.5)" fontSize="8" fontFamily="DM Mono, monospace">30ns</text>
             <text x="14" y="52" fill="rgba(229,231,235,0.6)" fontSize="7" fontFamily="DM Mono, monospace">CLK</text>
-            <text x="14" y="128" fill="rgba(123,53,232,0.7)" fontSize="7" fontFamily="DM Mono, monospace">DATA</text>
-            <text x="14" y="60" fill="rgba(155,90,255,0.7)" fontSize="7" fontFamily="DM Mono, monospace">EN</text>
+            <text x="14" y="128" fill="rgba(255,255,255,1)" fontSize="7" fontFamily="DM Mono, monospace">DATA</text>
+            <text x="14" y="60" fill="rgba(229,231,235,0.6)" fontSize="7" fontFamily="DM Mono, monospace">EN</text>
             <text x="14" y="190" fill="rgba(255,255,255,0.2)" fontSize="8" fontFamily="DM Mono, monospace">CH1 1V/div  10ns/div  TRIG: NORM</text>
         </svg>
     )
@@ -73,7 +73,7 @@ function BodePlot() {
             {[0.2, 0.4, 0.6, 0.8].map(f => (<line key={f} x1={30 + 280 * f} y1="10" x2={30 + 280 * f} y2="100" stroke="rgba(229,231,235,0.06)" strokeWidth="0.5" />))}
             <line x1="30" y1="10" x2="30" y2="100" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
             <line x1="30" y1="100" x2="310" y2="100" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-            <path d="M30,25 L120,25 Q160,25 200,45 Q240,65 280,85 L310,88" fill="none" stroke="rgba(123,53,232,0.7)" strokeWidth="1.5" className={styles.bodeLine} />
+            <path d="M30,25 L120,25 Q160,25 200,45 Q240,65 280,85 L310,88" fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" className={styles.bodeLine} />
             <text x="2" y="28" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">0dB</text>
             <text x="2" y="68" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">-20</text>
             <text x="2" y="100" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">-40</text>
@@ -100,13 +100,13 @@ function Pipeline() {
                     {i < stages.length - 1 && (<path d={`M${startX + i * (stageW + gap) + stageW},${startY + stageH / 2} L${startX + (i + 1) * (stageW + gap)},${startY + stageH / 2}`} fill="none" stroke="rgba(229,231,235,0.3)" strokeWidth="1" markerEnd="url(#arr)" />)}
                 </g>
             ))}
-            <rect x="18" y="115" width="270" height="22" rx="2" fill="none" stroke="rgba(123,53,232,0.2)" strokeWidth="0.8" strokeDasharray="3 3" />
-            <text x="22" y="130" fill="rgba(123,53,232,0.5)" fontSize="7" fontFamily="DM Mono, monospace">Hazard Detection Unit</text>
-            <path d="M130,62 C130,50 186,50 186,62" fill="none" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" strokeDasharray="2 2" />
-            <path d="M186,62 C186,44 242,44 242,62" fill="none" stroke="rgba(155,90,255,0.25)" strokeWidth="0.8" strokeDasharray="2 2" />
-            <rect className={styles.tokenA} x="0" y={startY + 6} width="10" height="10" rx="1" fill="rgba(123,53,232,0.8)" />
+            <rect x="18" y="115" width="270" height="22" rx="2" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" strokeDasharray="3 3" />
+            <text x="22" y="130" fill="rgba(255,255,255,0.6)" fontSize="7" fontFamily="DM Mono, monospace">Hazard Detection Unit</text>
+            <path d="M130,62 C130,50 186,50 186,62" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" strokeDasharray="2 2" />
+            <path d="M186,62 C186,44 242,44 242,62" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" strokeDasharray="2 2" />
+            <rect className={styles.tokenA} x="0" y={startY + 6} width="10" height="10" rx="1" fill="rgba(255,255,255,1)" />
             <rect className={styles.tokenB} x="0" y={startY + 18} width="10" height="10" rx="1" fill="rgba(229,231,235,0.6)" />
-            <rect className={styles.tokenC} x="0" y={startY + 6} width="10" height="10" rx="1" fill="rgba(155,90,255,0.7)" />
+            <rect className={styles.tokenC} x="0" y={startY + 6} width="10" height="10" rx="1" fill="rgba(255,255,255,0.8)" />
             <defs><marker id="arr" markerWidth="5" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(229,231,235,0.4)" /></marker></defs>
             <text x="8" y="18" fill="rgba(255,255,255,0.2)" fontSize="8" fontFamily="DM Mono, monospace">5-STAGE RISC-V PIPELINE — IN-ORDER</text>
             <text x="8" y="188" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">IPC: 0.94 avg  Stalls: 6.2%  Branch: 8.4%  CPI: 1.07</text>
@@ -119,22 +119,22 @@ function ChipPlacement() {
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
             <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
-            <rect x="10" y="10" width="230" height="140" rx="1" fill="none" stroke="rgba(123,53,232,0.3)" strokeWidth="1" />
+            <rect x="10" y="10" width="230" height="140" rx="1" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
             {cells.map(i => {
                 const col = i % cols, row = Math.floor(i / cols)
                 return (<rect key={i} x={10 + col * 7} y={10 + row * 8} width="5" height="6" rx="0.5" fill="rgba(229,231,235,0.08)" stroke="rgba(229,231,235,0.15)" strokeWidth="0.3" className={styles.cell} style={{ animationDelay: `${(i / cells.length) * 2}s` }} />)
             })}
             <path d="M50,30 H180 V80 H100 V120" fill="none" stroke="rgba(229,231,235,0.4)" strokeWidth="0.8" className={styles.routeLine} />
-            <path d="M30,70 H80 V130 H200 V50 H220" fill="none" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" className={styles.routeLine} style={{ animationDelay: '0.3s' }} />
-            <path d="M90,10 V150" fill="none" stroke="rgba(155,90,255,0.2)" strokeWidth="0.6" className={styles.routeLine} style={{ animationDelay: '0.6s' }} />
+            <path d="M30,70 H80 V130 H200 V50 H220" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" className={styles.routeLine} style={{ animationDelay: '0.3s' }} />
+            <path d="M90,10 V150" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="0.6" className={styles.routeLine} style={{ animationDelay: '0.6s' }} />
             <rect x="248" y="10" width="64" height="140" rx="2" fill="rgba(229,231,235,0.03)" stroke="rgba(229,231,235,0.15)" strokeWidth="0.5" />
             <text x="252" y="28" fill="rgba(229,231,235,0.7)" fontSize="7" fontFamily="DM Mono, monospace">UTIL: 73.4%</text>
-            <text x="252" y="42" fill="rgba(123,53,232,0.7)" fontSize="7" fontFamily="DM Mono, monospace">WNS: +0.08</text>
-            <text x="252" y="56" fill="rgba(155,90,255,0.7)" fontSize="7" fontFamily="DM Mono, monospace">TNS: 0.00</text>
+            <text x="252" y="42" fill="rgba(255,255,255,0.7)" fontSize="7" fontFamily="DM Mono, monospace">WNS: +0.08</text>
+            <text x="252" y="56" fill="rgba(255,255,255,0.8)" fontSize="7" fontFamily="DM Mono, monospace">TNS: 0.00</text>
             <text x="252" y="70" fill="rgba(255,255,255,0.3)" fontSize="7" fontFamily="DM Mono, monospace">DRC: 0</text>
             <text x="252" y="84" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">CELLS: 8.2k</text>
             <text x="252" y="98" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">NETS: 9.4k</text>
-            <text x="252" y="132" fill="rgba(155,90,255,0.5)" fontSize="7" fontFamily="DM Mono, monospace">OPENROAD</text>
+            <text x="252" y="132" fill="rgba(255,255,255,0.5)" fontSize="7" fontFamily="DM Mono, monospace">OPENROAD</text>
             <text x="252" y="144" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">FLOW v3.0</text>
             <text x="10" y="165" fill="rgba(255,255,255,0.2)" fontSize="7" fontFamily="DM Mono, monospace">SKY130 PDK  100MHz target  Floorplan: 240μm × 160μm</text>
         </svg>
@@ -148,26 +148,26 @@ function MCUSystem() {
             <text x="160" y="95" textAnchor="middle" fill="rgba(229,231,235,0.9)" fontSize="8" fontFamily="DM Mono, monospace">Cortex-M4</text>
             <text x="160" y="108" textAnchor="middle" fill="rgba(229,231,235,0.5)" fontSize="7" fontFamily="DM Mono, monospace">168MHz</text>
             <text x="160" y="120" textAnchor="middle" fill="rgba(229,231,235,0.4)" fontSize="6" fontFamily="DM Mono, monospace">STM32F4</text>
-            <rect x="10" y="20" width="60" height="28" rx="2" fill="rgba(123,53,232,0.05)" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
-            <text x="40" y="36" textAnchor="middle" fill="rgba(123,53,232,0.8)" fontSize="8" fontFamily="DM Mono, monospace">UART</text>
+            <rect x="10" y="20" width="60" height="28" rx="2" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <text x="40" y="36" textAnchor="middle" fill="rgba(255,255,255,1)" fontSize="8" fontFamily="DM Mono, monospace">UART</text>
             <rect x="250" y="20" width="60" height="28" rx="2" fill="rgba(229,231,235,0.05)" stroke="rgba(229,231,235,0.3)" strokeWidth="0.8" />
             <text x="280" y="36" textAnchor="middle" fill="rgba(229,231,235,0.8)" fontSize="8" fontFamily="DM Mono, monospace">SPI</text>
-            <rect x="10" y="86" width="60" height="28" rx="2" fill="rgba(155,90,255,0.05)" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
-            <text x="40" y="102" textAnchor="middle" fill="rgba(155,90,255,0.8)" fontSize="8" fontFamily="DM Mono, monospace">GPIO</text>
-            <rect x="250" y="86" width="60" height="28" rx="2" fill="rgba(155,90,255,0.05)" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
-            <text x="280" y="102" textAnchor="middle" fill="rgba(155,90,255,0.8)" fontSize="8" fontFamily="DM Mono, monospace">ADC</text>
-            <rect x="130" y="158" width="60" height="28" rx="2" fill="rgba(123,53,232,0.05)" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
-            <text x="160" y="174" textAnchor="middle" fill="rgba(123,53,232,0.8)" fontSize="8" fontFamily="DM Mono, monospace">TIM</text>
-            <line x1="70" y1="34" x2="115" y2="90" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
+            <rect x="10" y="86" width="60" height="28" rx="2" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <text x="40" y="102" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="8" fontFamily="DM Mono, monospace">GPIO</text>
+            <rect x="250" y="86" width="60" height="28" rx="2" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <text x="280" y="102" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="8" fontFamily="DM Mono, monospace">ADC</text>
+            <rect x="130" y="158" width="60" height="28" rx="2" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <text x="160" y="174" textAnchor="middle" fill="rgba(255,255,255,1)" fontSize="8" fontFamily="DM Mono, monospace">TIM</text>
+            <line x1="70" y1="34" x2="115" y2="90" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
             <line x1="250" y1="34" x2="205" y2="90" stroke="rgba(229,231,235,0.3)" strokeWidth="0.8" />
-            <line x1="70" y1="100" x2="115" y2="100" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
-            <line x1="205" y1="100" x2="250" y2="100" stroke="rgba(155,90,255,0.3)" strokeWidth="0.8" />
-            <line x1="160" y1="135" x2="160" y2="158" stroke="rgba(123,53,232,0.3)" strokeWidth="0.8" />
-            <circle className={styles.pulse1} r="3" fill="rgba(123,53,232,0.8)" />
+            <line x1="70" y1="100" x2="115" y2="100" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <line x1="205" y1="100" x2="250" y2="100" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <line x1="160" y1="135" x2="160" y2="158" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
+            <circle className={styles.pulse1} r="3" fill="rgba(255,255,255,1)" />
             <circle className={styles.pulse2} r="3" fill="rgba(229,231,235,0.8)" />
-            <circle className={styles.pulse3} r="3" fill="rgba(155,90,255,0.8)" />
-            <circle cx="12" cy="140" r="6" fill="rgba(123,53,232,0.2)" stroke="rgba(123,53,232,0.6)" strokeWidth="0.8" className={styles.gpioLed} />
-            <text x="22" y="144" fill="rgba(123,53,232,0.5)" fontSize="7" fontFamily="DM Mono, monospace">LED_STATUS</text>
+            <circle className={styles.pulse3} r="3" fill="rgba(255,255,255,0.8)" />
+            <circle cx="12" cy="140" r="6" fill="rgba(255,255,255,0.8)" stroke="rgba(255,255,255,1)" strokeWidth="0.8" className={styles.gpioLed} />
+            <text x="22" y="144" fill="rgba(255,255,255,0.5)" fontSize="7" fontFamily="DM Mono, monospace">LED_STATUS</text>
             <text x="10" y="190" fill="rgba(229,231,235,0.3)" fontSize="7" fontFamily="DM Mono, monospace" className={styles.binStream}>01101001 01101110 00100000 01110010 01110100 01101100</text>
         </svg>
     )
@@ -238,7 +238,7 @@ export default function Domains() {
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
                 start: 'top top',
-                end: () => `+=${window.innerWidth * (DOMAINS.length - 1) * 1.05}`,
+                end: () => `+=${window.innerWidth * (DOMAINS.length - 1)}`,
                 scrub: 0.15,
                 onUpdate(self) {
                     const progress = Math.max(0, Math.min(1, self.progress))
@@ -272,26 +272,22 @@ export default function Domains() {
             })
         }
 
-        // ── Why setTimeout works here ─────────────────────────
-        // Hero's ScrollTrigger is created inside an async chain:
-        //   fonts.ready → requestAnimationFrame → ScrollTrigger.create()
-        // That chain completes in well under 500ms on any device
-        // (fonts.ready is near-instant on repeat loads; the rAF is ~16ms).
-        //
-        // By waiting 500ms we guarantee Hero's ST and its pin spacer
-        // are in the DOM before we create the Domains ST, so
-        // `start: 'top top'` measures the correct offset (~480vh
-        // rather than ~100vh without the spacer).
-        //
-        // After creating, ScrollTrigger.refresh() recalculates all
-        // positions once more as a belt-and-suspenders measure.
-        // ─────────────────────────────────────────────────────
-        const timer = setTimeout(() => {
+        // ── PREMIUM FIX: Eliminated the race condition ─────────────────────
+        // Instead of hoping 500ms is enough for fonts to load and the Hero 
+        // to inject its pin spacer, we wait for a deterministic event.
+        function initST() {
+            if (hst) return
             createST()
+            ScrollTrigger.sort()
             ScrollTrigger.refresh()
-        }, 500)
+        }
+        
+        window.addEventListener('hero-st-ready', initST)
+        // Fallback just in case
+        const timer = setTimeout(initST, 2500)
 
         return () => {
+            window.removeEventListener('hero-st-ready', initST)
             clearTimeout(timer)
             hst?.kill()
             panelObserver.disconnect()

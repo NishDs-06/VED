@@ -56,9 +56,19 @@ const ScrollCue = forwardRef(function ScrollCue(_, ref) {
                 visibility: 'hidden',   // GSAP autoAlpha
                 opacity: 0.2,
                 zIndex: 5,
-                pointerEvents: 'none',
+                pointerEvents: 'auto', // ── PREMIUM FIX: Make it clickable
                 userSelect: 'none',
+                cursor: 'pointer',
             }}
+            onMouseEnter={(e) => {
+                const svg = e.currentTarget.querySelector('svg')
+                gsap.to(svg, { y: 6, scale: 1.15, duration: 0.5, ease: 'back.out(2.5)' })
+            }}
+            onMouseLeave={(e) => {
+                const svg = e.currentTarget.querySelector('svg')
+                gsap.to(svg, { y: 0, scale: 1, duration: 0.4, ease: 'power2.out' })
+            }}
+            onClick={() => window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' })}
         >
             <span
                 style={{

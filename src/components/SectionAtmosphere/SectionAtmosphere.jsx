@@ -12,17 +12,17 @@ const IS_MOBILE = typeof window !== 'undefined' &&
 
 const GLOW_VARIANTS = {
     projects: [
-        { cx: 0.05, cy: 0.20, rx: 0.38, ry: 0.30, col: 'rgba(123,47,255,', peak: 0.22, spd: 0.00020, ph: 0.0 },
-        { cx: 0.95, cy: 0.10, rx: 0.35, ry: 0.28, col: 'rgba(88,28,220,', peak: 0.18, spd: 0.00018, ph: 2.1 },
-        { cx: 0.50, cy: 0.85, rx: 0.55, ry: 0.35, col: 'rgba(109,40,217,', peak: 0.25, spd: 0.00013, ph: 1.4 },
-        { cx: 0.88, cy: 0.60, rx: 0.28, ry: 0.30, col: 'rgba(139,92,246,', peak: 0.16, spd: 0.00022, ph: 3.0 },
+        { cx: 0.05, cy: 0.20, rx: 0.38, ry: 0.30, col: 'rgba(255, 255, 255, ', peak: 0.22, spd: 0.00020, ph: 0.0 },
+        { cx: 0.95, cy: 0.10, rx: 0.35, ry: 0.28, col: 'rgba(255, 255, 255, ', peak: 0.18, spd: 0.00018, ph: 2.1 },
+        { cx: 0.50, cy: 0.85, rx: 0.55, ry: 0.35, col: 'rgba(255, 255, 255, ', peak: 0.25, spd: 0.00013, ph: 1.4 },
+        { cx: 0.88, cy: 0.60, rx: 0.28, ry: 0.30, col: 'rgba(255, 255, 255, ', peak: 0.16, spd: 0.00022, ph: 3.0 },
     ],
     team: [
         { cx: 0.10, cy: 0.30, rx: 0.40, ry: 0.32, col: 'rgba(109,40,217,', peak: 0.20, spd: 0.00016, ph: 1.0 },
         { cx: 0.90, cy: 0.20, rx: 0.36, ry: 0.26, col: 'rgba(123,47,255,', peak: 0.18, spd: 0.00021, ph: 2.6 },
         { cx: 0.45, cy: 0.90, rx: 0.50, ry: 0.38, col: 'rgba(88,28,220,', peak: 0.22, spd: 0.00014, ph: 0.5 },
         { cx: 0.08, cy: 0.75, rx: 0.30, ry: 0.24, col: 'rgba(139,92,246,', peak: 0.15, spd: 0.00024, ph: 3.8 },
-        { cx: 0.92, cy: 0.70, rx: 0.28, ry: 0.30, col: 'rgba(76,29,149,', peak: 0.14, spd: 0.00019, ph: 1.8 },
+        { cx: 0.92, cy: 0.70, rx: 0.28, ry: 0.30, col: 'rgba(255, 255, 255, ', peak: 0.14, spd: 0.00019, ph: 1.8 },
     ],
 }
 

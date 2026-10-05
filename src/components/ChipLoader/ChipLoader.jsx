@@ -60,9 +60,9 @@ export default function ChipLoader({ onComplete }) {
             const step = bw / (PADS + 1)
             const reach = cs * 1.4
             const cols = [
-                'rgba(123,53,232,',
-                'rgba(155,90,255,',
-                'rgba(168,85,247,',
+                'rgba(255, 255, 255, ',
+                'rgba(255, 255, 255, ',
+                'rgba(255, 255, 255, ',
                 'rgba(100,40,200,',
             ]
             const out = []
@@ -193,8 +193,8 @@ export default function ChipLoader({ onComplete }) {
             // IHS border
             ctx.globalAlpha = al * 0.9
             const borderGrad = ctx.createLinearGradient(L, T, R, B)
-            borderGrad.addColorStop(0, 'rgba(168,85,247,0.9)')
-            borderGrad.addColorStop(0.5, 'rgba(123,53,232,0.7)')
+            borderGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
+            borderGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.7)')
             borderGrad.addColorStop(1, 'rgba(100,40,200,0.8)')
             ctx.strokeStyle = borderGrad
             ctx.lineWidth = 1.8
@@ -203,7 +203,7 @@ export default function ChipLoader({ onComplete }) {
 
             // Inner border
             ctx.globalAlpha = al * 0.18
-            ctx.strokeStyle = 'rgba(168,85,247,0.5)'
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'
             ctx.lineWidth = 0.6
             bevel(L + 5, T + 5, cs - 10, cs - 10, Math.max(2, bv - 3))
             ctx.stroke()
@@ -224,29 +224,29 @@ export default function ChipLoader({ onComplete }) {
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
             ctx.globalAlpha = al * 0.30
-            ctx.fillStyle = 'rgba(192,132,252,1)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)'
             ctx.shadowBlur = cs * 0.20
-            ctx.shadowColor = 'rgba(123,53,232,0.95)'
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.95)'
             ctx.fillText('VED', cx_, cy_ - cs * 0.035)
 
             // VED wordmark — crisp layer
             ctx.globalAlpha = al * 0.88
             ctx.fillStyle = 'rgba(220,190,255,1)'
             ctx.shadowBlur = cs * 0.055
-            ctx.shadowColor = 'rgba(168,85,247,0.7)'
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.7)'
             ctx.fillText('VED', cx_, cy_ - cs * 0.035)
             ctx.shadowBlur = 0
 
             // Sub-text
             ctx.globalAlpha = al * 0.28
-            ctx.fillStyle = 'rgba(168,85,247,1)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)'
             ctx.font = `400 ${cs * 0.040}px "DM Mono", monospace`
             ctx.textBaseline = 'top'
             ctx.fillText('MIT BANGALORE  ·  SKY130', cx_, cy_ + cs * 0.24)
 
             // Brand mark top-left
             ctx.globalAlpha = al * 0.20
-            ctx.fillStyle = 'rgba(192,132,252,1)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)'
             ctx.font = `400 ${cs * 0.036}px "DM Mono", monospace`
             ctx.textAlign = 'left'
             ctx.textBaseline = 'top'
@@ -254,7 +254,7 @@ export default function ChipLoader({ onComplete }) {
 
             // Serial bottom-right
             ctx.globalAlpha = al * 0.13
-            ctx.fillStyle = 'rgba(168,85,247,1)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)'
             ctx.font = `300 ${cs * 0.028}px "DM Mono", monospace`
             ctx.textAlign = 'right'
             ctx.textBaseline = 'bottom'
@@ -274,23 +274,23 @@ export default function ChipLoader({ onComplete }) {
 
             ctx.save()
             ctx.globalAlpha = 0.4 * al
-            ctx.fillStyle = 'rgba(168,85,247,1)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)'
             ctx.font = '400 9px "DM Mono", monospace'
             ctx.textAlign = 'center'
             ctx.textBaseline = 'bottom'
             ctx.fillText(msg, CX(), by - 7)
 
             ctx.globalAlpha = 0.10 * al
-            ctx.fillStyle = 'rgba(123,53,232,1)'
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)'
             ctx.beginPath(); ctx.rect(bx, by, bw, 1.5); ctx.fill()
 
             ctx.globalAlpha = 0.7 * al
             const fg = ctx.createLinearGradient(bx, 0, bx + bw, 0)
             fg.addColorStop(0, 'rgba(100,30,200,1)')
-            fg.addColorStop(1, 'rgba(192,132,252,1)')
+            fg.addColorStop(1, 'rgba(255, 255, 255, 1)')
             ctx.fillStyle = fg
             ctx.shadowBlur = 6
-            ctx.shadowColor = 'rgba(168,85,247,0.8)'
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)'
             ctx.beginPath(); ctx.rect(bx, by, bw * prog, 1.5); ctx.fill()
             ctx.restore()
         }

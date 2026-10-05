@@ -10,34 +10,53 @@ import { useEffect, useRef } from 'react'
 const IS_MOBILE = typeof window !== 'undefined' &&
     window.matchMedia('(max-width: 768px)').matches
 
-// ── FIX: Boosted peak opacity values so glows are actually visible ──
 const GLOW_DEFS = [
-    { cx: 0.12, cy: 0.18, rx: 0.42, ry: 0.35, col: 'rgba(123,47,255,', peak: 0.28, spd: 0.00018, ph: 0.0 },
-    { cx: 0.88, cy: 0.14, rx: 0.38, ry: 0.30, col: 'rgba(88,28,220,', peak: 0.22, spd: 0.00022, ph: 1.8 },
-    { cx: 0.50, cy: 0.75, rx: 0.60, ry: 0.40, col: 'rgba(109,40,217,', peak: 0.30, spd: 0.00015, ph: 3.2 },
-    { cx: 0.08, cy: 0.92, rx: 0.32, ry: 0.25, col: 'rgba(76,29,149,', peak: 0.20, spd: 0.00025, ph: 0.9 },
-    { cx: 0.92, cy: 0.55, rx: 0.30, ry: 0.32, col: 'rgba(139,92,246,', peak: 0.20, spd: 0.00020, ph: 2.4 },
+    // ── PREMIUM FIX: Reduced radius and opacity so the background stays mostly black
+    // The glow should be a subtle white highlight, not a global wash.
+    { cx: 0.12, cy: 0.18, rx: 0.40, ry: 0.35, col: '255,255,255', peak: 0.15, spd: 0.00018, ph: 0.0 },
+    { cx: 0.88, cy: 0.14, rx: 0.35, ry: 0.30, col: '230,230,230', peak: 0.12, spd: 0.00022, ph: 1.8 },
+    { cx: 0.50, cy: 0.75, rx: 0.55, ry: 0.40, col: '255,255,255', peak: 0.18, spd: 0.00015, ph: 3.2 },
+    { cx: 0.08, cy: 0.92, rx: 0.30, ry: 0.25, col: '240,240,240', peak: 0.10, spd: 0.00025, ph: 0.9 },
+    { cx: 0.92, cy: 0.55, rx: 0.35, ry: 0.35, col: '250,250,250', peak: 0.10, spd: 0.00020, ph: 2.4 },
 ]
 
+// ── OPTIMIZATION: Pre-render glows to offscreen canvases ──
+const GLOW_SPRITES = GLOW_DEFS.map(g => {
+    const c = document.createElement('canvas')
+    c.width = 256
+    c.height = 256
+    const ctx = c.getContext('2d')
+    const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128)
+    grad.addColorStop(0, `rgba(${g.col}, 1)`)
+    grad.addColorStop(0.4, `rgba(${g.col}, 0.4)`)
+    grad.addColorStop(1, `rgba(${g.col}, 0)`)
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, 256, 256)
+    return c
+})
+
 function makeParticles(W, H) {
-    const count = IS_MOBILE ? 28 : 55
+    // ── PREMIUM FIX: Bringing back a richer sense of depth
+    const count = IS_MOBILE ? 20 : 45 
     const out = []
     for (let i = 0; i < count; i++) {
         const dr = Math.random()
         const depth = dr < 0.50 ? 'far' : dr < 0.80 ? 'mid' : 'near'
         const cfg = {
-            far: { rMin: 0.3, rMax: 0.8, opMin: 0.020, opMax: 0.060, spdMul: 0.20 },
-            mid: { rMin: 0.6, rMax: 1.2, opMin: 0.035, opMax: 0.090, spdMul: 0.45 },
-            near: { rMin: 1.0, rMax: 2.0, opMin: 0.055, opMax: 0.130, spdMul: 0.70 },
+            far: { rMin: 0.3, rMax: 0.8, opMin: 0.020, opMax: 0.050, spdMul: 0.05 },
+            mid: { rMin: 0.6, rMax: 1.2, opMin: 0.035, opMax: 0.080, spdMul: 0.15 },
+            near: { rMin: 1.0, rMax: 2.0, opMin: 0.050, opMax: 0.120, spdMul: 0.30 },
         }[depth]
         const r = cfg.rMin + Math.random() * (cfg.rMax - cfg.rMin)
         const baseOp = cfg.opMin + Math.random() * (cfg.opMax - cfg.opMin)
-        const speed = (0.04 + Math.random() * 0.08) * cfg.spdMul
+        // ── PREMIUM FIX: Drastically slower particles so they feel elegant, not chaotic.
+        const speed = (0.005 + Math.random() * 0.015) * cfg.spdMul
+
         const angle = Math.random() * Math.PI * 2
         const pb = depth === 'far' ? 0 : depth === 'mid' ? 0.3 : 0.6
-        const rc = Math.round(210 + (168 - 210) * pb)
-        const gc = Math.round(210 + (85 - 210) * pb)
-        const bc = Math.round(230 + (247 - 230) * pb)
+        const rc = Math.round(200 + (255 - 200) * pb)
+        const gc = Math.round(200 + (255 - 200) * pb)
+        const bc = Math.round(200 + (255 - 200) * pb)
         out.push({
             x: Math.random() * W, y: Math.random() * H,
             r, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
@@ -71,25 +90,20 @@ export default function HeroAtmosphere({ heroRef }) {
         }
 
         function drawGlows(now) {
-            for (const g of GLOW_DEFS) {
+            ctx.globalCompositeOperation = 'screen'
+            for (let i = 0; i < GLOW_DEFS.length; i++) {
+                const g = GLOW_DEFS[i]
+                const sprite = GLOW_SPRITES[i]
                 const pulse = 0.5 + 0.5 * Math.sin(now * g.spd + g.ph)
                 const opacity = g.peak * (0.55 + 0.45 * pulse)
                 const cx = g.cx * W, cy = g.cy * H
                 const rx = g.rx * W, ry = g.ry * H
-
-                ctx.save()
-                ctx.translate(cx, cy)
-                ctx.scale(rx, ry)
-                const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 1)
-                grad.addColorStop(0, g.col + opacity + ')')
-                grad.addColorStop(0.4, g.col + (opacity * 0.4) + ')')
-                grad.addColorStop(1, g.col + '0)')
-                ctx.fillStyle = grad
-                ctx.beginPath()
-                ctx.arc(0, 0, 1, 0, Math.PI * 2)
-                ctx.fill()
-                ctx.restore()
+                
+                ctx.globalAlpha = opacity
+                // Much faster: drawing a pre-rendered image instead of building a gradient on the CPU per frame
+                ctx.drawImage(sprite, cx - rx, cy - ry, rx * 2, ry * 2)
             }
+            ctx.globalCompositeOperation = 'source-over'
         }
 
         function drawParticles(now) {
@@ -102,15 +116,14 @@ export default function HeroAtmosphere({ heroRef }) {
 
                 let op = p.baseOp
                 if (p.twinkle) {
-                    op *= 0.6 + 0.4 * Math.sin(now * 0.0018 + p.phase)
+                    op *= 0.8 + 0.6 * Math.sin(now * 0.0018 + p.phase)
                 } else {
-                    op *= 0.75 + 0.25 * Math.sin(now * 0.0006 + p.phase)
+                    op *= 0.95 + 0.45 * Math.sin(now * 0.0006 + p.phase)
                 }
-                ctx.globalAlpha = op
+                ctx.globalAlpha = Math.max(0, op)
                 ctx.fillStyle = `rgb(${p.color})`
-                ctx.beginPath()
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-                ctx.fill()
+                // OPTIMIZATION: fillRect is massively faster than arc() and visually identical for small radii
+                ctx.fillRect(p.x - p.r, p.y - p.r, p.r * 2, p.r * 2)
             }
             ctx.globalAlpha = 1
         }

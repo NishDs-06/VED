@@ -13,16 +13,16 @@
   --ghost: rgba(255, 255, 255, 0.15);
 
   /* NEW — Electric violet from the poster */
-  --accent: #7B35E8;
-  --accent-glow: rgba(123, 53, 232, 0.20);
-  --accent-dim: rgba(123, 53, 232, 0.50);
+  --accent: #FFFFFF;
+  --accent-glow: rgba(255, 255, 255, 0.15);
+  --accent-dim: rgba(255, 255, 255, 0.50);
 
   --border: rgba(255, 255, 255, 0.07);
   --border-2: rgba(255, 255, 255, 0.12);
 
-  --glow-xs: 0 0 8px rgba(123, 53, 232, 0.18);
-  --glow-sm: 0 0 16px rgba(123, 53, 232, 0.22);
-  --glow-md: 0 0 32px rgba(123, 53, 232, 0.20);
+  --glow-xs: 0 0 8px rgba(255, 255, 255, 0.1);
+  --glow-sm: 0 0 16px rgba(255, 255, 255, 0.15);
+  --glow-md: 0 0 32px rgba(255, 255, 255, 0.15);
 
   /* Spacing */
   --sp-1: 4px;
@@ -75,10 +75,10 @@ canvas {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(123, 53, 232, 0.3);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(123, 53, 232, 0.6);
+  background: rgba(255, 255, 255, 0.6);
 }
