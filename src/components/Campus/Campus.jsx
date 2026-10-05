@@ -27,9 +27,10 @@ export default function Campus() {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: 'top top',
-                    end: '+=150%',
+                    end: '+=300%',
                     pin: true,
-                    scrub: 1,
+                    scrub: 2,
+                    refreshPriority: -1,
                 }
             });
 
@@ -76,9 +77,10 @@ export default function Campus() {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: 'top top',
-                    end: '+=250%',
+                    end: '+=350%',
                     pin: true,
-                    scrub: 1.5,
+                    scrub: 2,
+                    refreshPriority: -1,
                 }
             });
 

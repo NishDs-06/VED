@@ -48,7 +48,8 @@ function generateDots(vpW, vpH) {
     const isMobileView = vpW < 768
     // ── PREMIUM FIX: Wider spacing. A sparse, intentional dot-matrix feels 
     // like an expensive mechanical interface. Dense dots feel like TV static.
-    const spacing = isMobileView ? 7 : 10 
+    // ── PERFORMANCE FIX: Slightly increased to reduce overall dot count for a buttery smooth entrance.
+    const spacing = isMobileView ? 9 : 13 
 
     // On mobile (portrait) the visual centre of the canvas feels higher
     // because the subtitle sits below — push VED up slightly less than desktop
@@ -465,7 +466,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             const heroEl = heroRef?.current
             ScrollTrigger.create({
                 trigger: heroEl || '#hero',
-                start: 'top top', end: '+=380%', scrub: 1.2, pin: true,
+                start: 'top top', end: '+=380%', scrub: 1.2, pin: true, refreshPriority: 2,
                 onUpdate(self) {
                     scrollProg = self.progress
                     const t = heroTextRef?.current, c = scrollCueRef?.current
@@ -573,10 +574,15 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                             targetOffY = (dy / dist) * force * 35
                         }
                     }
-                    d.mOffX += (targetOffX - d.mOffX) * 0.12 // Spring damper
-                    d.mOffY += (targetOffY - d.mOffY) * 0.12
-                    x += d.mOffX
-                    y += d.mOffY
+                    if (Math.abs(d.mOffX) > 0.05 || Math.abs(d.mOffY) > 0.05 || targetOffX !== 0 || targetOffY !== 0) {
+                        d.mOffX += (targetOffX - d.mOffX) * 0.12
+                        d.mOffY += (targetOffY - d.mOffY) * 0.12
+                        x += d.mOffX
+                        y += d.mOffY
+                    } else {
+                        d.mOffX = 0
+                        d.mOffY = 0
+                    }
 
                     if (alpha < 0.02) continue
                     drawPixel(ctx, x, y, baseR, d.shape, d.sizeScale, bri, alpha)

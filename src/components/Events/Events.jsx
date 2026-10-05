@@ -17,116 +17,52 @@ const TYPE_COLOR = {
 const EVENTS = [
     {
         id: 'e1',
-        title: 'RTL Design Fundamentals',
-        date: 'September 12, 2025',
-        month: 'SEP 2025',
-        day: '12',
-        type: 'WORKSHOP',
-        summary: 'Hands-on Verilog workshop covering FSMs, pipelining, and testbench writing.',
-        description: 'A full-day, hands-on workshop introducing Register-Transfer Level design with Verilog HDL. Attendees built synthesisable FSMs, pipelined datapaths, and wrote self-checking testbenches. Included live demos on Vivado with Artix-7 boards provided by the lab.',
-        location: 'EC Lab 3, AB-2, MIT Bangalore',
-        host: 'Raagmanas Madhukar',
-        tags: ['VERILOG', 'VIVADO', 'FPGA'],
-        isUpcoming: false,
-        registrationEnabled: false,
-        registrationLink: '',
+        title: 'PowerNext-AI Hackathon',
+        date: 'October 10, 2026',
+        month: 'OCT 2026',
+        day: '10',
+        type: 'HACKATHON',
+        summary: 'Flagship AI engineering hackathon with a ₹3 Lakh prize pool.',
+        description: 'Organized by CPRI and MIT Bengaluru, PowerNext-AI is the premier hackathon focused on building next-generation AI and embedded systems solutions. Over a rigorous 48 hours, teams will prototype hardware-accelerated AI models and pitch to industry leaders. Top teams gain access to incubation programs.',
+        location: 'MIT Bengaluru Campus',
+        host: 'CPRI & MIT Bengaluru',
+        tags: ['AI', 'EMBEDDED', 'HACKATHON'],
+        registrationEnabled: true,
+        registrationLink: 'https://www.powernext-ai.in/',
+        image: '/poster_powernext.jpg',
     },
     {
         id: 'e2',
-        title: 'The SKY130 Open-Source PDK',
-        date: 'October 4, 2025',
-        month: 'OCT 2025',
-        day: '04',
-        type: 'TALK',
-        summary: 'Introduction to the Skywater 130nm process and open-source EDA toolchain.',
-        description: 'A guest talk introducing the Skywater 130nm open-source process design kit and the full open-source EDA toolchain — from synthesis with Yosys through place-and-route with OpenROAD to GDS generation. Covered what "open silicon" means for academic labs and how VED members can tape out real chips.',
-        location: 'Seminar Hall, AB-1, MIT Bangalore',
-        host: 'Dr. Shreshta Valasa',
-        tags: ['SKY130', 'OPENROAD', 'YOSYS'],
-        isUpcoming: false,
+        title: 'Embedded Systems Workshop',
+        date: 'October 24, 2026',
+        month: 'OCT 2026',
+        day: '24',
+        type: 'WORKSHOP',
+        summary: 'Building the future of interconnected devices and firmware.',
+        description: 'A hands-on workshop covering embedded C, RTOS fundamentals, and direct hardware interfacing. Attendees will work with ARM Cortex-M microcontrollers to build a fully functional IoT sensor node from scratch.',
+        location: 'EC Lab 1, MIT Bengaluru',
+        host: 'VED Club Core',
+        tags: ['ARM', 'RTOS', 'FIRMWARE'],
         registrationEnabled: false,
         registrationLink: '',
+        image: '/poster_embedded_systems.jpg',
     },
     {
         id: 'e3',
-        title: 'Circuit Debugging Sprint',
-        date: 'November 18, 2025',
-        month: 'NOV 2025',
-        day: '18',
+        title: 'VLSI Design Sprint',
+        date: 'November 12, 2026',
+        month: 'NOV 2026',
+        day: '12',
         type: 'COMPETITION',
-        summary: 'Timed fault-finding competition across analog and digital circuit problems.',
-        description: 'A fast-paced, timed competition where teams raced to find and fix faults in pre-built analog and digital circuits. Problems ranged from misbiased BJT amplifiers to broken FSM implementations. Scores were based on accuracy and speed, with bonus points for clean documentation.',
-        location: 'EC Lab 1, AB-2, MIT Bangalore',
-        host: null,
-        tags: ['ANALOG', 'DIGITAL', 'DEBUGGING'],
-        isUpcoming: false,
+        summary: 'Advanced silicon architectures and accelerated VLSI workflows.',
+        description: 'An intensive design sprint focusing on digital logic design, synthesis, and physical design using industry-standard EDA tools. Participants will race to optimize a RISC-V core for power, performance, and area (PPA).',
+        location: 'Innovation Centre, MIT Bengaluru',
+        host: 'Dr. Eliza Chen',
+        tags: ['VLSI', 'EDA', 'RISC-V'],
         registrationEnabled: false,
         registrationLink: '',
-    },
-    {
-        id: 'e4',
-        title: 'Low-Power Design Techniques',
-        date: 'January 22, 2026',
-        month: 'JAN 2026',
-        day: '22',
-        type: 'SEMINAR',
-        summary: 'Deep dive into clock gating, power domains, and sub-threshold operation.',
-        description: 'An in-depth seminar covering modern low-power design techniques at the RTL, gate, and transistor levels. Topics included clock gating, multi-Vt libraries, power domain partitioning (UPF), voltage scaling, and sub-threshold circuit operation. Featured case studies from real tapeouts.',
-        location: 'Seminar Hall, AB-1, MIT Bangalore',
-        host: 'Dr. Bharath Sreenivasulu V',
-        tags: ['LOW-POWER', 'UPF', 'CLOCK-GATING'],
-        isUpcoming: false,
-        registrationEnabled: false,
-        registrationLink: '',
-    },
-    {
-        id: 'e5',
-        title: 'Silicon Sprint — Spring Edition',
-        date: 'March 8, 2026',
-        month: 'MAR 2026',
-        day: '08',
-        type: 'HACKATHON',
-        summary: '24-hour FPGA and PCB design challenge open to all MIT BLR students.',
-        description: 'VED\'s flagship 24-hour design marathon. Teams of 2–4 designed and implemented a complete system — from RTL on FPGA to a custom PCB breakout board — within a single day. Judging criteria included correctness, power efficiency, documentation quality, and creative use of constraints. Open to all MIT Bangalore students.',
-        location: 'Innovation Centre, MIT Bangalore',
-        host: null,
-        tags: ['FPGA', 'PCB', 'HACKATHON'],
-        isUpcoming: false,
-        registrationEnabled: false,
-        registrationLink: '',
-    },
-    {
-        id: 'e6',
-        title: 'OpenROAD Physical Design Bootcamp',
-        date: 'June 20, 2026',
-        month: 'JUN 2026',
-        day: '20',
-        type: 'WORKSHOP',
-        summary: 'Full placement-and-route flow on a sample RISC-V core using OpenROAD v3.',
-        description: 'A hands-on bootcamp walking participants through the complete digital physical design flow using the OpenROAD v3 toolchain. Starting from a synthesised RISC-V core netlist, attendees will perform floorplanning, global and detailed placement, clock tree synthesis, and detailed routing — culminating in GDS generation and DRC/LVS verification.',
-        location: 'EC Lab 3, AB-2, MIT Bangalore',
-        host: "Nishanth D'Souza",
-        tags: ['OPENROAD', 'RISC-V', 'PNR'],
-        isUpcoming: true,
-        registrationEnabled: true,
-        registrationLink: 'https://forms.google.com',
-    },
-    {
-        id: 'e7',
-        title: 'Neuromorphic Computing at Scale',
-        date: 'July 11, 2026',
-        month: 'JUL 2026',
-        day: '11',
-        type: 'TALK',
-        summary: 'Guest lecture on SNN hardware deployment for edge inference workloads.',
-        description: 'A guest lecture exploring how spiking neural network architectures are being deployed on custom silicon for ultra-low-power edge inference. Covers SNN encoding schemes, hardware neuron models, on-chip learning with STDP, and real-world deployment at scale on neuromorphic processors.',
-        location: 'Seminar Hall, AB-1, MIT Bangalore',
-        host: 'TBA',
-        tags: ['SNN', 'NEUROMORPHIC', 'EDGE-AI'],
-        isUpcoming: true,
-        registrationEnabled: true,
-        registrationLink: 'https://forms.google.com',
-    },
+        image: '/poster_vlsi_sprint.jpg',
+    }
 ]
 
 /* ── Countdown timer hook ────────────────────────────────────── */
@@ -224,15 +160,21 @@ function EventPopup({ event, onClose }) {
     return (
         <div className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ''}`} onClick={handleOverlayClick}>
             <div className={`${styles.popup} ${isClosing ? styles.popupClosing : ''}`} onClick={e => e.stopPropagation()}>
-                <div className={styles.popupShimmer} />
-
+                
                 <button className={styles.closeBtn} onClick={handleOverlayClick} aria-label="Close">
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                 </button>
 
-                <div className={styles.popupInner}>
+                {event.image && (
+                    <div className={styles.popupImageSide}>
+                        <img src={event.image} alt={event.title} className={styles.popupImage} />
+                        <div className={styles.popupImageOverlay} />
+                    </div>
+                )}
+
+                <div className={styles.popupContentSide}>
                     <div className={styles.popupBadgeRow}>
                         <span
                             className={styles.popupTypeBadge}
@@ -240,23 +182,16 @@ function EventPopup({ event, onClose }) {
                         >
                             {event.type}
                         </span>
-                        {event.isUpcoming && (
-                            <>
-                                <span className={styles.popupStatusDot} />
-                                <span className={styles.popupStatusLabel}>Upcoming</span>
-                            </>
-                        )}
                     </div>
 
                     <h2 className={styles.popupName}>{event.title}</h2>
+                    <p className={styles.popupSummary}>{event.summary}</p>
 
-                    <div className={styles.popupDivider} />
-
-                    {event.isUpcoming && event.registrationEnabled && (
+                    {event.registrationEnabled && (
                         <CountdownTimer dateString={event.date} />
                     )}
 
-                    <div className={styles.metaRow}>
+                    <div className={styles.metaGrid}>
                         <div className={styles.metaBox}>
                             <span className={styles.metaLabel}>Date</span>
                             <span className={styles.metaVal}>{event.date}</span>
@@ -281,25 +216,22 @@ function EventPopup({ event, onClose }) {
                         </div>
                     )}
 
-                    <div className={styles.popupDivider} />
+                    <div className={styles.popupAboutSection}>
+                        <p className={styles.popupSectionLabel}>About This Event</p>
+                        <p className={styles.popupAbout}>{event.description}</p>
+                    </div>
 
-                    <p className={styles.popupSectionLabel}>About This Event</p>
-                    <p className={styles.popupAbout}>{event.description}</p>
-
-                    {event.isUpcoming && event.registrationEnabled && event.registrationLink && (
-                        <>
-                            <div className={styles.popupDivider} />
-                            <div className={styles.popupActions}>
-                                <a
-                                    href={event.registrationLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.registerBtn}
-                                >
-                                    Register Now →
-                                </a>
-                            </div>
-                        </>
+                    {event.registrationEnabled && event.registrationLink && (
+                        <div className={styles.popupActions}>
+                            <a
+                                href={event.registrationLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.registerBtn}
+                            >
+                                Register Now <span className={styles.btnArrow}>↗</span>
+                            </a>
+                        </div>
                     )}
                 </div>
             </div>
@@ -311,14 +243,11 @@ function EventPopup({ event, onClose }) {
 export default function Events() {
     const [selected, setSelected] = useState(null)
     const sectionRef = useRef(null)
-    
-    const upcomingEvents = EVENTS.filter(e => e.isUpcoming)
-    const pastEvents = EVENTS.filter(e => !e.isUpcoming)
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.fromTo(
-                `.${styles.heroCard}, .${styles.cascadeCard}`,
+                `.${styles.heroCard}`,
                 { opacity: 0, y: 60, scale: 0.95 },
                 {
                     opacity: 1,
@@ -350,22 +279,21 @@ export default function Events() {
                 <div className={styles.headingRule} />
             </div>
 
-            {upcomingEvents.length > 0 && (
-                <div className={styles.eventGroup}>
-                    <h3 className={styles.groupLabel}>Upcoming</h3>
-                    <div className={styles.heroGrid}>
-                        {upcomingEvents.map(evt => {
-                            const typeColor = TYPE_COLOR[evt.type] || '#FFFFFF'
-                            return (
-                                <div 
-                                    key={evt.id} 
-                                    className={styles.heroCard}
-                                    onClick={() => setSelected(evt)}
-                                    role="button"
-                                    tabIndex={0}
-                                    onKeyDown={e => e.key === 'Enter' && setSelected(evt)}
-                                >
-                                    <div className={styles.heroGlow} />
+            <div className={styles.eventGroup}>
+                <div className={styles.heroGrid}>
+                    {EVENTS.map(evt => {
+                        const typeColor = TYPE_COLOR[evt.type] || '#FFFFFF'
+                        return (
+                            <div 
+                                key={evt.id} 
+                                className={styles.heroCard}
+                                onClick={() => setSelected(evt)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={e => e.key === 'Enter' && setSelected(evt)}
+                            >
+                                <div className={styles.heroGlow} />
+                                <div className={styles.heroCardContent}>
                                     <div className={styles.heroInner}>
                                         <div className={styles.heroTop}>
                                             <span 
@@ -373,10 +301,6 @@ export default function Events() {
                                                 style={{ color: typeColor, borderColor: typeColor + '40', background: typeColor + '0f' }}
                                             >
                                                 {evt.type}
-                                            </span>
-                                            <span className={styles.liveIndicator}>
-                                                <span className={styles.liveDot} />
-                                                LIVE
                                             </span>
                                         </div>
                                         <h3 className={styles.heroTitle}>{evt.title}</h3>
@@ -390,51 +314,17 @@ export default function Events() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
-            )}
-
-            {pastEvents.length > 0 && (
-                <div className={styles.eventGroup}>
-                    <h3 className={styles.groupLabel}>Archive</h3>
-                    <div className={styles.cascadeStack}>
-                        {pastEvents.map((evt, i) => {
-                            const typeColor = TYPE_COLOR[evt.type] || '#FFFFFF'
-                            const rotation = i % 2 === 0 ? '-2deg' : '2deg'
-                            const xOffset = i % 2 === 0 ? '-10px' : '10px'
-                            
-                            return (
-                                <div 
-                                    key={evt.id} 
-                                    className={styles.cascadeCard}
-                                    style={{ zIndex: i, '--rot': rotation, '--x': xOffset }}
-                                    onClick={() => setSelected(evt)}
-                                    role="button"
-                                    tabIndex={0}
-                                    onKeyDown={e => e.key === 'Enter' && setSelected(evt)}
-                                >
-                                    <div className={styles.cascadeInner}>
-                                        <div className={styles.bentoTop}>
-                                            <span className={styles.bentoDate}>{evt.month} {evt.day}</span>
-                                            <span 
-                                                className={styles.typeBadge}
-                                                style={{ color: typeColor, borderColor: typeColor + '40', background: typeColor + '0f' }}
-                                            >
-                                                {evt.type}
-                                            </span>
+                                    {evt.image && (
+                                        <div className={styles.heroImageContainer}>
+                                            <img src={evt.image} alt={evt.title} className={styles.heroImage} />
                                         </div>
-                                        <h4 className={styles.bentoTitle}>{evt.title}</h4>
-                                        <p className={styles.bentoSummary}>{evt.summary}</p>
-                                    </div>
+                                    )}
                                 </div>
-                            )
-                        })}
-                    </div>
+                            </div>
+                        )
+                    })}
                 </div>
-            )}
+            </div>
 
             {selected && createPortal(
                 <EventPopup event={selected} onClose={() => setSelected(null)} />,

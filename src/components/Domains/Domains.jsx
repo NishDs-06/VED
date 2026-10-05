@@ -231,15 +231,17 @@ export default function Domains() {
 
         function createST() {
             hst?.kill()
+            if (window.innerWidth <= 768) return;
             hst = ScrollTrigger.create({
                 trigger: section,
                 pin: true,
                 pinSpacing: true,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
+                refreshPriority: 1,
                 start: 'top top',
                 end: () => `+=${window.innerWidth * (DOMAINS.length - 1)}`,
-                scrub: 0.15,
+                scrub: 1.5,
                 onUpdate(self) {
                     const progress = Math.max(0, Math.min(1, self.progress))
                     const xVal = -progress * window.innerWidth * (DOMAINS.length - 1)

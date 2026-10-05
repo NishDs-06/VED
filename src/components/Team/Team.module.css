@@ -783,3 +783,339 @@
         border-radius: 20px 20px 0 0;
     }
 }
+/* ── CINEMATIC – CSS 3D PERSPECTIVE TUNNEL ──────────────────── */
+
+/* The outer container pinned by GSAP ScrollTrigger */
+.cinematicContainer {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+    background: #000000;
+}
+
+/* Ambient glow orbs */
+.bgGlow1, .bgGlow2 {
+    position: absolute;
+    width: 70vw;
+    height: 70vw;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: 0;
+}
+.bgGlow1 {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    top: -15%;
+    left: -20%;
+}
+.bgGlow2 {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+    bottom: -15%;
+    right: -20%;
+}
+
+/* Starfield layer */
+.particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.45) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 80%, rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(2px 2px at 65% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.45) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 68% 72%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(2px 2px at 40% 90%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 25%, rgba(255,255,255,0.35) 0%, transparent 100%);
+}
+
+/* The 3D perspective stage — GSAP moves this along Z */
+.perspectiveViewport {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    perspective: 900px;
+    perspective-origin: 50% 45%;
+}
+
+.stage {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    /* GSAP sets translateZ on this element to move the camera */
+}
+
+.chunkWrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(4rem, 8vw, 12rem);
+    transform-style: preserve-3d;
+    opacity: 0;
+    will-change: opacity, transform;
+}
+
+.memberCardInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(1.5rem, 2vw, 2.5rem);
+    transform-style: preserve-3d;
+}
+
+.chunkTitleClip {
+    overflow: hidden;
+    padding-bottom: 0.1em;
+}
+
+.chunkTitle {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 5vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Photo */
+.memberPhoto {
+    display: block;
+    width: clamp(180px, 20vw, 320px);
+    height: clamp(240px, 28vw, 430px);
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.5),
+        0 20px 60px rgba(0,0,0,0.8),
+        0 0 0 1px rgba(255,255,255,0.08);
+    flex-shrink: 0;
+}
+
+.memberPhotoPlaceholder {
+    width: clamp(180px, 20vw, 320px);
+    height: clamp(240px, 28vw, 430px);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.memberPhotoInitials {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.2);
+}
+
+/* Video-editor lower-third: NO BOX, pure floating typography */
+.memberLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    max-width: 25vw;
+}
+
+/* Accent bar — sweeps left→right via GSAP scaleX */
+.memberAccentBar {
+    width: 2.5rem;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 1px;
+    transform-origin: center center;
+    margin-bottom: 0.1rem;
+}
+
+/* Role — Tech chyron style */
+.memberRole {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Clip container — overflow hidden curtain for the name reveal */
+.memberNameClip {
+    overflow: hidden;
+    padding-bottom: 0.05em;   /* room for descenders */
+}
+
+/*
+ * Name — Syne: brutalist, wide architectural aesthetic.
+ * Emil rule: weight + size alone create hierarchy; no strokes needed.
+ */
+.memberName {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 2.5vw, 3.5rem);
+    font-weight: 700;           
+    letter-spacing: -0.02em;    
+    line-height: 1.1;
+    color: #ffffff;
+    margin: 0;
+    display: block;
+    /* clip-path reveal is applied inline and animated by GSAP */
+}
+
+/* Sub-line — DM Sans italic, whisper-quiet */
+.memberSub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    font-style: italic;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.26);
+    line-height: 1.55;
+    max-width: 28ch;
+    text-wrap: pretty;
+    margin: 0;
+    margin-top: 0.2rem;
+}
+
+/* ── STAR PARTICLES in the 3D stage ──────────────────────────── */
+/*
+ * Stars are placed at fixed (x, y, worldZ) positions inside the 3D stage.
+ * As GSAP moves stage.z forward, stars rush past at their native Z depth.
+ * No extra JS animation needed — pure CSS 3D parallax.
+ */
+.star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* "OUR TEAM" intro overlay */
+.introText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+.introEyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+    text-transform: uppercase;
+    letter-spacing: 0.42em;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 1.2rem;
+}
+
+.introWord {
+    font-family: 'Bebas Neue', 'Syne', sans-serif;
+    font-size: clamp(6rem, 16vw, 14rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.88;
+    color: #fff;
+    display: block;
+}
+
+/* Scroll hint */
+.scrollHint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.2);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.scrollHintLine {
+    width: 1.5rem;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .perspectiveViewport {
+        perspective: 600px;
+    }
+    .memberCard {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
+    }
+    .memberLabel {
+        max-width: 90vw;
+        align-items: center;
+    }
+    .memberAccentBar {
+        align-self: center;
+        transform-origin: center center;
+    }
+    .memberRole {
+        text-align: center;
+    }
+    .memberName {
+        text-align: center;
+        font-size: clamp(2rem, 8vw, 3.2rem);
+    }
+    .memberSub {
+        text-align: center;
+        max-width: 32ch;
+    }
+    .memberPhoto {
+        width: clamp(140px, 55vw, 240px);
+        height: clamp(190px, 72vw, 320px);
+    }
+    .memberPhotoPlaceholder {
+        width: clamp(140px, 55vw, 240px);
+        height: clamp(190px, 72vw, 320px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .memberCard {
+        opacity: 1;
+        transform: translate(-50%, -50%) !important;
+    }
+    .stage {
+        transform: none !important;
+    }
+    .memberName {
+        clip-path: none !important;
+    }
+}
+
