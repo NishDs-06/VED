@@ -39,17 +39,15 @@
     z-index: 1;
     padding: 100px 64px 80px;
     display: grid;
-    grid-template-columns: 3.5fr 6.5fr;
-    gap: 64px;
-    align-items: flex-end;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    align-items: flex-start;
 }
 
 /* ── Left Column (Brand) ─────────────────────────────────────── */
 .leftCol {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
     gap: 64px;
 }
 
@@ -84,14 +82,14 @@
 
 .brandFull {
     font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
+    font-size: 26px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
 }
 
 .brandLocation {
     font-family: 'DM Mono', monospace;
-    font-size: 13px;
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.5);
     letter-spacing: 0.1em;
 }
@@ -99,51 +97,71 @@
 .tagline {
     font-family: 'DM Mono', monospace;
     font-style: italic;
-    font-size: 13px;
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.45);
     line-height: 1.7;
 }
 
-.socialsAndCredit {
+.midCol {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    align-items: center;
+    gap: 24px;
+}
+
+.midColLabel {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: -0.02em;
+    text-transform: none;
+    line-height: 1;
+    margin-top: 0;
 }
 
 .socialLogos {
     display: flex;
-    gap: 16px;
+    gap: 40px;
     align-items: center;
+    margin-top: 0;
 }
 
 .socialLink {
-    color: rgba(255, 255, 255, 0.4);
-    transition: color 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .socialLink:hover {
-    color: #FFFFFF;
-    transform: scale(1.1) translateY(-2px);
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.15) translateY(-4px);
+}
+
+/* LinkedIn Color Hover */
+.socialLink:first-child:hover {
+    color: #0a66c2;
+    filter: drop-shadow(0 8px 16px rgba(10, 102, 194, 0.4));
+}
+
+/* Instagram Color Hover */
+.socialLink:last-child:hover {
+    color: #e1306c;
+    filter: drop-shadow(0 8px 16px rgba(225, 48, 108, 0.4));
 }
 
 .icon {
-    width: 20px;
-    height: 20px;
+    width: 48px;
+    height: 48px;
 }
 
 .madeBy {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    align-items: flex-end;
+    text-align: right;
 }
 
 .madeByLabel {
@@ -172,11 +190,10 @@
 
 .designation {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.4);
     letter-spacing: 0.02em;
-    font-style: italic;
 }
 
 /* ── Right Column (Awwwards/Emil Typography CTA) ────────── */
@@ -184,7 +201,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end;
+    gap: 24px;
+    padding-left: 2vw;
+    margin-top: 0px;
 }
 
 .ctaLink {
@@ -197,40 +216,32 @@
     cursor: pointer;
 }
 
+
+
+
+
 .ctaLabel {
     display: inline-flex;
     align-items: center;
     gap: 12px;
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.5);
-    padding: 10px 20px;
-    border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.02);
+    padding: 0;
+    margin-top: 12px;
     transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
     align-self: flex-start;
 }
 
 .ctaLink:hover .ctaLabel {
-    background: #FFFFFF;
-    color: #050507;
-    border-color: #FFFFFF;
-}
-
-.ctaLabelDot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+    color: #FFFFFF;
 }
 
 .ctaHeading {
     font-family: 'DM Sans', sans-serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
     font-weight: 400;
     color: rgba(255, 255, 255, 0.4);
     line-height: 1;
@@ -242,7 +253,7 @@
 }
 
 .ctaHeadingMain {
-    font-size: clamp(3.5rem, 6vw, 7rem);
+    font-size: clamp(2.5rem, 4.5vw, 5rem);
     font-weight: 500;
     color: #FFFFFF;
     letter-spacing: -0.04em;
@@ -286,16 +297,22 @@
     position: relative;
     z-index: 1;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 24px 64px;
+    padding: 32px 64px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.stripLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .strip span {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
 }
@@ -317,6 +334,10 @@
     }
     
     .rightCol {
+        margin-top: 0;
+        padding-left: 0;
+    }
+    .rightCol, .midCol {
         align-items: flex-start;
     }
     
@@ -327,7 +348,13 @@
     .strip {
         padding: 24px;
         flex-direction: column;
-        gap: 12px;
+        gap: 32px;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .stripLeft, .madeBy {
+        align-items: center;
         text-align: center;
     }
 }

@@ -23,7 +23,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 85%;
+    object-position: center 35%; /* Shifted much further up */
     will-change: transform;
     image-rendering: high-quality;
     filter: contrast(1.05) saturate(1.05);
@@ -133,8 +133,49 @@
     transform: scale(0.97);
 }
 
+.mobilePhotoContainer {
+    display: none;
+}
+
 @media (max-width: 768px) {
+    .section {
+        height: auto;
+        min-height: 100vh;
+        background: #000;
+    }
+    
+    .bgWrapper {
+        display: none; /* Hide the absolute background image on mobile */
+    }
+    
     .content {
-        padding: 120px 24px 40px;
+        padding: 120px 24px 60px;
+        justify-content: flex-start;
+        gap: 3rem;
+    }
+    
+    .textGroup {
+        margin-top: 0;
+    }
+    
+    .mobilePhotoContainer {
+        display: block;
+        width: 100%;
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .mobilePhoto {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: contrast(1.05) saturate(1.05);
+    }
+    
+    .ctaButton {
+        margin-top: auto;
     }
 }

@@ -99,6 +99,12 @@ export default function TeamPreview() {
                     <h2 className={styles.title}>THE MINDS<br />BEHIND VED</h2>
                     <p className={styles.subtitle}>A collective of engineers pushing the boundaries of silicon design and embedded systems at MIT Bangalore.</p>
                 </div>
+                
+                {/* Mobile specific photo wrapper so we can sandwich the photo between text and button */}
+                <div className={styles.mobilePhotoContainer}>
+                    <img src="/team-group-2026.webp" alt="The VED Team Mobile" className={styles.mobilePhoto} />
+                </div>
+
                 <Link to="/team" className={styles.ctaButton}>
                     <span>MEET THE TEAM</span>
                     <div className={styles.ctaHoverBg}></div>

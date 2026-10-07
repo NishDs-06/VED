@@ -1082,7 +1082,7 @@
 @media (max-width: 768px) {
     .cinematicContainer {
         height: auto;
-        padding-top: 100px;
+        padding-top: 120px;
         padding-bottom: 120px;
     }
     .perspectiveViewport {
@@ -1093,7 +1093,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 80px;
+        gap: 60px;
         transform: none !important;
     }
     .introText {
@@ -1101,7 +1101,7 @@
         top: auto;
         left: auto;
         transform: none !important;
-        margin-bottom: 80px;
+        margin-bottom: 40px;
     }
     .chunkWrapper {
         position: relative;
@@ -1109,16 +1109,23 @@
         left: auto;
         transform: none !important;
         flex-direction: column;
-        gap: 3rem;
+        gap: 24px;
+        padding: 0 20px;
+        width: 100%;
     }
     .memberCardInner {
         flex-direction: column;
         align-items: center;
-        gap: 2rem;
+        gap: 1.5rem;
         text-align: center;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 40px 24px;
     }
     .memberLabel {
-        max-width: 90vw;
+        max-width: 100%;
         align-items: center;
     }
     .memberAccentBar {
@@ -1130,20 +1137,22 @@
     }
     .memberName {
         text-align: center;
-        font-size: clamp(2rem, 8vw, 3.2rem);
-        /* Force block display to ignore inset clipping if left over */
+        font-size: clamp(1.8rem, 7vw, 2.4rem);
         clip-path: none !important; 
     }
     .memberSub {
         text-align: center;
-        max-width: 32ch;
+        max-width: 100%;
     }
     .memberPhoto, .memberPhotoPlaceholder {
         width: 100%;
-        max-width: 320px;
-        aspect-ratio: 4/5;
+        max-width: 220px;
+        aspect-ratio: 1;
         height: auto;
         object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
     }
 }
 

@@ -60,25 +60,29 @@ export default function Navigation() {
             </div>
         </nav>
 
-        {/* Mobile Menu Portal-like Sibling */}
+        {/* Mobile Menu Side Drawer */}
         <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-            <div className="mobile-menu-close-header">
-                <button 
-                    className="mobile-close-btn" 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-label="Close menu"
-                >
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                </button>
-            </div>
-            <div className="mobile-links">
-                <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-                <Link to="/announcements" onClick={() => setIsMobileMenuOpen(false)}>Announcements</Link>
-                <Link to="/projects" onClick={() => setIsMobileMenuOpen(false)}>Projects & Research</Link>
-                <Link to="/events" onClick={() => setIsMobileMenuOpen(false)}>Events</Link>
-                <Link to="/team" onClick={() => setIsMobileMenuOpen(false)}>Team</Link>
+            <div className="mobile-menu-backdrop" onClick={() => setIsMobileMenuOpen(false)} />
+            
+            <div className="mobile-menu-drawer">
+                <div className="mobile-menu-close-header">
+                    <button 
+                        className="mobile-close-btn" 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        aria-label="Close menu"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div className="mobile-links">
+                    <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+                    <Link to="/announcements" onClick={() => setIsMobileMenuOpen(false)}>Announcements</Link>
+                    <Link to="/projects" onClick={() => setIsMobileMenuOpen(false)}>Projects & Research</Link>
+                    <Link to="/events" onClick={() => setIsMobileMenuOpen(false)}>Events</Link>
+                    <Link to="/team" onClick={() => setIsMobileMenuOpen(false)}>Team</Link>
+                </div>
             </div>
         </div>
         </>
