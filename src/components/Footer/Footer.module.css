@@ -1,16 +1,15 @@
-/* ── Import Rubik 80s Fade for VED logo text ─────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Rubik+80s+Fade&display=swap');
 
-/* ── Footer shell ────────────────────────────────────────────── */
+
 .footer {
     background: #050507;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 0 64px 0;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Deep purple radial glow rising from bottom */
 .footer::before {
     content: '';
     position: absolute;
@@ -24,7 +23,6 @@
     z-index: 0;
 }
 
-/* Top accent bar — purple gradient */
 .footer::after {
     content: '';
     position: absolute;
@@ -32,84 +30,120 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.4) 20%,
-            #FFFFFF 50%,
-            rgba(255, 255, 255, 0.4) 80%,
-            transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 20%, #FFFFFF 50%, rgba(255, 255, 255, 0.4) 80%, transparent 100%);
 }
 
-/* ── Main grid ───────────────────────────────────────────────── */
-.inner {
+/* ── Main Layout ─────────────────────────────────────────────── */
+.mainGrid {
     position: relative;
     z-index: 1;
+    padding: 100px 64px 80px;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 3.5fr 6.5fr;
     gap: 64px;
-    padding: 64px 0 64px;
+    align-items: flex-end;
 }
 
-/* ── Brand column ────────────────────────────────────────────── */
-.brand {
+/* ── Left Column (Brand) ─────────────────────────────────────── */
+.leftCol {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 64px;
 }
 
-/* VED — Rubik 80s Fade, bright purple glow */
+.brandInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.brandLogoRow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
 .brandName {
     font-family: 'Rubik 80s Fade', 'DM Mono', monospace;
-    font-size: 64px;
+    font-size: 72px;
     font-weight: 400;
     color: #FFFFFF;
     letter-spacing: 0.06em;
-    display: block;
-    margin-bottom: 14px;
     line-height: 1;
-    text-shadow:
-        0 0 16px rgba(255, 255, 255, 0.9),
-        0 0 40px rgba(255, 255, 255, 0.55),
-        0 0 80px rgba(255, 255, 255, 0.25);
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 255, 255, 0.55), 0 0 80px rgba(255, 255, 255, 0.25);
+}
+
+.brandText {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .brandFull {
     font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
-    display: block;
-    line-height: 1.7;
-    text-wrap: pretty;
 }
 
 .brandLocation {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.5);
-    display: block;
-    line-height: 1.7;
     letter-spacing: 0.1em;
 }
 
 .tagline {
     font-family: 'DM Mono', monospace;
     font-style: italic;
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.45);
-    line-height: 1.9;
-    display: block;
-    margin-top: 20px;
-    text-wrap: pretty;
+    line-height: 1.7;
 }
 
-/* ── Made by credit ──────────────────────────────────────────── */
+.socialsAndCredit {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.socialLogos {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.socialLink {
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.socialLink:hover {
+    color: #FFFFFF;
+    transform: scale(1.1) translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
 .madeBy {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    gap: 6px;
 }
 
 .madeByLabel {
@@ -122,13 +156,12 @@
 
 .madeByName {
     font-family: 'DM Mono', monospace;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
     letter-spacing: 0.04em;
     text-decoration: none;
     transition: color 200ms ease, text-shadow 200ms ease;
-    cursor: pointer;
     display: inline-block;
 }
 
@@ -137,36 +170,115 @@
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
 }
 
-/* ── Nav columns ─────────────────────────────────────────────── */
-.colLabel {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    color: rgba(255, 255, 255, 0.7);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 18px;
+.designation {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.02em;
+    font-style: italic;
 }
 
-.links {
+/* ── Right Column (Awwwards/Emil Typography CTA) ────────── */
+.rightCol {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    align-items: flex-start;
+    justify-content: flex-end;
 }
 
-.links a {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.75);
+.ctaLink {
+    display: flex;
+    flex-direction: column;
     text-decoration: none;
-    transition: color 200ms ease, transform 200ms ease;
-    display: inline-block;
-    letter-spacing: 0.01em;
+    gap: 32px;
+    padding: 0;
+    position: relative;
+    cursor: pointer;
 }
 
-.links a:hover {
+.ctaLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    align-self: flex-start;
+}
+
+.ctaLink:hover .ctaLabel {
+    background: #FFFFFF;
+    color: #050507;
+    border-color: #FFFFFF;
+}
+
+.ctaLabelDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+}
+
+.ctaHeading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1;
+    position: relative;
+    letter-spacing: -0.02em;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ctaHeadingMain {
+    font-size: clamp(3.5rem, 6vw, 7rem);
+    font-weight: 500;
     color: #FFFFFF;
-    transform: translateX(5px);
+    letter-spacing: -0.04em;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: color 400ms ease;
+}
+
+.ctaIconWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(50px, 8vw, 80px);
+    height: clamp(50px, 8vw, 80px);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaIcon {
+    width: 36%;
+    height: 36%;
+    color: #FFFFFF;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaLink:hover .ctaIconWrapper {
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
+.ctaLink:hover .ctaIcon {
+    color: #050507;
+    transform: translate(3px, -3px) scale(1.1);
 }
 
 /* ── Bottom strip ────────────────────────────────────────────── */
@@ -174,7 +286,7 @@
     position: relative;
     z-index: 1;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 18px 0;
+    padding: 24px 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -190,23 +302,32 @@
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .footer {
-        padding: 0 24px 0;
-    }
-
-    .inner {
+    .mainGrid {
         grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 48px 0 48px;
+        padding: 64px 24px;
+        gap: 80px;
     }
 
     .brandName {
-        font-size: 52px;
+        font-size: 64px;
     }
+    
+    .socialLogos {
+        gap: 24px;
+    }
+    
+    .rightCol {
+        align-items: flex-start;
+    }
+    
+
+    
+
 
     .strip {
+        padding: 24px;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
         text-align: center;
     }
 }

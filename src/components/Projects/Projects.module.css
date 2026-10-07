@@ -20,24 +20,23 @@
     margin-bottom: 100px;
 }
 
-.title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    line-height: 1;
-    margin: 0;
-    color: #ffffff;
-    letter-spacing: -0.02em;
+.introEyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+    text-transform: uppercase;
+    letter-spacing: 0.42em;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 1.2rem;
 }
-.titleOutline {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    line-height: 1;
-    margin: 0;
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
-    letter-spacing: -0.02em;
+
+.introWord {
+    font-family: 'Bebas Neue', 'Syne', sans-serif;
+    font-size: clamp(6rem, 16vw, 14rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.88;
+    color: #fff;
+    display: block;
 }
 
 .listWrapper {

@@ -186,44 +186,52 @@ function EventPopup({ event, onClose }) {
 
 const EVENTS = [
     {
-        id: 'silicon-symposium',
-        title: 'Silicon Symposium 2026',
-        date: 'MARCH 15',
+        id: 'conclave',
+        title: 'MITBLR Semiconductor Conclave',
+        date: 'FEB 2026',
         type: 'CONFERENCE',
         location: 'Main Auditorium',
-        summary: 'Annual gathering of VLSI enthusiasts, featuring guest speakers from industry leaders in semiconductor design.',
+        summary: 'Inauguration of VED Club, marking the beginning of our journey in semiconductor and embedded systems engineering.',
     },
     {
-        id: 'fpga-workshop',
-        title: 'FPGA Architecture Workshop',
-        date: 'APRIL 02',
+        id: 'cmti',
+        title: 'CMTI Fabrication Training',
+        date: 'APR 21',
+        type: 'WORKSHOP',
+        location: 'STDC, CMTI',
+        summary: 'Hands-on semiconductor fabrication training at Central Manufacturing Technology Institute.',
+    },
+    {
+        id: 'nthu',
+        title: 'NTHU Taiwan Meeting',
+        date: 'AUG 07',
+        type: 'CONFERENCE',
+        location: 'Board Room',
+        summary: 'Delegation visit from National Tsing Hua University (NTHU) to explore semiconductor research collaborations.',
+    },
+    {
+        id: 'riscv',
+        title: 'RISC-V Renode Workshop',
+        date: 'SEP 10',
         type: 'WORKSHOP',
         location: 'Hardware Lab',
-        summary: 'Hands-on session on advanced FPGA routing, synthesis optimization, and timing closure techniques.',
+        summary: 'Hands-on workshop on RISC-V boards, IoT, and edge AI emulation on Renode.',
+    },
+    {
+        id: 'mos',
+        title: 'MOS Transistor & Analog Design',
+        date: 'SEP 10',
+        type: 'SEMINAR',
+        location: 'Hybrid',
+        summary: 'Hybrid certification program in collaboration with CSIR-CEERI Pilani.',
     },
     {
         id: 'powernext-ai',
-        title: 'PowerNext AI',
-        date: 'APRIL 10',
-        type: 'SEMINAR',
-        location: 'Virtual',
-        summary: 'Exploring the intersection of artificial intelligence and ultra-low power hardware accelerators.',
-    },
-    {
-        id: 'tapeout-talks',
-        title: 'Tapeout Talks: First Silicon',
-        date: 'APRIL 18',
-        type: 'SEMINAR',
-        location: 'Virtual',
-        summary: 'Alumni share their experiences and challenges taking their first chip from RTL to actual tapeout.',
-    },
-    {
-        id: 'hackathon',
-        title: 'Embedded Systems Hackathon',
-        date: 'MAY 10',
+        title: 'PowerNext AI Hackathon',
+        date: 'OCT 10',
         type: 'COMPETITION',
-        location: 'Innovation Center',
-        summary: 'A 24-hour hardware hackathon focusing on ultra-low power IoT solutions and embedded security.',
+        location: 'MIT Bengaluru',
+        summary: 'Solving real-world power sector challenges using AI & Data Intelligence. Organized by CPRI.',
     }
 ]
 
@@ -348,8 +356,9 @@ export default function Events() {
                 <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
             </div>
             <div className={styles.introText} ref={introRef}>
-                <h2 className={styles.title}>UPCOMING</h2>
-                <h2 className={styles.titleOutline}>EVENTS</h2>
+                <span className={styles.introEyebrow}>VED · MIT Bangalore · 2026</span>
+                <span className={styles.introWord}>OUR</span>
+                <span className={styles.introWord}>EVENTS</span>
             </div>
 
             <div className={styles.listWrapper} ref={listRef}>

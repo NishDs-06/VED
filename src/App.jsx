@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import ProjectsPage from './pages/ProjectsPage';
 import EventsPage from './pages/EventsPage';
 import TeamPage from './pages/TeamPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
 
 function AnimatedRoutes() {
     const location = useLocation();
@@ -42,6 +43,7 @@ function AnimatedRoutes() {
         <div ref={containerRef} style={{ width: '100%' }}>
             <Routes location={displayLocation} key={displayLocation.pathname}>
                 <Route path="/" element={<Home />} />
+                <Route path="/announcements" element={<AnnouncementsPage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/team" element={<TeamPage />} />

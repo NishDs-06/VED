@@ -1,0 +1,234 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background: #020202;
+    color: #ffffff;
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: 200px;
+}
+
+.ambientGlow {
+    position: fixed;
+    top: -20vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vh;
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────── */
+.hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 180px 24px 80px;
+    position: relative;
+    z-index: 10;
+}
+
+.heroContent {
+    max-width: 6xl;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
+}
+
+.headline {
+    font-family: 'Cabinet Grotesk', 'Space Grotesk', sans-serif;
+    font-size: clamp(3rem, 6vw, 6.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    text-wrap: balance;
+}
+
+.inlineImage {
+    display: inline-block;
+    width: 2.2em;
+    height: 0.85em;
+    border-radius: 9999px;
+    vertical-align: middle;
+    background-size: cover;
+    background-position: center;
+    margin: 0 0.15em;
+    filter: grayscale(80%) contrast(120%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ── Bento Grid ─────────────────────────────────────────────── */
+.bentoSection {
+    padding: 40px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+.bentoGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 280px;
+    grid-auto-flow: dense; /* The magic for gapless filling! */
+    gap: 16px; /* Reduced gap to feel tighter */
+}
+
+@media (max-width: 1024px) {
+    .bentoGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .bentoGrid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 320px;
+    }
+}
+
+.bentoCard {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #080808;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 700ms cubic-bezier(0.23, 1, 0.32, 1), border-color 400ms ease;
+    cursor: pointer;
+    will-change: transform;
+}
+
+.bentoCard:hover {
+    transform: scale(0.98);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+.row-span-1 { grid-row: span 1; }
+.row-span-2 { grid-row: span 2; }
+
+@media (max-width: 768px) {
+    .col-span-1, .col-span-2, .col-span-3 {
+        grid-column: span 1;
+    }
+    .row-span-2 {
+        grid-row: span 1;
+    }
+}
+
+.cardImageBg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(60%) contrast(110%);
+    opacity: 0.7;
+    transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1), filter 700ms ease, opacity 700ms ease;
+}
+
+.bentoCard:hover .cardImageBg {
+    transform: scale(1.05);
+    filter: grayscale(0%) contrast(100%);
+    opacity: 0.9;
+}
+
+.cardOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.2) 60%, rgba(5,5,5,0.6) 100%);
+    z-index: 1;
+    transition: background 400ms ease;
+}
+
+.bentoCard:hover .cardOverlay {
+    background: linear-gradient(0deg, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0.1) 60%, rgba(5,5,5,0.4) 100%);
+}
+
+.cardContent {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px;
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.cardBottom {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.title {
+    font-family: 'Cabinet Grotesk', 'Space Grotesk', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 80%;
+}

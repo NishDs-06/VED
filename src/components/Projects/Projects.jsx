@@ -16,12 +16,14 @@ const STATUS_CONFIG = {
     'DESIGNING': { color: '#FF3366', label: 'Designing' },
     'BUILDING': { color: '#00E5FF', label: 'Building' },
     'TESTING': { color: '#00FF66', label: 'Testing' },
+    'ACTIVE': { color: '#FFE600', label: 'Active' },
 }
 const CATEGORY_COLOR = {
     'DEVICE': '#FF3366',
     'CIRCUIT': '#00E5FF',
     'EMBEDDED': '#00FF66',
-    'DIGITAL': '#BF00FF'
+    'DIGITAL': '#BF00FF',
+    'RESEARCH': '#FFE600'
 }
 
 function ProjectPopup({ project, onClose }) {
@@ -162,6 +164,16 @@ const PROJECTS = [
         members: 5,
         tools: ['VERILOG', 'PYTHON', 'VIVADO'],
         about: 'RTL implementation of a systolic array based neural network accelerator targeting real-time edge inference.',
+    },
+    {
+        id: 'tsing-hua',
+        name: 'NTHU Taiwan Collaboration',
+        domain: 'Research / International Relations',
+        category: 'RESEARCH',
+        status: 'ACTIVE',
+        members: 12,
+        tools: ['VLSI DESIGN', 'FABRICATION', 'EMBEDDED'],
+        about: 'Official affiliation and delegation visit to National Tsing Hua University (NTHU), Taiwan, exploring collaborative research in semiconductor technology, fabrication, and embedded systems.',
     }
 ]
 
@@ -286,8 +298,9 @@ export default function Projects() {
                 <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
             </div>
             <div className={styles.introText} ref={introRef}>
-                <h2 className={styles.title}>OUR</h2>
-                <h2 className={styles.titleOutline}>PROJECTS</h2>
+                <span className={styles.introEyebrow}>VED · MIT Bangalore · 2026</span>
+                <span className={styles.introWord}>PROJECTS</span>
+                <span className={styles.introWord}>& RESEARCH</span>
             </div>
 
             <div className={styles.listWrapper} ref={listRef}>

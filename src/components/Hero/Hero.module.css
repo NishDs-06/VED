@@ -55,7 +55,7 @@
 
 @media (max-width: 768px) {
     .heroContent {
-        top: 72%;
+        top: 58%;
         left: 50%;
         transform: translateX(-50%);
         padding: 0 24px;
