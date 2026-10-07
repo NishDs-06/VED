@@ -1,22 +1,23 @@
 .section {
     position: relative;
     width: 100%;
-    min-height: 100vh;
     background: #000000;
     color: #ffffff;
-    padding: 150px 5vw;
     display: flex;
     flex-direction: column;
+    padding-bottom: 200px;
 }
 
 .introText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100vh;
+    margin-top: -160px; /* Counteract section padding to perfectly center vertically */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     z-index: 10;
-    margin-bottom: 0;
+    margin-bottom: 100px;
 }
 
 .title {
@@ -36,18 +37,14 @@
     margin: 0;
     color: transparent;
     -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
-    letter-spacing: 0.05em;
+    letter-spacing: -0.02em;
 }
 
 .listWrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     width: 90vw;
     max-width: 1200px;
+    margin: 0 auto;
     z-index: 5;
-    opacity: 0;
 }
 
 .listContainer {
@@ -510,7 +507,7 @@
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(4, 2, 10, 0.93);
+    background: rgba(0, 0, 0, 0.85);
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -532,16 +529,16 @@
 
 /* ── Popup ───────────────────────────────────────────────────── */
 .popup {
-    background: #08060f;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 24px;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
     width: min(580px, 100%);
     max-height: 88vh;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
     animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
     will-change: transform, opacity;
@@ -559,22 +556,7 @@
     }
 }
 
-.popupShimmer {
-    height: 2px;
-    background: linear-gradient(90deg, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF);
-    background-size: 300%;
-    animation: shimmer 4s linear infinite;
-}
 
-@keyframes shimmer {
-    0% {
-        background-position: 200%;
-    }
-
-    100% {
-        background-position: -200%;
-    }
-}
 
 .closeBtn {
     position: absolute;

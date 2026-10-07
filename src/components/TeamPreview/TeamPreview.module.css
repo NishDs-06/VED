@@ -11,9 +11,10 @@
 
 .bgWrapper {
     position: absolute;
-    inset: -20%; /* Extra space for parallax */
-    width: 140%;
-    height: 140%;
+    top: -15%;
+    left: 0;
+    width: 100%;
+    height: 130%;
     z-index: 1;
     pointer-events: none;
 }
@@ -22,13 +23,24 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 85%;
     will-change: transform;
+    image-rendering: high-quality;
+    filter: contrast(1.05) saturate(1.05);
 }
 
 .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%);
+    /* Dark at very top for text, dark at very bottom for button, clear in middle for faces */
+    background: linear-gradient(
+        180deg, 
+        rgba(0,0,0,0.85) 0%, 
+        rgba(0,0,0,0.3) 25%, 
+        transparent 50%, 
+        transparent 80%,
+        rgba(0,0,0,0.8) 100%
+    );
 }
 
 .content {
@@ -38,21 +50,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    padding: 0 24px;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 140px 24px 60px; /* Top padding clears the navbar, bottom padding clears screen edge */
+}
+
+.textGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     max-width: 800px;
-    margin-top: 10vh;
 }
 
 .title {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(40px, 8vw, 96px);
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 7vw, 84px);
     font-weight: 700;
     color: #fff;
     line-height: 0.95;
     margin: 0;
     letter-spacing: -0.04em;
-    text-shadow: 0 0 30px rgba(0,0,0,0.8);
+    text-shadow: 0 0 40px rgba(0,0,0,0.9);
 }
 
 .subtitle {
@@ -69,19 +89,19 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 32px;
-    margin-top: 24px;
+    padding: 18px 40px;
     font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
     color: #fff;
     text-decoration: none;
-    letter-spacing: 0.1em;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 100px;
     overflow: hidden;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(12px);
     transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s ease;
 }
 
@@ -115,6 +135,6 @@
 
 @media (max-width: 768px) {
     .content {
-        margin-top: 0;
+        padding: 120px 24px 40px;
     }
 }

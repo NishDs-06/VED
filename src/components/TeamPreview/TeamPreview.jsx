@@ -37,6 +37,7 @@ export default function TeamPreview() {
             gsap.fromTo(contentElements, {
                 opacity: 0,
                 y: 50,
+                scale: 0.95,
                 filter: 'blur(10px)'
             }, {
                 scrollTrigger: {
@@ -47,6 +48,7 @@ export default function TeamPreview() {
                 },
                 opacity: 1,
                 y: 0,
+                scale: 1,
                 filter: 'blur(0px)',
                 stagger: 0.1,
                 ease: 'power3.out'
@@ -67,8 +69,8 @@ export default function TeamPreview() {
              
              // Mobile text reveal
              const contentElements = Array.from(contentRef.current.children);
-             gsap.fromTo(contentElements, { opacity: 0, y: 30 }, {
-                 opacity: 1, y: 0,
+             gsap.fromTo(contentElements, { opacity: 0, y: 30, scale: 0.95 }, {
+                 opacity: 1, y: 0, scale: 1,
                  stagger: 0.1,
                  scrollTrigger: {
                      trigger: sectionRef.current,
@@ -85,7 +87,7 @@ export default function TeamPreview() {
             <div className={styles.bgWrapper}>
                 <img 
                     ref={bgRef}
-                    src="/team_group.jpg" 
+                    src="/team-group-2026.webp" 
                     alt="The VED Team" 
                     className={styles.bgImage} 
                 />
@@ -93,8 +95,10 @@ export default function TeamPreview() {
             </div>
             
             <div className={styles.content} ref={contentRef}>
-                <h2 className={styles.title}>THE ARCHITECTS<br />OF TOMORROW</h2>
-                <p className={styles.subtitle}>A collective of engineers pushing the boundaries of silicon design and embedded systems.</p>
+                <div className={styles.textGroup}>
+                    <h2 className={styles.title}>THE MINDS<br />BEHIND VED</h2>
+                    <p className={styles.subtitle}>A collective of engineers pushing the boundaries of silicon design and embedded systems at MIT Bangalore.</p>
+                </div>
                 <Link to="/team" className={styles.ctaButton}>
                     <span>MEET THE TEAM</span>
                     <div className={styles.ctaHoverBg}></div>

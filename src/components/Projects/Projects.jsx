@@ -37,7 +37,6 @@ function ProjectPopup({ project, onClose }) {
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.popup} onClick={e => e.stopPropagation()}>
-                <div className={styles.popupShimmer} />
 
                 <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
                     <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
@@ -238,47 +237,26 @@ export default function Projects() {
     }, [])
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        if (!listRef.current) return;
         
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                start: 'top top',
-                end: '+=150%',
-                scrub: 1,
-                pin: true,
-            }
-        })
-
-        // Fly camera through stars on scroll
-        tl.to(camera.current, {
-            z: '+=2000', // Move 2000px forward on scroll
-            duration: 2,
-            ease: 'power2.inOut'
-        })
-
-        // Fade out intro like a cinematic flight
-        tl.to(introRef.current, {
+        // Staggered reveal of list items from lower middle using Emil's rules
+        // "Start from scale(0.95) with opacity: 0"
+        gsap.fromTo(itemsRef.current, {
             opacity: 0,
-            scale: 1.5, // Fly towards screen
-            filter: 'blur(20px)',
-            duration: 1,
-            ease: 'power2.in'
-        }, 0)
-        
-        // Staggered reveal of list items from lower middle
-        tl.fromTo(itemsRef.current, {
-            opacity: 0,
-            y: 150,
+            y: 50,
             scale: 0.95
         }, {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 1,
-            stagger: 0.15,
-            ease: 'power2.out'
-        }, 0.5)
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: listRef.current,
+                start: 'top 85%',
+            }
+        })
         
         return () => {
             ScrollTrigger.getAll().forEach(t => t.kill())
@@ -287,7 +265,9 @@ export default function Projects() {
 
     return (
                 <section className={styles.section} id="projects" ref={containerRef}>
-            <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }} />
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+                <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+            </div>
             <div className={styles.introText} ref={introRef}>
                 <h2 className={styles.title}>OUR</h2>
                 <h2 className={styles.titleOutline}>PROJECTS</h2>
