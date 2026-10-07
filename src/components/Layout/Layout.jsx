@@ -37,8 +37,20 @@ export default function Layout({ children }) {
         tickerFnRef.current = tickerFn;
         gsap.ticker.add(tickerFn);
         gsap.ticker.lagSmoothing(0);
+        
+        window.__scrollToTop = () => {
+            if (lenisRef.current) lenisRef.current.scrollTo(0, { immediate: true });
+        };
+
+        const onPopupOpen = () => lenis.stop();
+        const onPopupClose = () => lenis.start();
+
+        window.addEventListener('ved:popup:open', onPopupOpen);
+        window.addEventListener('ved:popup:close', onPopupClose);
 
         return () => {
+            window.removeEventListener('ved:popup:open', onPopupOpen);
+            window.removeEventListener('ved:popup:close', onPopupClose);
             lenis.destroy();
             lenisRef.current = null;
             if (tickerFnRef.current) {
@@ -46,24 +58,9 @@ export default function Layout({ children }) {
                 tickerFnRef.current = null;
             }
             ScrollTrigger.killAll();
+            delete window.__scrollToTop;
         };
     }, [loading]);
-
-    // useLayoutEffect runs synchronously before paint.
-    // We snap Lenis to the top here. Child components' useLayoutEffect
-    // might run slightly before this, but GSAP waits for refresh() anyway.
-    useLayoutEffect(() => {
-        if (isFirstMount.current) {
-            isFirstMount.current = false;
-            return;
-        }
-
-        // Snap Lenis to the top. The old page's components have unmounted
-        // and cleaned up their own ScrollTriggers.
-        if (lenisRef.current) {
-            lenisRef.current.scrollTo(0, { immediate: true });
-        }
-    }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // After new page components have mounted + registered their triggers,
     // do one final refresh so all start/end positions are correctly calculated.
@@ -73,8 +70,10 @@ export default function Layout({ children }) {
                 ScrollTrigger.refresh();
             });
             return () => cancelAnimationFrame(raf);
+        } else {
+            isFirstMount.current = false;
         }
-    }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [location.pathname]);
 
     return (
         <>

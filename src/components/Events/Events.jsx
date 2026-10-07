@@ -318,27 +318,27 @@ export default function Events() {
     useEffect(() => {
         if (!listRef.current) return;
         
-        // Staggered reveal of list items from lower middle using Emil's rules
-        // "Start from scale(0.95) with opacity: 0"
-        gsap.fromTo(itemsRef.current, {
-            opacity: 0,
-            y: 50,
-            scale: 0.95
-        }, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: listRef.current,
-                start: 'top 85%',
-            }
-        })
+        const ctx = gsap.context(() => {
+            gsap.fromTo(itemsRef.current, {
+                opacity: 0,
+                y: 50,
+                scale: 0.95
+            }, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: listRef.current,
+                    start: 'top 85%',
+                }
+            })
+        }, listRef)
         
         return () => {
-            ScrollTrigger.getAll().forEach(t => t.kill())
+            ctx.revert()
         }
     }, [])
 

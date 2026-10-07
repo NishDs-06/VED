@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './Team.module.css'
@@ -548,6 +549,7 @@ function Row({ label, sublabel, members, cols, onClick, large, constrained }) {
 /* ── Team ──────────────────────────────────────────────────── */
 
 export default function Team() {
+    const [selected, setSelected] = useState(null)
     const cinematicRef = useRef(null)
     const stageRef     = useRef(null)
     const introTextRef = useRef(null)
@@ -586,6 +588,7 @@ export default function Team() {
     const camera = useRef({ z: 0 })
 
     useEffect(() => {
+        let raf;
         const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -606,7 +609,7 @@ export default function Team() {
 
             
             const canvas = canvasRef.current
-            const ctx = canvas.getContext('2d')
+            const ctx2d = canvas.getContext('2d')
             const stars = []
             const maxZ = 2000
             const minZ = -(chunks.length + 3) * DEPTH_STEP
@@ -629,19 +632,18 @@ export default function Team() {
             dotCtx.arc(8, 8, 8, 0, Math.PI * 2)
             dotCtx.fill()
 
-            let raf;
             const render = () => {
                 if (!canvas) return;
                 if (canvas.width !== window.innerWidth) canvas.width = window.innerWidth;
                 if (canvas.height !== window.innerHeight) canvas.height = window.innerHeight;
                 
-                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                ctx2d.clearRect(0, 0, canvas.width, canvas.height)
                 const cx = canvas.width / 2
                 const cy = canvas.height / 2
                 const fl = 900 // matches CSS perspective
                 const camZ = camera.current.z
                 
-                ctx.fillStyle = '#ffffff'
+                ctx2d.fillStyle = '#ffffff'
                 for (let i = 0; i < stars.length; i++) {
                     const s = stars[i]
                     const z = s.z + camZ
@@ -653,16 +655,18 @@ export default function Team() {
                     
                     if (px < 0 || px > canvas.width || py < 0 || py > canvas.height) continue;
                     
-                    ctx.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
+                    ctx2d.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
                     const r = s.size * scale * 0.5
                     
-                    ctx.beginPath()
-                    ctx.arc(px, py, Math.max(0.5, r), 0, Math.PI * 2)
-                    ctx.fill()
+                    ctx2d.beginPath()
+                    ctx2d.arc(px, py, Math.max(0.5, r), 0, Math.PI * 2)
+                    ctx2d.fill()
                 }
                 raf = requestAnimationFrame(render)
             }
             raf = requestAnimationFrame(render)
+
+            gsap.set(introTextRef.current, { xPercent: -50, yPercent: -50 })
 
             tl.to(introTextRef.current, {
                 opacity: 0,
@@ -701,14 +705,6 @@ export default function Team() {
                     ease: 'power2.out',
                 }, '<+0.4')
 
-                tl.to(chunkEl, {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    scale: 1.05,
-                    duration: 0.8,
-                    ease: 'power2.in',
-                }, '<+1.3')
-
                 if (chunk.type === 'members') {
                     const accents = chunkEl.querySelectorAll(`.${styles.memberAccentBar}`)
                     const roles = chunkEl.querySelectorAll(`.${styles.memberRole}`)
@@ -731,8 +727,8 @@ export default function Team() {
                     }
                     if (names.length) {
                         tl.fromTo(names,
-                            { clipPath: 'inset(110% 0% 0% 0%)', y: 20 },
-                            { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.1 },
+                            { opacity: 0, y: 20 },
+                            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.1 },
                             '<+0.1'
                         )
                     }
@@ -747,8 +743,8 @@ export default function Team() {
                     const titleWord = chunkEl.querySelector(`.${styles.chunkTitle}`)
                     if (titleWord) {
                         tl.fromTo(titleWord,
-                            { clipPath: 'inset(110% 0% 0% 0%)', y: 30, filter: 'blur(10px)' },
-                            { clipPath: 'inset(0% 0% 0% 0%)', y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out' },
+                            { opacity: 0, y: 30, filter: 'blur(10px)' },
+                            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out' },
                             '<+0.1'
                         )
                     }
@@ -814,7 +810,12 @@ export default function Team() {
                                 }}
                             >
                                 {chunk.type === 'members' && chunk.members.map((member) => (
-                                    <div key={member.id} className={styles.memberCardInner}>
+                                    <div 
+                                        key={member.id} 
+                                        className={styles.memberCardInner}
+                                        onClick={() => setSelected(member)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                         {member.photo ? (
                                             <img
                                                 src={member.photo}
@@ -834,7 +835,7 @@ export default function Team() {
                                                 {member.role}
                                             </span>
                                             <div className={styles.memberNameClip}>
-                                                <h3 className={styles.memberName} style={{ clipPath: 'inset(110% 0% 0% 0%)' }}>
+                                                <h3 className={styles.memberName} style={{ opacity: 0 }}>
                                                     {member.name}
                                                 </h3>
                                             </div>
@@ -849,7 +850,7 @@ export default function Team() {
 
                                 {chunk.type === 'title' && (
                                     <div className={styles.chunkTitleClip}>
-                                        <h2 className={styles.chunkTitle} style={{ clipPath: 'inset(110% 0% 0% 0%)' }}>
+                                        <h2 className={styles.chunkTitle} style={{ opacity: 0 }}>
                                             {chunk.text}
                                         </h2>
                                     </div>
@@ -865,6 +866,11 @@ export default function Team() {
                 scroll to explore
                 <span className={styles.scrollHintLine} />
             </div>
+
+            {selected && createPortal(
+                <Popup member={selected} onClose={() => setSelected(null)} />,
+                document.body
+            )}
         </section>
     )
 }

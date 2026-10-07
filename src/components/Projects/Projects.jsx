@@ -6,6 +6,12 @@ import styles from './Projects.module.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const GitHubIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+    </svg>
+)
+
 const STATUS_CONFIG = {
     'DESIGNING': { color: '#FF3366', label: 'Designing' },
     'BUILDING': { color: '#00E5FF', label: 'Building' },
@@ -20,7 +26,7 @@ const CATEGORY_COLOR = {
 
 function ProjectPopup({ project, onClose }) {
     const accent = CATEGORY_COLOR[project.category] || '#FFFFFF'
-    const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.PLANNING
+    const statusCfg = STATUS_CONFIG[project.status] || { color: '#888', label: 'Planning' }
 
     useEffect(() => {
         window.dispatchEvent(new Event('ved:popup:open'))
@@ -45,59 +51,70 @@ function ProjectPopup({ project, onClose }) {
                 </button>
 
                 <div className={styles.popupInner}>
-                    <div className={styles.popupBadgeRow}>
-                        <span className={styles.popupCategoryBadge} style={{ color: accent, borderColor: accent + '33', background: accent + '11' }}>
-                            {project.category}
-                        </span>
-                        <span className={styles.popupStatusDot} style={{ background: statusCfg.color }} />
-                        <span className={styles.popupStatusLabel} style={{ color: statusCfg.color }}>{statusCfg.label}</span>
+                    <div className={styles.popupHeader}>
+                        <div className={styles.popupBadgeRow}>
+                            <span className={styles.popupCategoryBadge} style={{ color: accent, background: accent + '11' }}>
+                                {project.category}
+                            </span>
+                        </div>
+                        <h2 className={styles.popupName}>{project.name}</h2>
+                        <p className={styles.popupDomain}>{project.domain}</p>
                     </div>
 
-                    <h2 className={styles.popupName}>{project.name}</h2>
-                    <p className={styles.popupDomain}>{project.domain}</p>
+                    <div className={styles.popupGrid}>
+                        <div className={styles.popupMainContent}>
+                            <p className={styles.sectionLabel}>Problem Statement</p>
+                            <p className={styles.popupAbout}>{project.about}</p>
 
-                    <div className={styles.popupDivider} />
-
-                    <div className={styles.metaRow}>
-                        <div className={styles.metaBox}>
-                            <span className={styles.metaLabel}>Team</span>
-                            <span className={styles.metaVal}>{project.members} members</span>
+                            {project.learn && project.learn.length > 0 && (
+                                <>
+                                    <p className={styles.sectionLabel} style={{ marginTop: 32 }}>What You'll Learn</p>
+                                    <ul className={styles.learnList}>
+                                        {project.learn.map(l => (
+                                            <li key={l}>
+                                                <span className={styles.learnArrow} style={{ color: accent }}>→</span>
+                                                {l}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </>
+                            )}
                         </div>
-                        <div className={styles.metaBox}>
-                            <span className={styles.metaLabel}>Cycle</span>
-                            <span className={styles.metaVal}>Spring 2026</span>
+
+                        <div className={styles.popupSidebar}>
+                            <div className={styles.sidebarBlock}>
+                                <span className={styles.metaLabel}>Status</span>
+                                <div className={styles.statusWrap}>
+                                    <span className={styles.popupStatusDot} style={{ background: statusCfg.color }} />
+                                    <span className={styles.metaVal} style={{ color: statusCfg.color }}>{statusCfg.label}</span>
+                                </div>
+                            </div>
+                            <div className={styles.sidebarBlock}>
+                                <span className={styles.metaLabel}>Team</span>
+                                <span className={styles.metaVal}>{project.members} members</span>
+                            </div>
+                            <div className={styles.sidebarBlock}>
+                                <span className={styles.metaLabel}>Cycle</span>
+                                <span className={styles.metaVal}>Spring 2026</span>
+                            </div>
+                            <div className={styles.sidebarBlock}>
+                                <span className={styles.metaLabel}>Tech Stack</span>
+                                <div className={styles.toolsRow}>
+                                    {project.tools && project.tools.map(t => <span key={t} className={styles.toolPill}>{t}</span>)}
+                                </div>
+                            </div>
+                            <div className={styles.sidebarBlock} style={{ marginTop: 'auto', paddingTop: '16px' }}>
+                                {project.github ? (
+                                    <a href={project.github} target="_blank" rel="noreferrer" className={styles.actionGhost}>
+                                        <GitHubIcon /> View Repository
+                                    </a>
+                                ) : (
+                                    <span className={styles.actionGhost} style={{ opacity: 0.3, cursor: 'not-allowed' }}>
+                                        <GitHubIcon /> Code Private
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                        <div className={styles.metaBox}>
-                            <span className={styles.metaLabel}>Status</span>
-                            <span className={styles.metaVal} style={{ color: statusCfg.color }}>{statusCfg.label}</span>
-                        </div>
-                    </div>
-
-                    <div className={styles.toolsRow}>
-                        {project.tools.map(t => <span key={t} className={styles.toolPill}>{t}</span>)}
-                    </div>
-
-                    <div className={styles.popupDivider} />
-
-                    <p className={styles.sectionLabel}>Problem Statement</p>
-                    <p className={styles.popupAbout}>{project.about}</p>
-
-                    <p className={styles.sectionLabel} style={{ marginTop: 22 }}>What You'll Learn</p>
-                    <ul className={styles.learnList}>
-                        {project.learn.map(l => (
-                            <li key={l}>
-                                <span className={styles.learnArrow} style={{ color: accent }}>→</span>
-                                {l}
-                            </li>
-                        ))}
-                    </ul>
-
-                    <div className={styles.popupDivider} />
-
-                    <div className={styles.popupActions}>
-                        <a href={project.github} target="_blank" rel="noreferrer" className={styles.actionGhost}>
-                            <GitHubIcon /> GitHub
-                        </a>
                     </div>
                 </div>
             </div>
@@ -239,27 +256,27 @@ export default function Projects() {
     useEffect(() => {
         if (!listRef.current) return;
         
-        // Staggered reveal of list items from lower middle using Emil's rules
-        // "Start from scale(0.95) with opacity: 0"
-        gsap.fromTo(itemsRef.current, {
-            opacity: 0,
-            y: 50,
-            scale: 0.95
-        }, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: listRef.current,
-                start: 'top 85%',
-            }
-        })
+        const ctx = gsap.context(() => {
+            gsap.fromTo(itemsRef.current, {
+                opacity: 0,
+                y: 50,
+                scale: 0.95
+            }, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: listRef.current,
+                    start: 'top 85%',
+                }
+            })
+        }, listRef)
         
         return () => {
-            ScrollTrigger.getAll().forEach(t => t.kill())
+            ctx.revert()
         }
     }, [])
 
