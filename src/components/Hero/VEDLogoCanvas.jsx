@@ -46,16 +46,14 @@ sctx.fillRect(0, 0, 16, 16)
 
 function generateDots(vpW, vpH) {
     const isMobileView = vpW < 768
-    // ── PREMIUM FIX: Wider spacing. A sparse, intentional dot-matrix feels 
-    // like an expensive mechanical interface. Dense dots feel like TV static.
-    // ── PERFORMANCE FIX: Slightly increased to reduce overall dot count for a buttery smooth entrance.
-    const spacing = isMobileView ? 9 : 13 
+    // ── PREMIUM FIX: 6px spacing on mobile for ultra-high-resolution retina matrix feel
+    const spacing = isMobileView ? 6 : 13 
 
-    // On mobile (portrait) the visual centre of the canvas feels higher
-    // because the subtitle sits below — push VED up slightly less than desktop
-    const cyFrac = isMobileView ? 0.44 : 0.47
-    const maxWFrac = isMobileView ? 0.88 : 0.82
-    const maxHFrac = isMobileView ? 0.30 : 0.44
+    // Adjust cy slightly higher on mobile
+    const cyFrac = isMobileView ? 0.40 : 0.47
+    // Maintain strict aspect ratio bounds to prevent squishing on narrow screens
+    const maxWFrac = 0.82
+    const maxHFrac = 0.44
 
     const maxW = vpW * maxWFrac
     const maxH = vpH * maxHFrac

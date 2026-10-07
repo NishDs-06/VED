@@ -37,7 +37,7 @@ export default function Hero() {
                 aria-hidden="true"
                 style={{
                     position: 'absolute',
-                    bottom: '8%',
+                    bottom: 'clamp(10%, 12vh, 12%)',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     opacity: 0,

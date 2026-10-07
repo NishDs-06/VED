@@ -590,6 +590,17 @@ export default function Team() {
     useEffect(() => {
         let raf;
         const ctx = gsap.context(() => {
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Instantly reveal all elements for native mobile scrolling
+                gsap.set(introTextRef.current, { opacity: 1, y: 0, scale: 1 });
+                gsap.set(chunkRefs.current, { opacity: 1, filter: 'blur(0px)', scale: 1 });
+                gsap.set(`.${styles.memberRole}, .${styles.memberName}, .${styles.memberSub}, .${styles.chunkTitle}`, { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)', filter: 'blur(0px)' });
+                gsap.set(`.${styles.memberAccentBar}`, { scaleX: 1 });
+                return;
+            }
+
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: cinematicRef.current,
