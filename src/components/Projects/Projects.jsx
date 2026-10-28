@@ -6,18 +6,13 @@ import styles from './Projects.module.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const GitHubIcon = () => (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-    </svg>
-)
-
 const STATUS_CONFIG = {
     'NOT_STARTED': { color: '#FF9900', label: 'Not Started (Recruiting Soon)' },
     'DESIGNING': { color: '#FF3366', label: 'Designing' },
     'BUILDING': { color: '#00E5FF', label: 'Building' },
     'TESTING': { color: '#00FF66', label: 'Testing' },
     'ACTIVE': { color: '#FFE600', label: 'Active' },
+    'LIT_REVIEW': { color: '#B388FF', label: 'Literature Review' },
 }
 const CATEGORY_COLOR = {
     'DEVICE': '#FF3366',
@@ -106,17 +101,6 @@ function ProjectPopup({ project, onClose }) {
                                     {project.tools && project.tools.map(t => <span key={t} className={styles.toolPill}>{t}</span>)}
                                 </div>
                             </div>
-                            <div className={styles.sidebarBlock} style={{ marginTop: 'auto', paddingTop: '16px' }}>
-                                {project.github ? (
-                                    <a href={project.github} target="_blank" rel="noreferrer" className={styles.actionGhost}>
-                                        <GitHubIcon /> View Repository
-                                    </a>
-                                ) : (
-                                    <span className={styles.actionGhost} style={{ opacity: 0.3, cursor: 'not-allowed' }}>
-                                        <GitHubIcon /> Code Private
-                                    </span>
-                                )}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,25 +141,45 @@ const PROJECTS = [
         about: 'An embedded semiconductor forensics platform that measures current, voltage, power and temperature signatures of ICs to generate repeatable electrical fingerprints to identify counterfeit, recycled, or tampered semiconductor devices.',
     },
     {
-        id: 'contamination-system',
-        name: 'Cleanroom Contamination Fingerprinting',
-        domain: 'Embedded Systems / IoT / Automation',
-        category: 'EMBEDDED',
-        status: 'NOT_STARTED',
-        members: 5,
-        tools: ['Siemens NX', 'ANSYS Fluent', 'Proteus', 'STM32CubeIDE', 'ESP32'],
-        about: 'A complete software-based digital twin and simulation of an intelligent semiconductor cleanroom that models airflow, filtration, and environmental sensing. Detects contamination events, identifies sources via fingerprints, and simulates corrective responses.',
+        id: 'rdf-bti-cmos',
+        name: 'RDF and BTI Effects on Nanoscale CMOS',
+        domain: 'Semiconductor Device Physics',
+        category: 'DEVICE',
+        status: 'LIT_REVIEW',
+        members: '3–4',
+        tools: ['TCAD'],
+        about: 'A TCAD study of how random dopant fluctuation (RDF) and bias temperature instability (BTI) degrade threshold voltage and reliability in nanoscale CMOS transistors.',
     },
     {
-        id: 'tsing-hua',
-        name: 'NTHU Taiwan Collaboration',
-        domain: 'Research / International Relations',
-        category: 'RESEARCH',
-        status: 'ACTIVE',
-        members: 12,
-        tools: ['VLSI DESIGN', 'FABRICATION', 'EMBEDDED'],
-        about: 'Official affiliation and delegation visit to National Tsing Hua University (NTHU), Taiwan, exploring collaborative research in semiconductor technology, fabrication, and embedded systems.',
-    }
+        id: 'sar-adc-comparator',
+        name: 'Dynamic Latch Comparator for SAR ADC',
+        domain: 'Circuits',
+        category: 'CIRCUIT',
+        status: 'LIT_REVIEW',
+        members: '3–4',
+        tools: ['Cadence'],
+        about: 'Design and characterisation of a low-power dynamic latch comparator, the core decision element of a successive-approximation (SAR) ADC, optimised for speed, offset and energy per conversion.',
+    },
+    {
+        id: 'self-heating-ro',
+        name: 'Self-Heating Effects in CMOS Ring Oscillators',
+        domain: 'Semiconductor Device Physics',
+        category: 'DEVICE',
+        status: 'LIT_REVIEW',
+        members: '3–4',
+        tools: ['TCAD', 'Cadence'],
+        about: 'Investigating how self-heating in scaled CMOS devices shifts the frequency and stability of ring oscillators, linking device-level TCAD thermal models to circuit-level behaviour in Cadence.',
+    },
+    {
+        id: 'self-cal-ro',
+        name: 'Self-Calibrating CMOS Ring Oscillator',
+        domain: 'Circuits',
+        category: 'CIRCUIT',
+        status: 'LIT_REVIEW',
+        members: '3–4',
+        tools: ['Cadence'],
+        about: 'A ring oscillator with on-chip calibration that compensates for process, voltage and temperature (PVT) variation to hold a stable output frequency.',
+    },
 ]
 
 export default function Projects() {
@@ -202,7 +206,9 @@ export default function Projects() {
         window.addEventListener('resize', handleResize)
 
         const stars = []
-        for (let i = 0; i < 4000; i++) {
+        // Phones get fewer stars; density stays similar on the smaller screen
+        const starCount = window.innerWidth <= 768 ? 1200 : 2500
+        for (let i = 0; i < starCount; i++) {
             stars.push({
                 x: (Math.random() - 0.5) * 4000,
                 y: (Math.random() - 0.5) * 4000,
@@ -254,7 +260,8 @@ export default function Projects() {
                 ctx2d.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
                 const r = s.size * scale * 0.5
                 const size = Math.max(1, r * 2)
-                ctx2d.drawImage(dotCanvas, 0, 0, 16, 16, px - r, py - r, size, size)
+                if (size < 2.5) ctx2d.fillRect(px - r, py - r, size, size)
+                else ctx2d.drawImage(dotCanvas, 0, 0, 16, 16, px - r, py - r, size, size)
             }
             raf = requestAnimationFrame(render)
         }
@@ -322,8 +329,8 @@ export default function Projects() {
                                 <p className={styles.itemDesc}>{project.about}</p>
                             </div>
                             <div className={styles.itemMeta}>
-                                <div>{project.status}</div>
-                                <div style={{ color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>{project.members} Team Members</div>
+                                <div>{(STATUS_CONFIG[project.status] || {}).label || project.status}</div>
+                                <div style={{ color: 'rgba(255,255,255,0.72)', marginTop: '4px' }}>{project.members} Team Members</div>
                             </div>
                         </div>
                     ))}

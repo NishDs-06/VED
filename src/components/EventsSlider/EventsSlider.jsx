@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import styles from './EventsSlider.module.css';
 
 const EVENTS = [
-    { id: 1, title: "PowerNext-AI", date: "OCT 10-11, 2026", status: "ONGOING", link: "https://www.powernext-ai.in/", image: "/poster_powernext.jpg" },
-    { id: 2, title: "Embedded Systems Workshop", date: "Coming Soon", status: "UPCOMING", link: "#", image: "/poster_embedded_systems.jpg" },
-    { id: 3, title: "VLSI Design Sprint", date: "Past Event", status: "COMPLETED", link: "#", image: "/poster_vlsi_sprint.jpg" },
+    { id: 1, title: "PowerNext-AI", date: "OCT 10-11, 2026", status: "ONGOING", link: "https://www.powernext-ai.in/", image: "/poster_powernext.webp" },
+    { id: 2, title: "Embedded Systems Workshop", date: "Coming Soon", status: "UPCOMING", link: "#", image: "/poster_embedded_systems.webp" },
+    { id: 3, title: "VLSI Design Sprint", date: "Past Event", status: "COMPLETED", link: "#", image: "/poster_vlsi_sprint.webp" },
 ];
 
 export default function EventsSlider() {

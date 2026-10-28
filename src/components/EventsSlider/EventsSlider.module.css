@@ -27,7 +27,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.15em;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     text-transform: uppercase;
     transition: color 0.3s ease;
@@ -155,7 +155,7 @@
 .card p {
     font-family: 'DM Mono', monospace;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
 }
 

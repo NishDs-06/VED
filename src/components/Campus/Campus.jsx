@@ -73,11 +73,14 @@ export default function Campus() {
             const heightPct = (heightPx / vh) * 100;
             const bottomPct = 100 - 10 - heightPct;
 
+            // Copy sits under the video card rather than over the middle of the screen
+            gsap.set(textRef.current, { top: vh * 0.1 + heightPx + 28 });
+
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: 'top top',
-                    end: '+=350%',
+                    end: '+=200%',
                     pin: true,
                     scrub: 2,
                     refreshPriority: -1,
@@ -106,16 +109,7 @@ export default function Campus() {
                   stagger: 0.1,
                   ease: 'power2.out'
               }, 0.3)
-              .to(videoRef.current, {
-                  opacity: 0,
-                  duration: 0.5,
-                  ease: 'power2.inOut'
-              }, 1)
-              .to(textRef.current, {
-                  y: '-15vh',
-                  duration: 0.5,
-                  ease: 'power2.inOut'
-              }, 1);
+              .to({}, { duration: 0.4 });
               
             return () => { tl.kill(); };
         });
@@ -128,13 +122,15 @@ export default function Campus() {
     return (
         <section className={styles.campusSection} ref={containerRef}>
             <div className={styles.videoWrapper} ref={videoRef}>
-                <video 
-                    autoPlay 
+                <video
+                    autoPlay
                     loop
-                    muted 
-                    playsInline 
+                    muted
+                    playsInline
+                    preload="metadata"
+                    poster="/campus_poster.jpg"
                     className={styles.video}
-                    src="/campus_watermark_removed.webm"
+                    src="/campus.mp4"
                 />
                 <div className={styles.overlay} ref={overlayRef}></div>
             </div>

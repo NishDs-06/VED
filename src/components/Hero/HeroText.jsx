@@ -40,7 +40,7 @@ const HeroText = forwardRef(function HeroText(_, ref) {
                     fontWeight: 500,
                     fontSize: 'clamp(10px, 1.5vw, 13px)',
                     letterSpacing: 'clamp(0.15em, 1vw, 0.3em)',
-                    color: 'rgba(255, 255, 255, 0.45)',
+                    color: 'rgba(255, 255, 255, 0.72)',
                     textTransform: 'uppercase',
                 }}
             >

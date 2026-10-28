@@ -283,11 +283,7 @@ function drawSolidChip(ctx, vpW, vpH, alpha, smirkPhase) {
     }
 
     // ── PREMIUM FIX: The "Cool" Factor — Glowing Purple Laser Routing ──
-    ctx.globalAlpha = alpha * 0.85
     ctx.strokeStyle = 'rgba(255,255,255,1)'
-    ctx.shadowColor = 'rgba(255,255,255,0.8)'
-    ctx.shadowBlur = 8
-    ctx.lineWidth = 1.5
 
     // Draw some complex angular data pathways
     const traces = [
@@ -298,25 +294,31 @@ function drawSolidChip(ctx, vpW, vpH, alpha, smirkPhase) {
         [[0.04, 0.50], [0.10, 0.50], [0.10, 0.65], [0.21, 0.65]]
     ]
     
+    // Glow without shadowBlur (a per-draw GPU blur): one wide faint pass under the crisp line
+    const tracePath = new Path2D()
     for (const line of traces) {
-        ctx.beginPath()
         for (let i = 0; i < line.length; i++) {
             const px = L + line[i][0] * size
             const py = T + line[i][1] * size
-            if (i === 0) ctx.moveTo(px, py)
-            else ctx.lineTo(px, py)
+            if (i === 0) tracePath.moveTo(px, py)
+            else tracePath.lineTo(px, py)
         }
-        ctx.stroke()
-        
+    }
+    ctx.lineJoin = 'round'
+    ctx.globalAlpha = alpha * 0.18
+    ctx.lineWidth = 6
+    ctx.stroke(tracePath)
+    ctx.globalAlpha = alpha * 0.85
+    ctx.lineWidth = 1.5
+    ctx.stroke(tracePath)
+
+    for (const line of traces) {
         // Draw photon node at start and end
         ctx.fillStyle = '#FFFFFF'
         const start = line[0], end = line[line.length - 1]
         ctx.beginPath(); ctx.arc(L + start[0]*size, T + start[1]*size, 2, 0, Math.PI*2); ctx.fill()
         ctx.beginPath(); ctx.arc(L + end[0]*size, T + end[1]*size, 2, 0, Math.PI*2); ctx.fill()
     }
-    
-    // Clear shadow for remainder
-    ctx.shadowBlur = 0
 
     //     // ── SMIRK SHINE — Shimmering glass reflection ──
     if (alpha > 0.30) {
@@ -368,10 +370,9 @@ function drawPixel(ctx, x, y, baseR, shape, sizeScale, bri, alpha) {
         const h = r * 0.9
         ctx.drawImage(SQUARE_SPRITE, x - h, y - h, h * 2, h * 2)
     } else {
-        ctx.fillStyle = '#fff'
+        // fillStyle is set once per frame by the caller
         ctx.fillRect(x - 0.75, y - 0.75, 1.5, 1.5)
     }
-    ctx.globalAlpha = 1
 }
 
 /* ══════════════════════════════════════════════════════════════ */
@@ -408,7 +409,9 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             vpH = hero ? hero.clientHeight : window.innerHeight
 
             const { dots: d } = generateDots(vpW, vpH)
-            dots = d
+            // Grouped by shape so consecutive draws share a sprite and the GPU can batch them
+            const SHAPE_ORDER = { circle: 0, square: 1, speck: 2 }
+            dots = d.sort((a, b) => SHAPE_ORDER[a.shape] - SHAPE_ORDER[b.shape])
             baseR = Math.max(1.5, 7 * 0.40)
 
             dots.forEach(dot => {
@@ -516,6 +519,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
 
             // Draw dots
             if (dotAlpha > 0.01) {
+                ctx.fillStyle = '#fff'
                 for (const d of dots) {
                     let x, y, alpha, bri
                     if (!entryDone) {
@@ -585,6 +589,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
                     if (alpha < 0.02) continue
                     drawPixel(ctx, x, y, baseR, d.shape, d.sizeScale, bri, alpha)
                 }
+                ctx.globalAlpha = 1
             }
 
             // Draw solid chip
@@ -594,11 +599,20 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
         }
 
         /* ── Visibility / Resize ───────────────────────────── */
-        function onVis() {
-            if (document.hidden) { alive = false; cancelAnimationFrame(rafId); breathTween?.pause() }
-            else { alive = true; rafId = requestAnimationFrame(loop); breathTween?.resume() }
+        // Only draw while the tab is visible and the hero is on screen
+        let onScreen = true
+        function pause() { alive = false; cancelAnimationFrame(rafId); breathTween?.pause() }
+        function resume() {
+            if (alive || !onScreen || document.hidden) return
+            alive = true; rafId = requestAnimationFrame(loop); breathTween?.resume()
         }
+        function onVis() { document.hidden ? pause() : resume() }
         document.addEventListener('visibilitychange', onVis)
+        const io = new IntersectionObserver(([entry]) => {
+            onScreen = entry.isIntersecting
+            onScreen ? resume() : pause()
+        })
+        io.observe(canvas)
         let resizeTimer
         function onResize() {
             clearTimeout(resizeTimer)
@@ -624,6 +638,7 @@ export default function VEDLogoCanvas({ heroRef, heroTextRef, scrollCueRef }) {
             window.removeEventListener('resize', onResize)
             window.removeEventListener('pointermove', onPointerMove)
             document.removeEventListener('visibilitychange', onVis)
+            io.disconnect()
             heroST?.kill()
         }
     }, [])

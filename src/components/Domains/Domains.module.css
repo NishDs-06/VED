@@ -140,7 +140,7 @@
     font-size: clamp(28px, 4vw, 56px);
     font-weight: 900;
     letter-spacing: -0.02em;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(255, 255, 255, 0.72);
     text-transform: uppercase;
     line-height: 1.05;
     margin-bottom: 0;
@@ -187,7 +187,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.22em;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     text-transform: uppercase;
     margin-top: var(--sp-1);
 }
@@ -330,14 +330,20 @@
     }
 }
 
-.cell {
-    opacity: 0;
-    animation: placeCell 0.08s ease-out forwards;
+/* Set from JS while the horizontal track is moving */
+.isMoving .vizSvg * {
+    animation-play-state: paused !important;
 }
 
-@keyframes placeCell {
+.cellGrid {
+    clip-path: inset(0 0 100% 0);
+    /* 16 steps = the grid fills in one row of cells at a time */
+    animation: placeCells 2s steps(16, end) forwards;
+}
+
+@keyframes placeCells {
     to {
-        opacity: 1;
+        clip-path: inset(0 0 0 0);
     }
 }
 
@@ -473,11 +479,11 @@
     .panel {
         width: 100vw !important;
         height: auto !important;
-        min-height: 100svh;
+        min-height: 0;
         flex-direction: column !important;
-        padding: 80px 20px 56px;
-        gap: 28px;
-        justify-content: center;
+        padding: 56px 20px 48px;
+        gap: 20px;
+        justify-content: flex-start;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -489,6 +495,7 @@
         flex: 0 0 auto;
         width: 100%;
         max-width: 100%;
+        order: -1; /* same visual-then-copy order on every panel */
     }
 
     .vizSvg {

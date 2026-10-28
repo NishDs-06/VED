@@ -113,17 +113,20 @@ function Pipeline() {
         </svg>
     )
 }
+// The 512 standard cells are one path, revealed row by row by a single clip animation
+// (one animated element instead of 512 separately animated rects)
+const PLACEMENT_COLS = 32, PLACEMENT_ROWS = 16
+const PLACEMENT_CELLS = Array.from({ length: PLACEMENT_COLS * PLACEMENT_ROWS }, (_, i) => {
+    const col = i % PLACEMENT_COLS, row = Math.floor(i / PLACEMENT_COLS)
+    return `M${10 + col * 7} ${10 + row * 8}h5v6h-5z`
+}).join('')
+
 function ChipPlacement() {
-    const cols = 32, rows = 16
-    const cells = Array.from({ length: cols * rows }, (_, i) => i)
     return (
         <svg viewBox="0 0 320 200" className={styles.vizSvg} aria-hidden="true">
             <rect x="0" y="0" width="320" height="200" fill="rgba(0,0,0,0.92)" rx="4" />
             <rect x="10" y="10" width="230" height="140" rx="1" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-            {cells.map(i => {
-                const col = i % cols, row = Math.floor(i / cols)
-                return (<rect key={i} x={10 + col * 7} y={10 + row * 8} width="5" height="6" rx="0.5" fill="rgba(229,231,235,0.08)" stroke="rgba(229,231,235,0.15)" strokeWidth="0.3" className={styles.cell} style={{ animationDelay: `${(i / cells.length) * 2}s` }} />)
-            })}
+            <path d={PLACEMENT_CELLS} fill="rgba(229,231,235,0.08)" stroke="rgba(229,231,235,0.15)" strokeWidth="0.3" className={styles.cellGrid} />
             <path d="M50,30 H180 V80 H100 V120" fill="none" stroke="rgba(229,231,235,0.4)" strokeWidth="0.8" className={styles.routeLine} />
             <path d="M30,70 H80 V130 H200 V50 H220" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" className={styles.routeLine} style={{ animationDelay: '0.3s' }} />
             <path d="M90,10 V150" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="0.6" className={styles.routeLine} style={{ animationDelay: '0.6s' }} />
@@ -228,6 +231,7 @@ export default function Domains() {
         }
 
         let hst = null
+        let moving = false, settleTimer = null
 
         function createST() {
             hst?.kill()
@@ -243,6 +247,12 @@ export default function Domains() {
                 end: () => `+=${window.innerWidth * (DOMAINS.length - 1)}`,
                 scrub: 1.5,
                 onUpdate(self) {
+                    // Pause the diagram loops while the track slides; they repaint the
+                    // whole SVG every frame and nobody can follow them mid-swipe anyway
+                    if (!moving) { moving = true; section.classList.add(styles.isMoving) }
+                    clearTimeout(settleTimer)
+                    settleTimer = setTimeout(() => { moving = false; section.classList.remove(styles.isMoving) }, 140)
+
                     const progress = Math.max(0, Math.min(1, self.progress))
                     const xVal = -progress * window.innerWidth * (DOMAINS.length - 1)
                     track.style.transform = `translateX(${xVal}px)`
@@ -291,6 +301,7 @@ export default function Domains() {
         return () => {
             window.removeEventListener('hero-st-ready', initST)
             clearTimeout(timer)
+            clearTimeout(settleTimer)
             hst?.kill()
             panelObserver.disconnect()
         }

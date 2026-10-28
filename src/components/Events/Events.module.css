@@ -25,7 +25,7 @@
     font-size: clamp(0.65rem, 0.9vw, 0.8rem);
     text-transform: uppercase;
     letter-spacing: 0.42em;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.65);
     margin-bottom: 1.2rem;
 }
 
@@ -77,7 +77,7 @@
 .itemDate {
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.8);
     letter-spacing: 0.05em;
 }
 
@@ -92,7 +92,7 @@
 .itemDesc {
     font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.8);
     line-height: 1.5;
     margin: 10px 0 0 0;
     max-width: 90%;
@@ -259,7 +259,7 @@
 .heroSummary {
     font-family: 'DM Sans', sans-serif;
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.8);
     max-width: 700px;
     line-height: 1.6;
     text-wrap: pretty;
@@ -408,7 +408,7 @@
     right: 24px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -509,7 +509,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.25em;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.65);
     text-transform: uppercase;
 }
 
@@ -530,7 +530,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.72);
     text-transform: uppercase;
     margin-bottom: 16px;
     display: block;
@@ -539,7 +539,7 @@
 .popupAbout {
     font-family: 'DM Sans', sans-serif;
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.8);
     line-height: 1.7;
     text-wrap: pretty;
 }
@@ -592,7 +592,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.25em;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.72);
     text-transform: uppercase;
 }
 
@@ -623,7 +623,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.65);
     text-transform: uppercase;
 }
 
@@ -631,7 +631,7 @@
     font-family: 'Syne', sans-serif;
     font-size: 32px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.55);
     margin: 0 -8px;
     padding-bottom: 4px;
 }

@@ -62,7 +62,7 @@ export default function Hero() {
                     fontFamily: "'DM Mono', monospace",
                     fontSize: '10px',
                     letterSpacing: '0.22em',
-                    color: 'rgba(255,255,255,0.4)', // ── PREMIUM FIX: Crisp silver subtitle
+                    color: 'rgba(255,255,255,0.72)', // ── PREMIUM FIX: Crisp silver subtitle
                     textTransform: 'uppercase',
                 }}>
                     SKY130 · 130nm · MIT Bangalore

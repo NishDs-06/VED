@@ -1,1038 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap');
+/* ── Tokens ──────────────────────────────────────────────────── */
+.page {
+    --text: #ffffff;
+    --text-2: rgba(255, 255, 255, 0.72);
+    --text-3: rgba(255, 255, 255, 0.55);
+    --line: rgba(255, 255, 255, 0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    --gutter: clamp(16px, 5vw, 64px);
 
-/* ── SECTION ────────────────────────────────────────────────── */
-.section {
+    position: relative;
+    min-height: 100vh;
     background: #000;
-    position: relative;
-    z-index: 2;
-    padding-bottom: 140px;
-    width: 100%;
-    will-change: transform;
-    transform: translateZ(0);
-    contain: layout paint;
+    color: var(--text);
+    overflow-x: clip;
+    padding-bottom: clamp(96px, 14vh, 160px);
 }
 
-/* ── HEADER ─────────────────────────────────────────────────── */
-.header {
-    width: 100%;
-    padding: 96px 64px 40px;
-}
-
-.eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.32em;
-    color: rgba(255, 255, 255, 0.7);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-}
-
-.heading {
-    font-family: 'DM Sans', sans-serif;
-    font-size: clamp(30px, 5vw, 56px);
-    font-weight: 500;
-    color: #fff;
-    letter-spacing: -0.04em;
-    line-height: 1.1;
-    text-wrap: balance;
-}
-
-.headingRule {
-    width: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, #FFFFFF, transparent);
-    margin: 16px 0 12px;
-    border-radius: 2px;
-}
-
-.sub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.25);
-    text-transform: uppercase;
-}
-
-/* ── SINE WAVE ──────────────────────────────────────────────── */
-.sineCanvas {
-    display: block;
-    width: 100%;
-    height: 90px;
-    margin: 12px 0 0;
-}
-
-/* ── ROW WRAPPER ────────────────────────────────────────────── */
-.rowWrap {
-    width: 100%;
-    padding: 0 64px;
-    margin-bottom: 72px;
-}
-
-.rowWrapPlain {
-    width: 100%;
-    padding: 32px 64px 0;
-    margin-bottom: 72px;
-}
-
-.rowHeader {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-    padding-top: 64px;
-}
-
-.rowLabel {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.3em;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.rowSublabel {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.18);
-    white-space: nowrap;
-}
-
-.rowRule {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent);
-}
-
-/* ── GRIDS ──────────────────────────────────────────────────── */
-.grid2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    align-items: stretch;
-}
-
-.grid3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    align-items: stretch;
-}
-
-.grid4 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    align-items: stretch;
-}
-
-.grid5 {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
-    align-items: stretch;
-}
-
-/* ── CARD ───────────────────────────────────────────────────── */
-.card {
-    background: #050507;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 380px;
-    transition:
-        border-color 300ms cubic-bezier(0.25, 1, 0.5, 1),
-        transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 300ms cubic-bezier(0.25, 1, 0.5, 1);
-    outline: none;
-    will-change: transform;
-    contain: layout style paint;
-}
-
-.card:active {
-    transform: scale(0.98);
-}
-
-.cardLarge {
-    height: 440px;
-}
-
-@media (min-width: 1024px) {
-    .card {
-        height: 420px;
-    }
-
-    .cardLarge {
-        height: 500px;
-    }
-}
-
-.card:hover,
-.card:focus-visible {
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-5px);
-    box-shadow: 0 20px 60px rgba(255, 255, 255, 0.18);
-}
-
-/* ── TOP SHIMMER ────────────────────────────────────────────── */
-.cardAccentLine {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.4) 20%,
-            rgba(255, 255, 255, 1) 50%,
-            rgba(255, 255, 255, 0.4) 80%,
-            transparent 100%);
-    opacity: 0;
-    transition: opacity 280ms ease;
-    pointer-events: none;
-    z-index: 5;
-}
-
-.card:hover .cardAccentLine,
-.card:focus-visible .cardAccentLine {
-    opacity: 1;
-}
-
-/* ── PHOTO BOX ──────────────────────────────────────────────── */
-.photoBox {
-    /* FIXED: takes up all remaining space above card body */
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background: #060010;
-    min-height: 0;
-}
-
-.photoImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 15%;
-    display: block;
-    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.card:hover .photoImg {
-    transform: scale(1.04);
-}
-
-/* For members with photoScale set, hover should add to existing scale */
-.card:hover .photoImg[style*="scale(0"] {
-    /* don't override inline scale — just let it be */
-    transform: none;
-}
-
-/* ── PHOTO GRADIENT OVERLAY ──────────────────────────────────── */
-/* 
-   Gradient only kicks in at bottom 30% — face stays fully visible.
-   For headshot-style photos that fill the frame, this is critical.
-*/
-.photoOverlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg,
-            transparent 0%,
-            transparent 52%,
-            rgba(11, 8, 20, 0.35) 72%,
-            rgba(11, 8, 20, 0.82) 88%,
-            rgba(11, 8, 20, 0.96) 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* ── PLACEHOLDER ────────────────────────────────────────────── */
-.photoPlaceholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(160deg, #110828 0%, #080016 60%, #030009 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.photoPlaceholder::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 20px 20px;
-    pointer-events: none;
-}
-
-.photoPlaceholder::after {
-    content: '';
-    position: absolute;
-    inset: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    pointer-events: none;
-    transition: border-color 280ms ease;
-}
-
-.card:hover .photoPlaceholder::after {
-    border-color: rgba(255, 255, 255, 0.28);
-}
-
-.photoInitials {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.05em;
-    user-select: none;
-    position: relative;
-    z-index: 1;
-    transition: color 280ms ease, text-shadow 280ms ease;
-}
-
-.card:hover .photoInitials {
-    color: rgba(255, 255, 255, 0.6);
-    text-shadow: 0 0 32px rgba(255, 255, 255, 0.3);
-}
-
-/* ── SCAN LINE ──────────────────────────────────────────────── */
-.scanLine {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: linear-gradient(180deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.05) 40%,
-            rgba(255, 255, 255, 0.09) 50%,
-            rgba(255, 255, 255, 0.05) 60%,
-            transparent 100%);
-    top: 0;
-    transform: translateY(-70px);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 2;
-}
-
-.card:hover .scanLine {
-    opacity: 1;
-    animation: scanDown 3.5s linear infinite;
-}
-
-@keyframes scanDown {
-    0% {
-        transform: translateY(-70px);
-    }
-
-    100% {
-        transform: translateY(calc(100% + 200px));
-    }
-}
-
-/* ── CARD BODY ──────────────────────────────────────────────── */
-.cardBody {
-    flex-shrink: 0;
-    padding: 12px 16px 14px;
-    /* FIXED: slightly lighter surface so text pops */
-    background: #100d1e;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    /* fixed height so all cards are consistent */
-    min-height: 82px;
-}
-
-.cardRole {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    color: rgba(255, 255, 255, 0.9);
-    text-transform: uppercase;
-    line-height: 1.3;
-}
-
-.cardName {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-    margin-top: 2px;
-    text-wrap: balance;
-}
-
-.cardPlaceholder {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    color: rgba(255, 255, 255, 0.35);
-    text-transform: uppercase;
-    margin-top: 1px;
-}
-
-.cardFooterRow {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-}
-
-.cardFooterRow svg {
-    color: rgba(255, 255, 255, 0.4);
-    transition: color 200ms ease;
-}
-
-.card:hover .cardFooterRow svg {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.ctaText {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    color: rgba(255, 255, 255, 0.55);
-    text-transform: uppercase;
-    margin-left: auto;
-    transition: color 200ms ease;
-}
-
-.card:hover .ctaText {
-    color: #FFFFFF;
-}
-
-/* ── OVERLAY ────────────────────────────────────────────────── */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(4, 2, 10, 0.93);
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: overlayIn 150ms ease forwards;
-    will-change: opacity;
-}
-
-@keyframes overlayIn {
-    from {
-        opacity: 0
-    }
-
-    to {
-        opacity: 1
-    }
-}
-
-.overlayClosing {
-    animation: overlayOut 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes overlayOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-
-/* ── POPUP ──────────────────────────────────────────────────── */
-.popup {
-    background: #08060f;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 22px;
-    width: min(460px, 92vw);
-    position: relative;
-    overflow: hidden;
-    animation: popupIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
-    will-change: transform, opacity;
-}
-
-@keyframes popupIn {
-    from {
-        transform: scale(0.94) translateY(20px);
-        opacity: 0
-    }
-
-    to {
-        transform: scale(1) translateY(0);
-        opacity: 1
-    }
-}
-
-.popupClosing {
-    animation: popupOut 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes popupOut {
-    from {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: scale(0.94) translateY(20px);
-        opacity: 0;
-    }
-}
-
-.popup::before {
-    content: '';
-    display: block;
-    height: 2px;
-    background: linear-gradient(90deg, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF);
-    background-size: 300%;
-    animation: shimmer 4s linear infinite;
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: 200%
-    }
-
-    100% {
-        background-position: -200%
-    }
-}
-
-.closeBtn {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.3);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 150ms cubic-bezier(0.25, 1, 0.5, 1), border-color 150ms cubic-bezier(0.25, 1, 0.5, 1), color 150ms cubic-bezier(0.25, 1, 0.5, 1), transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1;
-}
-
-.closeBtn::after {
-    content: '';
-    position: absolute;
-    inset: -10px;
-}
-
-.closeBtn:active {
-    transform: scale(0.9);
-}
-
-.closeBtn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.4);
-    color: #FFFFFF;
-}
-
-.popupTop {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    padding: 26px 26px 20px;
-}
-
-/* FIXED: Popup photo box is now taller for better portrait framing */
-.popupPhotoBox {
-    width: 84px;
-    height: 108px;
-    border-radius: 12px;
-    background: linear-gradient(145deg, #0E0018, #040009);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    overflow: hidden;
-}
-
-.popupImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-}
-
-.popupInitials {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 24px;
-    color: rgba(255, 255, 255, 0.35);
-}
-
-.popupMeta {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-top: 2px;
-}
-
-.popupRoleBadge {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    color: rgba(255, 255, 255, 0.9);
-    text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 3px 10px;
-    border-radius: 20px;
-    display: inline-block;
-    width: fit-content;
-}
-
-.popupName {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 500;
-    color: #fff;
-    line-height: 1.15;
-    margin: 0;
-    letter-spacing: -0.04em;
-    text-wrap: balance;
-}
-
-.popupQuote {
-    font-family: 'DM Sans', sans-serif;
-    font-style: italic;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.32);
-    line-height: 1.65;
-    margin: 0;
-    text-wrap: pretty;
-}
-
-.popupQual {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.7;
-    margin: 0;
-}
-
-.popupSection {
-    padding: 16px 26px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.popupSectionLabel {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.26em;
-    color: rgba(255, 255, 255, 0.2);
-    text-transform: uppercase;
-}
-
-.popupTags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.popupLinks {
-    display: flex;
-    gap: 9px;
-    flex-wrap: wrap;
-}
-
-.tag {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    padding: 2px 7px;
-    border-radius: 4px;
-    text-transform: uppercase;
-}
-
-.linkBtn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.45);
-    text-decoration: none;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    padding: 8px 16px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: color 150ms, border-color 150ms, background 150ms;
-}
-
-.linkBtn:hover {
-    color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.07);
-}
-
-.popupHint {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.08);
-    text-align: center;
-    padding: 10px 26px 18px;
-    margin: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-/* ── CONSTRAINED WRAPPERS (Faculty row only) ─────────────────── */
-.rowWrapConstrained {
-    width: 100%;
-    padding: 0 64px;
-    margin-bottom: 72px;
-}
-
-.rowWrapPlainConstrained {
-    width: 100%;
-    padding: 32px 64px 0;
-    margin-bottom: 72px;
-}
-
-/* Faculty grid caps at 860px so 2 cards don't stretch absurdly wide */
-.rowWrapConstrained .grid2,
-.rowWrapPlainConstrained .grid2 {
-    max-width: 860px;
-}
-
-/* ── RESPONSIVE ─────────────────────────────────────────────── */
-@media (max-width: 1200px) {
-    .grid4 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 1100px) {
-    .grid5 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 800px) {
-    .grid3 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .grid5 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 540px) {
-    .header {
-        padding: 64px 24px 32px;
-    }
-
-    .rowWrap,
-    .rowWrapPlain,
-    .rowWrapConstrained,
-    .rowWrapPlainConstrained {
-        padding-left: 24px;
-        padding-right: 24px;
-        margin-bottom: 48px;
-    }
-
-    .rowHeader {
-        padding-top: 48px;
-    }
-
-    .grid2,
-    .grid3,
-    .grid4,
-    .grid5 {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
-
-    .card {
-        height: 290px;
-    }
-
-    .cardLarge {
-        height: 320px;
-    }
-
-    .overlay {
-        padding: 0;
-        align-items: flex-end;
-    }
-
-    .popup {
-        width: 100%;
-        max-width: 100%;
-        border-radius: 24px 24px 0 0;
-        padding-top: 20px;
-    }
-    
-    .popup::after {
-        content: '';
-        position: absolute;
-        top: 12px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 48px;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
-        pointer-events: none;
-    }
-}
-/* ── CINEMATIC – CSS 3D PERSPECTIVE TUNNEL ──────────────────── */
-
-/* The outer container pinned by GSAP ScrollTrigger */
-.cinematicContainer {
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    overflow: hidden;
-    background: #000000;
-}
-
-/* Ambient glow orbs */
-.bgGlow1, .bgGlow2 {
+.bgGlow1,
+.bgGlow2 {
     position: absolute;
     width: 70vw;
     height: 70vw;
     border-radius: 50%;
-    filter: blur(140px);
     pointer-events: none;
-    z-index: 0;
 }
+
+/* Static glows: painted once, never animated */
 .bgGlow1 {
     background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
     top: -15%;
     left: -20%;
 }
+
 .bgGlow2 {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
-    bottom: -15%;
-    right: -20%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.035) 0%, transparent 70%);
+    top: 35%;
+    right: -25%;
 }
 
-/* Starfield layer */
-.particles {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.45) 0%, transparent 100%),
-        radial-gradient(1px 1px at 75% 80%, rgba(255,255,255,0.35) 0%, transparent 100%),
-        radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(2px 2px at 65% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
-        radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.45) 0%, transparent 100%),
-        radial-gradient(1px 1px at 5% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.35) 0%, transparent 100%),
-        radial-gradient(1px 1px at 68% 72%, rgba(255,255,255,0.25) 0%, transparent 100%),
-        radial-gradient(2px 2px at 40% 90%, rgba(255,255,255,0.15) 0%, transparent 100%),
-        radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 50% 25%, rgba(255,255,255,0.35) 0%, transparent 100%);
-}
-
-/* The 3D perspective stage — GSAP moves this along Z */
-.perspectiveViewport {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    perspective: 900px;
-    perspective-origin: 50% 45%;
-}
-
-.stage {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    /* GSAP sets translateZ on this element to move the camera */
-}
-
-.chunkWrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(4rem, 8vw, 12rem);
-    transform-style: preserve-3d;
-    opacity: 0;
-    will-change: opacity, transform;
-}
-
-.memberCardInner {
+/* ── Landing ─────────────────────────────────────────────────── */
+.landing {
+    position: relative;
+    height: 100svh;
+    min-height: 520px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: clamp(1.5rem, 2vw, 2.5rem);
-    transform-style: preserve-3d;
-}
-
-.chunkTitleClip {
-    overflow: hidden;
-    padding-bottom: 0.1em;
-}
-
-.chunkTitle {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(3rem, 5vw, 6rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    color: #ffffff;
-    margin: 0;
-    line-height: 1;
-    white-space: nowrap;
-}
-
-/* Photo - Optimized for full-length transparent cutouts */
-.memberPhoto {
-    display: block;
-    width: clamp(200px, 25vw, 400px);
-    height: auto;
-    max-height: 60vh;
-    object-fit: contain;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
-    flex-shrink: 0;
-}
-
-.memberPhotoPlaceholder {
-    width: clamp(180px, 20vw, 320px);
-    height: clamp(240px, 28vw, 430px);
-    border-radius: 16px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.memberPhotoInitials {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 3rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.2);
-}
-
-/* Video-editor lower-third: NO BOX, pure floating typography */
-.memberLabel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
-    max-width: 25vw;
-}
-
-/* Accent bar — sweeps left→right via GSAP scaleX */
-.memberAccentBar {
-    width: 2.5rem;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 1px;
-    transform-origin: center center;
-    margin-bottom: 0.1rem;
-}
-
-/* Role — Tech chyron style */
-.memberRole {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(0.7rem, 0.9vw, 0.85rem);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    color: rgba(255, 255, 255, 0.4);
-    line-height: 1;
-    white-space: nowrap;
-}
-
-/* Clip container — overflow hidden curtain for the name reveal */
-.memberNameClip {
-    overflow: hidden;
-    padding-bottom: 0.05em;   /* room for descenders */
-}
-
-/*
- * Name — Syne: brutalist, wide architectural aesthetic.
- * Emil rule: weight + size alone create hierarchy; no strokes needed.
- */
-.memberName {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(1.8rem, 2.5vw, 3.5rem);
-    font-weight: 500;           
-    letter-spacing: -0.04em;    
-    line-height: 1.1;
-    color: #ffffff;
-    margin: 0;
-    display: block;
-    /* clip-path reveal is applied inline and animated by GSAP */
-}
-
-/* Sub-line — DM Sans italic, whisper-quiet */
-.memberSub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: clamp(0.8rem, 1vw, 0.95rem);
-    font-style: italic;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.26);
-    line-height: 1.55;
-    max-width: 28ch;
-    text-wrap: pretty;
-    margin: 0;
-    margin-top: 0.2rem;
-}
-
-/* ── STAR PARTICLES in the 3D stage ──────────────────────────── */
-/*
- * Stars are placed at fixed (x, y, worldZ) positions inside the 3D stage.
- * As GSAP moves stage.z forward, stars rush past at their native Z depth.
- * No extra JS animation needed — pure CSS 3D parallax.
- */
-.star {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-    pointer-events: none;
-    will-change: transform;
-}
-
-/* "OUR TEAM" intro overlay */
-.introText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /* transform removed, handled by GSAP xPercent/yPercent */
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    pointer-events: none;
 }
 
 .introEyebrow {
@@ -1040,129 +55,621 @@
     font-size: clamp(0.65rem, 0.9vw, 0.8rem);
     text-transform: uppercase;
     letter-spacing: 0.42em;
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--text-2);
     margin-bottom: 1.2rem;
+    animation: fadeUp 900ms var(--ease-out) both;
 }
 
-.introWord {
+.introTitle {
+    margin: 0;
     font-family: 'Bebas Neue', 'Syne', sans-serif;
     font-size: clamp(6rem, 16vw, 14rem);
     font-weight: 400;
     letter-spacing: 0.02em;
     line-height: 0.88;
-    color: #fff;
-    display: block;
+    text-transform: uppercase;
 }
 
-/* Scroll hint */
+/* Each word rises out of its own mask */
+.introLine {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.04em;
+}
+
+.introLine > span {
+    display: block;
+    animation: lineUp 1100ms var(--ease-out) both;
+}
+
+.introLine:nth-child(2) > span {
+    animation-delay: 90ms;
+}
+
 .scrollHint {
     position: absolute;
     bottom: 2.5rem;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.35em;
-    color: rgba(255,255,255,0.2);
+    color: var(--text-3);
+    white-space: nowrap;
     pointer-events: none;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    animation: fadeIn 900ms 500ms ease both;
 }
 
 .scrollHintLine {
     width: 1.5rem;
     height: 1px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
-/* ── RESPONSIVE ────────────────────────────────────────────── */
-@media (max-width: 768px) {
-    .cinematicContainer {
+@keyframes lineUp {
+    from { transform: translateY(105%); }
+    to { transform: none; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ── Committee ───────────────────────────────────────────────── */
+.committee {
+    position: relative;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: clamp(56px, 10vh, 112px) var(--gutter) 0;
+}
+
+.committeeHead {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.committeeIndex,
+.committeeCount {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+}
+
+.committeeTitle {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 4.2vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+}
+
+.committeeTitle > span {
+    display: block;
+    padding-bottom: 0.06em;
+}
+
+/* Reveal once the section scrolls in */
+.committee .committeeTitle > span,
+.committee .committeeIndex,
+.committee .committeeCount {
+    transform: translateY(105%);
+    opacity: 0;
+    transition: transform 900ms var(--ease-out), opacity 600ms ease;
+}
+
+.committee .committeeIndex,
+.committee .committeeCount {
+    transform: translateY(8px);
+}
+
+.committee .committeeCount {
+    transition-delay: 120ms;
+}
+
+.isIn .committeeTitle > span,
+.isIn .committeeIndex,
+.isIn .committeeCount {
+    transform: none;
+    opacity: 1;
+}
+
+/* ── Dock ────────────────────────────────────────────────────── */
+.dockWrap {
+    /* Room above the row for cards to grow into */
+    padding-top: calc(var(--lift) + 16px);
+}
+
+.dockRows {
+    display: flex;
+    flex-direction: column;
+    /* Each row needs the same headroom as the first so magnified cards never overlap */
+    gap: calc(var(--lift) + 16px);
+}
+
+.dock {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.card {
+    position: relative;
+    flex: none;
+    height: var(--h);
+    width: calc(var(--h) * var(--a));
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    /* No will-change: it would rasterise at base size and blur the magnified card */
+    transform-origin: 50% 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cardInner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #111;
+    box-shadow:
+        0 0 0 1px var(--line),
+        0 10px 30px -12px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 700ms ease, transform 900ms var(--ease-out);
+    transition-delay: calc(var(--i) * 45ms + 150ms);
+}
+
+.isIn .cardInner {
+    opacity: 1;
+    transform: none;
+}
+
+.cardInner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* box already has the photo's own aspect ratio, so nothing is cut */
+    user-select: none;
+}
+
+/* No photo yet: black card with initials */
+.placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    background: #050505;
+    container-type: size;
+}
+
+.placeholder span {
+    font-family: 'DM Mono', monospace;
+    font-size: max(12px, 22cqh);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.55);
+    user-select: none;
+}
+
+.card:focus-visible {
+    outline: none;
+}
+
+.card:focus-visible .cardInner {
+    box-shadow:
+        0 0 0 2px #fff,
+        0 10px 30px -12px rgba(0, 0, 0, 0.8);
+}
+
+.card:active .cardInner {
+    transform: scale(0.97);
+    transition: transform 120ms ease-out;
+}
+
+/* The card hides while its photo is out in the sheet */
+.cardHidden .cardInner {
+    opacity: 0 !important;
+    transition: none;
+}
+
+.cardLabel {
+    display: none;
+}
+
+/* Name under the dock, following the cursor's card */
+.caption {
+    margin: 20px 0 0;
+    min-height: 44px;
+    text-align: center;
+}
+
+.captionInner {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    animation: fadeUp 220ms var(--ease-out);
+}
+
+.captionRole,
+.captionIdle {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.captionName {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+/* ── Touch / small screens: swipeable strip, labels under cards ─ */
+@media (hover: none), (pointer: coarse), (max-width: 768px) {
+    .dockWrap {
+        padding-top: 32px;
+        --h: 116px !important;
+        margin-inline: calc(var(--gutter) * -1);
+    }
+
+    .dockRows {
+        gap: 0;
+    }
+
+    .dock {
+        justify-content: safe center;
+        align-items: flex-start;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--gutter);
+        padding: 0 var(--gutter) 8px;
+        scrollbar-width: none;
+        overscroll-behavior-x: contain;
+    }
+
+    .dock::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card {
         height: auto;
-        padding-top: 120px;
-        padding-bottom: 120px;
+        scroll-snap-align: start;
+        text-align: start;
     }
-    .perspectiveViewport {
-        position: relative;
-        perspective: none;
+
+    .cardInner {
+        height: var(--h);
     }
-    .stage {
-        position: relative;
+
+    .cardLabel {
         display: flex;
         flex-direction: column;
-        gap: 60px;
-        transform: none !important;
+        gap: 2px;
+        padding-top: 10px;
     }
-    .introText {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none !important;
-        margin-bottom: 40px;
+
+    .cardLabelRole {
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-3);
     }
-    .chunkWrapper {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none !important;
-        flex-direction: column;
-        gap: 24px;
-        padding: 0 20px;
-        width: 100%;
+
+    .cardLabelName {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text);
     }
-    .memberCardInner {
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-        text-align: center;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 40px 24px;
-    }
-    .memberLabel {
-        max-width: 100%;
-        align-items: center;
-    }
-    .memberAccentBar {
-        align-self: center;
-        transform-origin: center center;
-    }
-    .memberRole {
-        text-align: center;
-    }
-    .memberName {
-        text-align: center;
-        font-size: clamp(1.8rem, 7vw, 2.4rem);
-        clip-path: none !important; 
-    }
-    .memberSub {
-        text-align: center;
-        max-width: 100%;
-    }
-    .memberPhoto, .memberPhotoPlaceholder {
-        width: 100%;
-        max-width: 220px;
-        aspect-ratio: 1;
-        height: auto;
-        object-fit: cover;
-        border-radius: 50%;
-        box-shadow: 0 16px 40px rgba(0,0,0,0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+
+    .caption {
+        display: none;
     }
 }
 
+/* ── Sheet ───────────────────────────────────────────────────── */
+.sheetLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 24px var(--gutter, 24px);
+    --text: #fff;
+    --text-2: rgba(255, 255, 255, 0.72);
+    --text-3: rgba(255, 255, 255, 0.55);
+    --line: rgba(255, 255, 255, 0.12);
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.62);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.sheet {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(280px, 340px);
+    gap: 32px;
+    padding: 20px 32px 20px 20px;
+    max-width: min(1040px, 100%);
+    max-height: calc(100svh - 48px);
+    color: var(--text);
+}
+
+.surface {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    background: #0d0d10;
+    box-shadow:
+        0 0 0 1px var(--line),
+        0 40px 120px -20px rgba(0, 0, 0, 0.9);
+}
+
+.sheetPhoto {
+    position: relative;
+    aspect-ratio: var(--a);
+    width: min(620px, 56vw, calc((100svh - 88px) * var(--a)));
+    border-radius: 16px;
+    overflow: hidden;
+    background: #111 center / cover no-repeat;
+    transform-origin: 0 0;
+}
+
+/* No photo yet: keep the black card modest instead of filling the sheet */
+.sheetPhotoEmpty {
+    width: min(340px, 40vw, calc((100svh - 88px) * var(--a)));
+}
+
+.sheetPhoto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fadeIn 260ms ease both;
+}
+
+.sheetInfo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 12px 0 4px;
+}
+
+.sheetMeta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-inline-end: 44px; /* clear the close button */
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.sheetCount {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.sheetBody {
+    margin-top: auto;
+    padding-top: 32px;
+    animation: fadeUp 280ms var(--ease-out);
+}
+
+.sheetRole {
+    margin: 0 0 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-2);
+}
+
+.sheetName {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+}
+
+.sheetText {
+    margin: 16px 0 0;
+    max-width: 36ch;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--text-2);
+    text-wrap: pretty;
+}
+
+.sheetTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sheetTags li {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-2);
+}
+
+.sheetLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.sheetLinks a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    transition: background-color 160ms ease, transform 160ms ease-out;
+}
+
+.sheetLinks a:active {
+    transform: scale(0.97);
+}
+
+.sheetNav {
+    display: flex;
+    gap: 8px;
+    margin-top: 32px;
+}
+
+.sheetNav button,
+.sheetClose {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 160ms ease, transform 160ms ease-out;
+}
+
+.sheetNav button:active,
+.sheetClose:active {
+    transform: scale(0.94);
+}
+
+.sheetClose {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .sheetLinks a:hover,
+    .sheetNav button:hover,
+    .sheetClose:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+}
+
+.sheetLinks a:focus-visible,
+.sheetNav button:focus-visible,
+.sheetClose:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* Stack on narrow screens: photo on top, details below, sheet scrolls */
+@media (max-width: 860px) {
+    .sheetLayer {
+        padding: 16px;
+        align-items: end;
+    }
+
+    .sheet {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        width: 100%;
+        padding: 12px 12px 20px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .sheetPhoto {
+        width: 100%;
+        max-height: 52svh;
+        width: min(100%, calc(52svh * var(--a)));
+        justify-self: center;
+    }
+
+    .sheetPhotoEmpty {
+        width: min(200px, 52vw);
+    }
+
+    .sheetInfo {
+        padding: 0 8px;
+    }
+
+    .sheetBody {
+        padding-top: 16px;
+    }
+
+    .sheetClose {
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.55);
+    }
+
+    .sheetMeta {
+        padding-inline-end: 0;
+    }
+}
+
+/* ── Reduced motion: keep fades, drop movement ───────────────── */
 @media (prefers-reduced-motion: reduce) {
-    .memberCardInner {
-        opacity: 1;
-        transform: translate(-50%, -50%) !important;
-    }
-    .stage {
+    .introLine > span,
+    .introEyebrow,
+    .committee .committeeTitle > span,
+    .committee .committeeIndex,
+    .committee .committeeCount,
+    .cardInner,
+    .captionInner,
+    .sheetBody {
         transform: none !important;
+        animation-name: fadeIn;
     }
 }
-

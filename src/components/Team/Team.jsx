@@ -1,10 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
+import { createPortal } from 'react-dom'
+import { COMMITTEES, MEMBERS } from './team_data'
 import styles from './Team.module.css'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const LinkedInIcon = () => (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
@@ -22,866 +19,425 @@ const InstagramIcon = () => (
     </svg>
 )
 
-/* ── Data ──────────────────────────────────────────────────── */
+/* ── Dock ──────────────────────────────────────────────────────
+ * A row of uncropped photo cards. On hover-capable devices the cards
+ * magnify around the cursor like the macOS dock: each card's scale comes
+ * from its distance to the pointer, and neighbours slide aside so nothing
+ * overlaps. Transform-only, and the loop only runs while something moves.
+ */
+const MAX_SCALE = 2
+const RADIUS = 210
+const GAP = 10
+const SHEET_EASE = 'cubic-bezier(0.32, 0.72, 0, 1)'
 
-const ROW1 = [
-    {
-        id: 'rm',
-        role: 'President',
-        initials: 'RM',
-        name: 'Raagmanas Madhukar',
-        photo: '/manas.webp',
-        photoPosition: 'center bottom',
-        oneLiner: 'Co-founder. Building VED from the ground up.',
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/raagmanasmadhukar',
-        github: 'https://github.com/Cipher1712',
-        instagram: null,
-    },
-    {
-        id: 'sg',
-        role: 'Vice President',
-        initials: 'SG',
-        name: 'Siddharth Gaur',
-        photo: '/sid2.webp',
-        useBackground: true,
-        bgPos: 'center top',
-        oneLiner: 'Co-founder. Steering vision into execution.',
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/siddharth-gaur-471084266',
-        github: null,
-        instagram: null,
-    },
-    {
-        id: 'gs',
-        role: 'General Secretary',
-        initials: 'AA',
-        name: 'Akshansh Alawa',
-        photo: '/akshansh.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/akshansh-alawa-96a82a20a',
-        github: null,
-        instagram: null,
-    },
-]
+const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-const ROW2 = [
-    {
-        id: 'hk',
-        role: 'Events Head',
-        initials: 'HK',
-        name: 'Hafiz Khan G J',
-        photo: '/hafiz.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/hafiz-khan-g-j-0777323a8',
-        github: null,
-        instagram: null,
-    },
-    {
-        id: 'kt',
-        role: 'Treasurer',
-        initials: 'KT',
-        name: 'Karthik Deepak Narayan',
-        photo: '/karthik.webp',
-        photoPosition: 'center 20%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/karthik-deepak-narayan-5524a4393',
-        github: null,
-        instagram: null,
-    },
-    {
-        id: 'rj',
-        role: 'Marketing Head',
-        initials: 'RJ',
-        name: 'Riya Joseph',
-        photo: '/riya.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://in.linkedin.com/in/riya-joseph-319244374',
-        github: 'https://github.com/riyaelizabethjoseph',
-        instagram: null,
-    },
-    {
-        id: 'fm',
-        role: 'Graphic Design & Media Head',
-        initials: 'FM',
-        name: 'Farah Manikindi',
-        photo: '/farah2.webp',
-        photoPosition: 'center bottom',
-        oneLiner: null,
-        tags: ['Design', 'Branding'],
-        linkedin: 'https://www.linkedin.com/in/farah-manikindi-fm9',
-        github: null,
-        instagram: null,
-    },
-]
+const MIN_BASE = 72
 
-const ROW3 = [
-    {
-        id: 'nd',
-        role: 'Technical Head',
-        initials: 'ND',
-        name: "Nishanth D'Souza",
-        photo: '/nd.webp',
-        photoPosition: 'center 20%',
-        oneLiner: 'Turns silicon specs into pixels. Built this site.',
-        tags: ['Frontend', 'UI/UX', 'React'],
-        linkedin: 'https://www.linkedin.com/in/nishds30/',
-        github: 'https://github.com/NishDs-06',
-        instagram: null,
-    },
-    {
-        id: 'ak',
-        role: 'Project Head',
-        initials: 'AK',
-        name: 'Akhil George Kurian',
-        photo: '/akhil.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: null,
-        github: 'https://github.com/Akhil8231',
-        instagram: null,
-    },
-    {
-        id: 'sp',
-        role: 'Research Head',
-        initials: 'SP',
-        name: 'Sreeparvathy M',
-        photo: '/sree.webp',
-        photoPosition: 'center 22%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/sreeparvathy-m-4b064930b',
-        github: null,
-        instagram: 'https://www.instagram.com/sreeparv4thy',
-    },
-    {
-        id: 'sc',
-        role: 'Vice Research Head',
-        initials: 'SC',
-        name: 'Sharadhi CP',
-        photo: '/sharadhi.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/sharadhi-cp-53791335a',
-        github: 'https://github.com/sharadhi06',
-        instagram: null,
-    },
-    {
-        id: 'jt',
-        role: 'Vice Project Head',
-        initials: 'JT',
-        name: 'Jeevan Thanu',
-        photo: '/jeevan.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/jeevan-thanu-399b65375',
-        github: 'https://github.com/jeevanthanu836-prog',
-        instagram: null,
-    },
-    {
-        id: 'vu',
-        role: 'Executive Head',
-        initials: 'VU',
-        name: 'Veer Upadhyay',
-        photo: '/veer.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/veer-upadhyay-2111b5318',
-        github: null,
-        instagram: null,
-    },
-    {
-        id: 'vk',
-        role: 'Social Media Head',
-        initials: 'VK',
-        name: 'Varshini V',
-        photo: '/varshini.webp',
-        photoPosition: 'center 45%',
-        oneLiner: null,
-        tags: [],
-        linkedin: 'https://www.linkedin.com/in/varshini-v-5a45a736a',
-        github: 'https://github.com/varshini-v20',
-        instagram: null,
-    },
-]
+const initials = name => name.replace(/^Dr\.\s*/, '').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase()
 
-const ROW4 = [
-    {
-        id: 'fa1',
-        role: 'Faculty Adviser',
-        initials: 'SV',
-        name: 'Dr. Shreshta Valasa',
-        photo: '/shrestamam.webp',
-        photoPosition: 'center 15%',
-        qual: 'Ph.D.',
-        linkedin: 'https://www.linkedin.com/in/dr-shreshta-valasa-810999258',
-        github: null,
-        instagram: null,
-        tags: [],
-        oneLiner: null,
-    },
-    {
-        id: 'fa2',
-        role: 'Faculty Adviser',
-        initials: 'BS',
-        name: 'Dr. Bharath Sreenivasulu V',
-        photo: '/bharatsir.webp',
-        photoPosition: 'center 8%',
-        qual: 'Ph.D. · Post-Doc (IIT Patna)',
-        linkedin: 'https://www.linkedin.com/in/bharath-sreenivasulu-v-64b4a575',
-        github: null,
-        instagram: null,
-        tags: [],
-        oneLiner: null,
-    },
-]
+// Photo, or a black placeholder with initials until the photo arrives
+function Portrait({ m, size }) {
+    if (!m.img) return <span className={styles.placeholder} aria-hidden="true"><span>{initials(m.name)}</span></span>
+    return size === 'sm'
+        ? <img src={`/team/${m.img}-sm.webp`} width={Math.round(320 * m.w / m.h)} height={320} alt="" loading="lazy" decoding="async" draggable="false" />
+        : <img key={m.id} src={`/team/${m.img}.webp`} width={m.w} height={m.h} alt={m.name} decoding="async" />
+}
 
-/* ── Sine Wave ─────────────────────────────────────────────── */
-function SineWave() {
-    const ref = useRef(null)
-    const raf = useRef(null)
+/* Splits a committee into the fewest balanced rows that keep cards at least
+   MIN_BASE tall, so a growing committee wraps instead of shrinking to slivers */
+function Dock({ members, openId, onOpen, registerCard }) {
+    const wrapRef = useRef(null)
+    const [layout, setLayout] = useState({ base: 96, rows: [members] })
+    const [active, setActive] = useState(null)
 
-    useEffect(() => {
-        const canvas = ref.current
-        if (!canvas) return
-        const ctx = canvas.getContext('2d')
-        let t = 0
-        const trail = []
-        const TRAIL_LEN = 16
-        const STEP = 8
-        let frameCount = 0
-        let startTimer = null
-
-        const resize = () => {
-            canvas.width = canvas.offsetWidth
-            canvas.height = canvas.offsetHeight
-        }
-        resize()
-        window.addEventListener('resize', resize)
-
-        const draw = () => {
-            frameCount++
-
-            const W = canvas.width, H = canvas.height
-            ctx.clearRect(0, 0, W, H)
-            const amp = 22, freq = (2 * Math.PI) / (W * 0.42)
-
-            const waves = [
-                { ph: 0, a: 0.65, w: 1.8 },
-                { ph: 1.1, a: 0.28, w: 0.9 },
-                { ph: -0.7, a: 0.12, w: 0.5 },
-            ]
-            for (const { ph, a, w } of waves) {
-                ctx.beginPath()
-                ctx.strokeStyle = `rgba(255, 255, 255, ${a})`
-                ctx.lineWidth = w
-                for (let x = 0; x <= W; x += STEP) {
-                    const y = H / 2 + amp * Math.sin(freq * x + t + ph)
-                    x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
-                }
-                ctx.stroke()
+    useLayoutEffect(() => {
+        const wrap = wrapRef.current
+        const fit = () => {
+            // Leave headroom for the row to widen while magnified (about one radius of growth)
+            const W = wrap.clientWidth - (canHover() ? (MAX_SCALE - 1) * RADIUS : 0)
+            const max = members.length <= 3 ? 168 : 120
+            let best = null
+            for (let k = 1; k <= members.length; k++) {
+                const per = Math.ceil(members.length / k)
+                const rows = Array.from({ length: k }, (_, r) => members.slice(r * per, (r + 1) * per)).filter(r => r.length)
+                const base = Math.min(...rows.map(r =>
+                    (W - GAP * (r.length - 1)) / r.reduce((sum, m) => sum + m.w / m.h, 0)))
+                best = { base: Math.floor(Math.min(max, base)), rows }
+                if (base >= MIN_BASE) break
             }
-
-            const dotX = (t * 55) % W
-            const dotY = H / 2 + amp * Math.sin(freq * dotX + t)
-            trail.push({ x: dotX, y: dotY })
-            if (trail.length > TRAIL_LEN) trail.shift()
-
-            if (trail.length > 2) {
-                ctx.beginPath()
-                ctx.moveTo(trail[0].x, trail[0].y)
-                for (let i = 1; i < trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y)
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'
-                ctx.lineWidth = 2
-                ctx.stroke()
-            }
-
-            ctx.beginPath()
-            ctx.arc(dotX, dotY, 4, 0, Math.PI * 2)
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)'
-            ctx.fill()
-
-            ctx.beginPath()
-            ctx.arc(dotX, dotY, 2, 0, Math.PI * 2)
-            ctx.fillStyle = '#fff'
-            ctx.fill()
-
-            t += 0.020
-            raf.current = requestAnimationFrame(draw)
+            setLayout(prev => prev.base === best.base && prev.rows.length === best.rows.length ? prev : best)
         }
+        fit()
+        const ro = new ResizeObserver(fit)
+        ro.observe(wrap)
+        return () => ro.disconnect()
+    }, [members])
 
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    // Delay start so canvas doesn't fire during scroll momentum
-                    startTimer = setTimeout(() => {
-                        if (!raf.current) raf.current = requestAnimationFrame(draw)
-                    }, 120)
-                } else {
-                    clearTimeout(startTimer)
-                    cancelAnimationFrame(raf.current)
-                    raf.current = null
-                }
-            },
-            { threshold: 0 }
-        )
-        observer.observe(canvas)
-
-        return () => {
-            clearTimeout(startTimer)
-            cancelAnimationFrame(raf.current)
-            observer.disconnect()
-            window.removeEventListener('resize', resize)
-        }
-    }, [])
-
-    return <canvas ref={ref} className={styles.sineCanvas} aria-hidden="true" />
-}
-
-/* ── Popup ─────────────────────────────────────────────────── */
-function Popup({ member, onClose }) {
-    const [isClosing, setIsClosing] = useState(false)
-
-    useEffect(() => {
-        window.dispatchEvent(new Event('ved:popup:open'))
-        document.body.style.overflow = 'hidden'
-        document.documentElement.style.overflow = 'hidden'
-        
-        const handleClose = () => {
-            setIsClosing(true)
-            setTimeout(onClose, 250)
-        }
-        
-        const onKey = e => e.key === 'Escape' && handleClose()
-        document.addEventListener('keydown', onKey)
-        return () => {
-            window.dispatchEvent(new Event('ved:popup:close'))
-            document.body.style.overflow = ''
-            document.documentElement.style.overflow = ''
-            document.removeEventListener('keydown', onKey)
-        }
-    }, [onClose])
-
-    const handleOverlayClick = () => {
-        setIsClosing(true)
-        setTimeout(onClose, 250)
-    }
-
-    const isFaculty = member.qual !== undefined
+    // On touch screens the dock is a single swipeable strip
+    const rows = canHover() ? layout.rows : [members]
+    const shown = active && members.find(m => m.id === active)
 
     return (
-        <div className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ''}`} onClick={handleOverlayClick}>
-            <div className={`${styles.popup} ${isClosing ? styles.popupClosing : ''}`} onClick={e => e.stopPropagation()}>
-
-                <button className={styles.closeBtn} onClick={handleOverlayClick} aria-label="Close">
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                        <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                </button>
-
-                <div className={styles.popupTop}>
-                    <div className={styles.popupPhotoBox}>
-                        {member.photo
-                            ? <img
-                                src={member.photo}
-                                alt={member.name}
-                                className={styles.popupImg}
-                                loading="lazy"
-                                decoding="async"
-                                style={member.photoPosition ? { objectPosition: member.photoPosition } : {}}
-                            />
-                            : <span className={styles.popupInitials}>{member.initials}</span>
-                        }
-                    </div>
-                    <div className={styles.popupMeta}>
-                        <span className={styles.popupRoleBadge}>{member.role}</span>
-                        <h3 className={styles.popupName}>{member.name || '—'}</h3>
-                        {isFaculty && member.qual && (
-                            <p className={styles.popupQual}>{member.qual}</p>
-                        )}
-                        {!isFaculty && member.oneLiner && (
-                            <p className={styles.popupQuote}>"{member.oneLiner}"</p>
-                        )}
-                    </div>
-                </div>
-
-                {member.tags && member.tags.length > 0 && (
-                    <div className={styles.popupSection}>
-                        <span className={styles.popupSectionLabel}>Expertise</span>
-                        <div className={styles.popupTags}>
-                            {member.tags.map(t => <span key={t} className={styles.tag}>{t}</span>)}
-                        </div>
-                    </div>
-                )}
-
-                {(member.linkedin || member.github || member.instagram) && (
-                    <div className={styles.popupSection}>
-                        <span className={styles.popupSectionLabel}>Links</span>
-                        <div className={styles.popupLinks}>
-                            {member.linkedin && (
-                                <a href={member.linkedin} target="_blank" rel="noreferrer" className={styles.linkBtn}>
-                                    <LinkedInIcon /> LinkedIn
-                                </a>
-                            )}
-                            {member.github && (
-                                <a href={member.github} target="_blank" rel="noreferrer" className={styles.linkBtn}>
-                                    <GitHubIcon /> GitHub
-                                </a>
-                            )}
-                            {member.instagram && (
-                                <a href={member.instagram} target="_blank" rel="noreferrer" className={styles.linkBtn}>
-                                    <InstagramIcon /> Instagram
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
-
-                <p className={styles.popupHint}>ESC or click outside to close</p>
-            </div>
-        </div>
-    )
-}
-
-/* ── Card ──────────────────────────────────────────────────── */
-function Card({ member, onClick, large }) {
-    return (
-        <div
-            className={`${styles.card} ${large ? styles.cardLarge : ''}`}
-            onClick={() => onClick(member)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={e => e.key === 'Enter' && onClick(member)}
-        >
-            <div className={styles.cardAccentLine} />
-
-            <div className={styles.photoBox} style={member.photoBackground ? { background: member.photoBackground } : {}}>
-                {member.photo
-                    ? member.useBackground
-                        ? <div
-                            className={styles.photoImg}
-                            style={{
-                                backgroundImage: `url(${member.photo})`,
-                                backgroundSize: member.bgSize || 'cover',
-                                backgroundPosition: member.bgPos || 'center 15%',
-                                backgroundRepeat: 'no-repeat',
-                            }}
-                        />
-                        : <img
-                            src={member.photo}
-                            alt={member.name || member.role}
-                            className={styles.photoImg}
-                            loading="lazy"
-                            decoding="async"
-                            style={{
-                                objectPosition: member.photoPosition || 'center 15%',
-                                objectFit: 'cover',
-                                ...(member.photoZoom
-                                    ? { transform: `scale(${member.photoZoom})`, transformOrigin: 'center top' }
-                                    : member.photoScale
-                                        ? { transform: `scale(${member.photoScale})`, transformOrigin: 'center center' }
-                                        : {}),
-                            }}
-                        />
-                    : (
-                        <div className={styles.photoPlaceholder}>
-                            <span className={styles.photoInitials}>{member.initials}</span>
-                        </div>
-                    )
-                }
-                <div className={styles.photoOverlay} />
-                <div className={styles.scanLine} />
-            </div>
-
-            <div className={styles.cardBody}>
-                <p className={styles.cardRole}>{member.role}</p>
-                {member.name
-                    ? <p className={styles.cardName}>{member.name}</p>
-                    : <p className={styles.cardPlaceholder}>Coming soon</p>
-                }
-                <div className={styles.cardFooterRow}>
-                    {member.linkedin && <LinkedInIcon />}
-                    {member.github && <GitHubIcon />}
-                    {member.instagram && <InstagramIcon />}
-                    <span className={styles.ctaText}>VIEW →</span>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-/* ── Row ───────────────────────────────────────────────────── */
-function Row({ label, sublabel, members, cols, onClick, large, constrained }) {
-    const gridClass = cols === 3 ? styles.grid3 : cols === 2 ? styles.grid2 : cols === 5 ? styles.grid5 : styles.grid4
-    const wrapClass = label
-        ? (constrained ? styles.rowWrapConstrained : styles.rowWrap)
-        : (constrained ? styles.rowWrapPlainConstrained : styles.rowWrapPlain)
-
-    return (
-        <div className={wrapClass}>
-            {label && (
-                <div className={styles.rowHeader}>
-                    <span className={styles.rowLabel}>{label}</span>
-                    {sublabel && <span className={styles.rowSublabel}>{sublabel}</span>}
-                    <div className={styles.rowRule} />
-                </div>
-            )}
-            <div className={gridClass}>
-                {members.map(m => (
-                    <Card key={m.id} member={m} onClick={onClick} large={large} />
+        <div className={styles.dockWrap} ref={wrapRef} style={{ '--h': `${layout.base}px`, '--lift': `${layout.base * (MAX_SCALE - 1)}px` }}>
+            <div className={styles.dockRows}>
+                {rows.map((row, r) => (
+                    <DockRow
+                        key={r}
+                        members={row}
+                        offset={rows.slice(0, r).reduce((n, x) => n + x.length, 0)}
+                        base={layout.base}
+                        openId={openId}
+                        onOpen={onOpen}
+                        registerCard={registerCard}
+                        onActive={setActive}
+                    />
                 ))}
             </div>
+            <p className={styles.caption} aria-hidden="true">
+                {shown ? (
+                    <span key={shown.id} className={styles.captionInner}>
+                        <span className={styles.captionRole}>{shown.role}</span>
+                        <span className={styles.captionName}>{shown.name}</span>
+                    </span>
+                ) : (
+                    <span className={styles.captionIdle}>Hover to browse · click to open</span>
+                )}
+            </p>
         </div>
+    )
+}
+
+function DockRow({ members, offset, base, openId, onOpen, registerCard, onActive }) {
+    const rowRef = useRef(null)
+    const cardRefs = useRef([])
+
+    useEffect(() => {
+        if (!canHover() || reduceMotion()) return
+        const row = rowRef.current
+        const cards = cardRefs.current.slice(0, members.length)
+        const n = cards.length
+        const cur = new Array(n).fill(1)
+        const target = new Array(n).fill(1)
+        let centers = [], widths = [], pointerX = null, raf = 0, lastActive = -1
+
+        const measure = () => {
+            centers = cards.map(c => c.offsetLeft + c.offsetWidth / 2)
+            widths = cards.map(c => c.offsetWidth)
+        }
+
+        const frame = () => {
+            let moving = false
+            for (let i = 0; i < n; i++) {
+                const d = pointerX === null ? Infinity : Math.abs(pointerX - centers[i])
+                target[i] = d < RADIUS ? 1 + (MAX_SCALE - 1) * (Math.cos(Math.PI * d / RADIUS) + 1) / 2 : 1
+                const next = cur[i] + (target[i] - cur[i]) * 0.2
+                if (Math.abs(target[i] - next) > 0.001) moving = true
+                cur[i] = Math.abs(target[i] - next) > 0.001 ? next : target[i]
+            }
+            // Grow from the bottom centre and push neighbours outward so the row stays centred
+            const extra = cur.map((s, i) => widths[i] * (s - 1))
+            const total = extra.reduce((a, b) => a + b, 0)
+            let before = 0
+            for (let i = 0; i < n; i++) {
+                const after = total - before - extra[i]
+                cards[i].style.transform = `translateX(${(before - after) / 2}px) scale(${cur[i]})`
+                cards[i].style.zIndex = cur[i] > 1.01 ? Math.round(cur[i] * 10) : ''
+                before += extra[i]
+            }
+
+            let nearest = -1
+            if (pointerX !== null) {
+                let best = Infinity
+                centers.forEach((c, i) => { const d = Math.abs(pointerX - c); if (d < best) { best = d; nearest = i } })
+            }
+            if (nearest !== lastActive) {
+                lastActive = nearest
+                if (nearest >= 0) onActive(members[nearest].id)
+            }
+
+            raf = moving ? requestAnimationFrame(frame) : 0
+        }
+        const kick = () => { if (!raf) raf = requestAnimationFrame(frame) }
+
+        const onMove = e => {
+            pointerX = e.clientX - row.getBoundingClientRect().left
+            kick()
+        }
+        const onEnter = e => { measure(); onMove(e) }
+        const onLeave = () => { pointerX = null; onActive(id => (members.some(m => m.id === id) ? null : id)); kick() }
+        // Keyboard focus magnifies the focused card too
+        const onFocusIn = e => {
+            const i = cards.indexOf(e.target)
+            if (i < 0) return
+            measure(); pointerX = centers[i]; kick()
+        }
+        const onFocusOut = e => { if (!row.contains(e.relatedTarget)) onLeave() }
+
+        row.addEventListener('pointerenter', onEnter)
+        row.addEventListener('pointermove', onMove)
+        row.addEventListener('pointerleave', onLeave)
+        row.addEventListener('focusin', onFocusIn)
+        row.addEventListener('focusout', onFocusOut)
+        return () => {
+            cancelAnimationFrame(raf)
+            row.removeEventListener('pointerenter', onEnter)
+            row.removeEventListener('pointermove', onMove)
+            row.removeEventListener('pointerleave', onLeave)
+            row.removeEventListener('focusin', onFocusIn)
+            row.removeEventListener('focusout', onFocusOut)
+            cards.forEach(c => { c.style.transform = ''; c.style.zIndex = '' })
+        }
+    }, [members, base, onActive])
+
+    return (
+        <div className={styles.dock} ref={rowRef}>
+            {members.map((m, i) => (
+                <button
+                    key={m.id}
+                    type="button"
+                    className={`${styles.card} ${openId === m.id ? styles.cardHidden : ''}`}
+                    style={{ '--a': m.w / m.h, '--i': offset + i }}
+                    ref={el => { cardRefs.current[i] = el; registerCard(m.id, el) }}
+                    onClick={e => onOpen(m.id, e.currentTarget)}
+                    aria-label={`${m.name}, ${m.role}`}
+                >
+                    <span className={styles.cardInner}>
+                        <Portrait m={m} size="sm" />
+                    </span>
+                    <span className={styles.cardLabel} aria-hidden="true">
+                        <span className={styles.cardLabelRole}>{m.role}</span>
+                        <span className={styles.cardLabelName}>{m.name}</span>
+                    </span>
+                </button>
+            ))}
+        </div>
+    )
+}
+
+/* ── Member sheet ──────────────────────────────────────────────
+ * Apple-style detail view: the photo flies from its card to the sheet
+ * (FLIP with WAAPI, transform only) while the surface and copy fade in.
+ * Closing flies the photo back to whichever member's card is showing.
+ */
+function MemberSheet({ list, index, committeeTitle, getCard, onIndex, onClosed }) {
+    const m = list[index]
+    const backdropRef = useRef(null)
+    const surfaceRef = useRef(null)
+    const photoRef = useRef(null)
+    const infoRef = useRef(null)
+    const closeRef = useRef(null)
+    const closing = useRef(false)
+
+    const flight = (card, photo) => {
+        const from = card.getBoundingClientRect()
+        const to = photo.getBoundingClientRect()
+        const s = from.width / to.width
+        return `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${s})`
+    }
+
+    useLayoutEffect(() => {
+        window.dispatchEvent(new Event('ved:popup:open'))
+        document.documentElement.style.overflow = 'hidden'
+        const card = getCard(m.id)
+        const photo = photoRef.current
+        const still = reduceMotion() || !card
+        backdropRef.current.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'ease-out' })
+        if (!still) {
+            photo.animate([{ transform: flight(card, photo) }, { transform: 'none' }], { duration: 560, easing: SHEET_EASE })
+        }
+        const fadeIn = still ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }]
+        surfaceRef.current.animate([{ opacity: 0, transform: still ? 'none' : 'scale(0.97)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: SHEET_EASE })
+        infoRef.current.animate(fadeIn, { duration: 420, delay: 90, easing: SHEET_EASE, fill: 'backwards' })
+        closeRef.current.focus({ preventScroll: true })
+        return () => {
+            window.dispatchEvent(new Event('ved:popup:close'))
+            document.documentElement.style.overflow = ''
+        }
+        // Runs once per open; navigation inside the sheet swaps content without a flight
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const close = () => {
+        if (closing.current) return
+        closing.current = true
+        const card = getCard(m.id)
+        const photo = photoRef.current
+        const r = card?.getBoundingClientRect()
+        const visible = r && r.bottom > 0 && r.top < window.innerHeight
+        const opts = { duration: 300, easing: SHEET_EASE, fill: 'forwards' }
+        backdropRef.current.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 260, easing: 'ease-out', fill: 'forwards' })
+        surfaceRef.current.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: 'ease-out', fill: 'forwards' })
+        infoRef.current.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: 'ease-out', fill: 'forwards' })
+        const anim = visible && !reduceMotion()
+            ? photo.animate([{ transform: 'none' }, { transform: flight(card, photo) }], opts)
+            : photo.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.96)' }], { ...opts, duration: 200 })
+        anim.finished.then(() => {
+            onClosed()
+            card?.focus({ preventScroll: true })
+        })
+    }
+
+    const step = dir => onIndex((index + dir + list.length) % list.length)
+
+    useEffect(() => {
+        const onKey = e => {
+            if (e.key === 'Escape') close()
+            else if (list.length > 1 && e.key === 'ArrowRight') step(1)
+            else if (list.length > 1 && e.key === 'ArrowLeft') step(-1)
+        }
+        document.addEventListener('keydown', onKey)
+        return () => document.removeEventListener('keydown', onKey)
+    })
+
+    const links = [
+        m.linkedin && { href: m.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
+        m.github && { href: m.github, label: 'GitHub', Icon: GitHubIcon },
+        m.instagram && { href: m.instagram, label: 'Instagram', Icon: InstagramIcon },
+    ].filter(Boolean)
+
+    return (
+        <div className={styles.sheetLayer} role="dialog" aria-modal="true" aria-label={`${m.name}, ${m.role}`}>
+            <div className={styles.backdrop} ref={backdropRef} onClick={close} />
+            <div className={styles.sheet}>
+                <div className={styles.surface} ref={surfaceRef} />
+                <div className={`${styles.sheetPhoto} ${m.img ? '' : styles.sheetPhotoEmpty}`} ref={photoRef} style={{ '--a': m.w / m.h, backgroundImage: m.img ? `url(/team/${m.img}-sm.webp)` : 'none' }}>
+                    <Portrait m={m} size="lg" />
+                </div>
+                <div className={styles.sheetInfo} ref={infoRef}>
+                    <div className={styles.sheetMeta}>
+                        <span>{committeeTitle}</span>
+                        <span className={styles.sheetCount}>
+                            {String(index + 1).padStart(2, '0')} / {String(list.length).padStart(2, '0')}
+                        </span>
+                    </div>
+                    <div key={m.id} className={styles.sheetBody}>
+                        <p className={styles.sheetRole}>{m.role}</p>
+                        <h3 className={styles.sheetName}>{m.name}</h3>
+                        {(m.oneLiner || m.qual) && <p className={styles.sheetText}>{m.oneLiner || m.qual}</p>}
+                        {m.tags?.length > 0 && (
+                            <ul className={styles.sheetTags}>
+                                {m.tags.map(t => <li key={t}>{t}</li>)}
+                            </ul>
+                        )}
+                        {links.length > 0 && (
+                            <div className={styles.sheetLinks}>
+                                {links.map(({ href, label, Icon }) => (
+                                    <a key={label} href={href} target="_blank" rel="noreferrer">
+                                        <Icon /> {label}
+                                    </a>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    {list.length > 1 && (
+                        <div className={styles.sheetNav}>
+                            <button type="button" onClick={() => step(-1)} aria-label="Previous member">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                            <button type="button" onClick={() => step(1)} aria-label="Next member">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                        </div>
+                    )}
+                </div>
+                <button type="button" className={styles.sheetClose} ref={closeRef} onClick={close} aria-label="Close">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+                </button>
+            </div>
+        </div>
+    )
+}
+
+/* ── Committee section ─────────────────────────────────────── */
+function Committee({ index, title, members, openId, onOpen, registerCard }) {
+    const ref = useRef(null)
+    const [seen, setSeen] = useState(false)
+
+    useEffect(() => {
+        const io = new IntersectionObserver(([e]) => {
+            if (e.isIntersecting) { setSeen(true); io.disconnect() }
+        }, { rootMargin: '0px 0px -15% 0px' })
+        io.observe(ref.current)
+        return () => io.disconnect()
+    }, [])
+
+    return (
+        <section className={`${styles.committee} ${seen ? styles.isIn : ''}`} ref={ref} aria-labelledby={`committee-${index}`}>
+            <header className={styles.committeeHead}>
+                <span className={styles.committeeIndex}>{String(index + 1).padStart(2, '0')}</span>
+                <h2 className={styles.committeeTitle} id={`committee-${index}`}>
+                    <span>{title}</span>
+                </h2>
+                <span className={styles.committeeCount}>
+                    {members.length} {members.length === 1 ? 'member' : 'members'}
+                </span>
+            </header>
+            <Dock members={members} openId={openId} onOpen={onOpen} registerCard={registerCard} />
+        </section>
     )
 }
 
 /* ── Team ──────────────────────────────────────────────────── */
-
 export default function Team() {
-    const [selected, setSelected] = useState(null)
-    const cinematicRef = useRef(null)
-    const stageRef     = useRef(null)
-    const introTextRef = useRef(null)
-    const chunkRefs    = useRef([])
-    const canvasRef    = useRef(null)
+    const [open, setOpen] = useState(null) // { committee, index }
+    const cards = useRef(new Map())
 
-    const regularMembers = [...ROW1, ...ROW2, ...ROW3].filter(m => m.name)
-    const facultyAdvisors = ROW4.filter(m => m.name)
+    const groups = useMemo(() => COMMITTEES
+        .map(c => ({ ...c, members: MEMBERS.filter(m => m.committee === c.id) }))
+        .filter(c => c.members.length > 0), [])
 
-    const chunks = []
-    
-    for (let i = 0; i < regularMembers.length; i += 2) {
-        chunks.push({
-            type: 'members',
-            id: `chunk_reg_${i}`,
-            members: regularMembers.slice(i, i + 2)
-        })
-    }
+    const registerCard = useCallback((id, el) => {
+        if (el) cards.current.set(id, el)
+        else cards.current.delete(id)
+    }, [])
+    const getCard = useCallback(id => cards.current.get(id), [])
 
-    chunks.push({
-        type: 'title',
-        id: 'title_faculty',
-        text: 'FACULTY ADVISORS'
-    })
-
-    for (let i = 0; i < facultyAdvisors.length; i += 2) {
-        chunks.push({
-            type: 'members',
-            id: `chunk_fac_${i}`,
-            members: facultyAdvisors.slice(i, i + 2)
-        })
-    }
-
-    const DEPTH_STEP = 1200  
-
-    const camera = useRef({ z: 0 })
-
-    useEffect(() => {
-        let raf;
-        const ctx = gsap.context(() => {
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // Instantly reveal all elements for native mobile scrolling
-                gsap.set(introTextRef.current, { opacity: 1, y: 0, scale: 1 });
-                gsap.set(chunkRefs.current, { opacity: 1, filter: 'blur(0px)', scale: 1 });
-                gsap.set(`.${styles.memberRole}, .${styles.memberName}, .${styles.memberSub}, .${styles.chunkTitle}`, { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)', filter: 'blur(0px)' });
-                gsap.set(`.${styles.memberAccentBar}`, { scaleX: 1 });
-                return;
-            }
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: cinematicRef.current,
-                    start: 'top top',
-                    end: `+=${(chunks.length + 1.5) * DEPTH_STEP * 1.0}`,
-                    scrub: true,
-                    pin: true,
-                    snap: {
-                        snapTo: 'labels',
-                        duration: { min: 0.5, max: 1.0 },
-                        delay: 0.05,
-                        ease: 'expo.inOut'
-                    }
-                }
-            })
-            tl.addLabel('start', 0)
-
-            
-            const canvas = canvasRef.current
-            const ctx2d = canvas.getContext('2d')
-            const stars = []
-            const maxZ = 2000
-            const minZ = -(chunks.length + 3) * DEPTH_STEP
-            for (let i = 0; i < 4000; i++) {
-                stars.push({
-                    x: (Math.random() - 0.5) * 8000,
-                    y: (Math.random() - 0.5) * 8000,
-                    z: Math.random() * (maxZ - minZ) + minZ,
-                    size: Math.random() > 0.90 ? Math.random() * 4 + 2 : Math.random() * 2 + 1,
-                    opacity: Math.random() * 0.8 + 0.4
-                })
-            }
-
-            const dotCanvas = document.createElement('canvas')
-            dotCanvas.width = 16
-            dotCanvas.height = 16
-            const dotCtx = dotCanvas.getContext('2d')
-            dotCtx.fillStyle = '#ffffff'
-            dotCtx.beginPath()
-            dotCtx.arc(8, 8, 8, 0, Math.PI * 2)
-            dotCtx.fill()
-
-            const render = () => {
-                if (!canvas) return;
-                if (canvas.width !== window.innerWidth) canvas.width = window.innerWidth;
-                if (canvas.height !== window.innerHeight) canvas.height = window.innerHeight;
-                
-                ctx2d.clearRect(0, 0, canvas.width, canvas.height)
-                const cx = canvas.width / 2
-                const cy = canvas.height / 2
-                const fl = 900 // matches CSS perspective
-                const camZ = camera.current.z
-                
-                ctx2d.fillStyle = '#ffffff'
-                for (let i = 0; i < stars.length; i++) {
-                    const s = stars[i]
-                    const z = s.z + camZ
-                    if (z >= fl) continue;
-                    
-                    const scale = fl / (fl - z)
-                    const px = cx + s.x * scale
-                    const py = cy + s.y * scale
-                    
-                    if (px < 0 || px > canvas.width || py < 0 || py > canvas.height) continue;
-                    
-                    ctx2d.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
-                    const r = s.size * scale * 0.5
-                    
-                    ctx2d.beginPath()
-                    ctx2d.arc(px, py, Math.max(0.5, r), 0, Math.PI * 2)
-                    ctx2d.fill()
-                }
-                raf = requestAnimationFrame(render)
-            }
-            raf = requestAnimationFrame(render)
-
-            gsap.set(introTextRef.current, { xPercent: -50, yPercent: -50 })
-
-            tl.to(introTextRef.current, {
-                opacity: 0,
-                y: -50,
-                scale: 1.1,
-                duration: 1.5,
-                ease: 'power2.in',
-            })
-            tl.addLabel('intro_end')
-
-            chunks.forEach((chunk, i) => {
-                const targetZ = (i + 1) * DEPTH_STEP
-                const chunkEl = chunkRefs.current[i]
-
-                tl.to(stageRef.current, {
-                    z: targetZ,
-                    duration: i === 0 ? 1.0 : 2.0,
-                    ease: 'power2.inOut',
-                }, i === 0 ? '-=0.2' : '-=0.5')
-
-                tl.to(camera.current, {
-                    z: targetZ,
-                    duration: i === 0 ? 1.0 : 2.0,
-                    ease: 'power2.inOut',
-                }, i === 0 ? '-=0.2' : '<')
-
-                tl.fromTo(chunkEl, {
-                    opacity: 0,
-                    filter: 'blur(20px)',
-                    scale: 0.9,
-                }, {
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    scale: 1,
-                    duration: 1.0,
-                    ease: 'power2.out',
-                }, '<+0.4')
-
-                if (chunk.type === 'members') {
-                    const accents = chunkEl.querySelectorAll(`.${styles.memberAccentBar}`)
-                    const roles = chunkEl.querySelectorAll(`.${styles.memberRole}`)
-                    const names = chunkEl.querySelectorAll(`.${styles.memberName}`)
-                    const subs = chunkEl.querySelectorAll(`.${styles.memberSub}`)
-
-                    if (accents.length) {
-                        tl.fromTo(accents,
-                            { scaleX: 0 },
-                            { scaleX: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.2'
-                        )
-                    }
-                    if (roles.length) {
-                        tl.fromTo(roles,
-                            { y: 15, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.1'
-                        )
-                    }
-                    if (names.length) {
-                        tl.fromTo(names,
-                            { opacity: 0, y: 20 },
-                            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.1'
-                        )
-                    }
-                    if (subs.length) {
-                        tl.fromTo(subs,
-                            { y: 10, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
-                            '<+0.1'
-                        )
-                    }
-                } else if (chunk.type === 'title') {
-                    const titleWord = chunkEl.querySelector(`.${styles.chunkTitle}`)
-                    if (titleWord) {
-                        tl.fromTo(titleWord,
-                            { opacity: 0, y: 30, filter: 'blur(10px)' },
-                            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out' },
-                            '<+0.1'
-                        )
-                    }
-                }
-
-                tl.addLabel(`chunk_${i}_focus`)
-                tl.to({}, { duration: 0.1 })
-
-                if (i < chunks.length - 1) {
-                    tl.to(chunkEl, {
-                        opacity: 0,
-                        filter: 'blur(15px)',
-                        scale: 1.1,
-                        duration: 0.8,
-                        ease: 'power2.inOut',
-                    }, '-=0.1')
-                }
-
-            })
-
-        }, cinematicRef)
-
-        return () => {
-            cancelAnimationFrame(raf)
-            ctx.revert()
-        }
-    }, [chunks.length])
+    const openGroup = open && groups.find(g => g.id === open.committee)
+    const openId = openGroup ? openGroup.members[open.index].id : null
 
     return (
-        <section id="my-team-section" className={styles.cinematicContainer} ref={cinematicRef}>
-            <div className={styles.bgGlow1} />
-            <div className={styles.bgGlow2} />
-            <div className={styles.particles} />
-            <canvas 
-                ref={canvasRef} 
-                style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0 }}
-            />
+        <div className={styles.page}>
+            <div className={styles.bgGlow1} aria-hidden="true" />
+            <div className={styles.bgGlow2} aria-hidden="true" />
 
-
-            <div className={styles.introText} ref={introTextRef}>
+            <header className={styles.landing}>
                 <span className={styles.introEyebrow}>VED · MIT Bangalore · 2026</span>
-                <span className={styles.introWord}>OUR</span>
-                <span className={styles.introWord}>TEAM</span>
-            </div>
-
-            <div className={styles.perspectiveViewport}>
-                <div
-                    className={styles.stage}
-                    ref={stageRef}
-                    style={{ transform: 'translateZ(0px)' }}
-                >
-                    
-
-                    {chunks.map((chunk, i) => {
-                        const worldZ = -(i + 1) * DEPTH_STEP
-                        return (
-                            <div
-                                key={chunk.id}
-                                className={styles.chunkWrapper}
-                                ref={el => chunkRefs.current[i] = el}
-                                style={{
-                                    transform: `translate(-50%, -50%) translateZ(${worldZ}px)`,
-                                }}
-                            >
-                                {chunk.type === 'members' && chunk.members.map((member) => (
-                                    <div 
-                                        key={member.id} 
-                                        className={styles.memberCardInner}
-                                        onClick={() => setSelected(member)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {member.photo ? (
-                                            <img
-                                                src={member.photo}
-                                                alt={member.name}
-                                                className={styles.memberPhoto}
-                                                style={{ objectPosition: member.bgPos || member.photoPosition || 'center 20%' }}
-                                            />
-                                        ) : (
-                                            <div className={styles.memberPhotoPlaceholder}>
-                                                <span className={styles.memberPhotoInitials}>{member.initials}</span>
-                                            </div>
-                                        )}
-
-                                        <div className={styles.memberLabel}>
-                                            <div className={styles.memberAccentBar} style={{ transform: 'scaleX(0)' }} />
-                                            <span className={styles.memberRole} style={{ opacity: 0 }}>
-                                                {member.role}
-                                            </span>
-                                            <div className={styles.memberNameClip}>
-                                                <h3 className={styles.memberName} style={{ opacity: 0 }}>
-                                                    {member.name}
-                                                </h3>
-                                            </div>
-                                            {(member.oneLiner || member.qual) && (
-                                                <p className={styles.memberSub} style={{ opacity: 0 }}>
-                                                    {member.oneLiner || member.qual}
-                                                </p>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-
-                                {chunk.type === 'title' && (
-                                    <div className={styles.chunkTitleClip}>
-                                        <h2 className={styles.chunkTitle} style={{ opacity: 0 }}>
-                                            {chunk.text}
-                                        </h2>
-                                    </div>
-                                )}
-                            </div>
-                        )
-                    })}
+                <h1 className={styles.introTitle}>
+                    <span className={styles.introLine}><span>Our</span></span>
+                    <span className={styles.introLine}><span>Team</span></span>
+                </h1>
+                <div className={styles.scrollHint} aria-hidden="true">
+                    <span className={styles.scrollHintLine} />
+                    scroll to explore
+                    <span className={styles.scrollHintLine} />
                 </div>
-            </div>
+            </header>
 
-            <div className={styles.scrollHint}>
-                <span className={styles.scrollHintLine} />
-                scroll to explore
-                <span className={styles.scrollHintLine} />
-            </div>
+            {groups.map((g, gi) => (
+                <Committee
+                    key={g.id}
+                    index={gi}
+                    title={g.title}
+                    members={g.members}
+                    openId={openId}
+                    registerCard={registerCard}
+                    onOpen={id => setOpen({ committee: g.id, index: g.members.findIndex(m => m.id === id) })}
+                />
+            ))}
 
-            {selected && createPortal(
-                <Popup member={selected} onClose={() => setSelected(null)} />,
+            {openGroup && createPortal(
+                <MemberSheet
+                    list={openGroup.members}
+                    index={open.index}
+                    committeeTitle={openGroup.title}
+                    getCard={getCard}
+                    onIndex={i => setOpen(o => ({ ...o, index: i }))}
+                    onClosed={() => setOpen(null)}
+                />,
                 document.body
             )}
-        </section>
+        </div>
     )
 }

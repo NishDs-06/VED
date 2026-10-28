@@ -259,7 +259,9 @@ export default function Events() {
         window.addEventListener('resize', handleResize)
 
         const stars = []
-        for (let i = 0; i < 4000; i++) {
+        // Phones get fewer stars; density stays similar on the smaller screen
+        const starCount = window.innerWidth <= 768 ? 1200 : 2500
+        for (let i = 0; i < starCount; i++) {
             stars.push({
                 x: (Math.random() - 0.5) * 4000,
                 y: (Math.random() - 0.5) * 4000,
@@ -311,7 +313,8 @@ export default function Events() {
                 ctx2d.globalAlpha = Math.max(0, Math.min(1, s.opacity * scale))
                 const r = s.size * scale * 0.5
                 const size = Math.max(1, r * 2)
-                ctx2d.drawImage(dotCanvas, 0, 0, 16, 16, px - r, py - r, size, size)
+                if (size < 2.5) ctx2d.fillRect(px - r, py - r, size, size)
+                else ctx2d.drawImage(dotCanvas, 0, 0, 16, 16, px - r, py - r, size, size)
             }
             raf = requestAnimationFrame(render)
         }
@@ -380,7 +383,7 @@ export default function Events() {
                             </div>
                             <div className={styles.itemMeta}>
                                 <div>{event.type}</div>
-                                <div style={{ color: 'rgba(255,255,255,0.4)', marginTop: '4px', fontSize: '0.8rem' }}>{event.location}</div>
+                                <div style={{ color: 'rgba(255,255,255,0.72)', marginTop: '4px', fontSize: '0.8rem' }}>{event.location}</div>
                             </div>
                         </div>
                     ))}

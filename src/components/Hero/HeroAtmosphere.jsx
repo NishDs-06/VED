@@ -136,11 +136,20 @@ export default function HeroAtmosphere({ heroRef }) {
             rafId = requestAnimationFrame(loop)
         }
 
-        function onVis() {
-            if (document.hidden) { alive = false; cancelAnimationFrame(rafId) }
-            else { alive = true; rafId = requestAnimationFrame(loop) }
+        // Only draw while the tab is visible and the hero is on screen
+        let onScreen = true
+        function pause() { alive = false; cancelAnimationFrame(rafId) }
+        function resume() {
+            if (alive || !onScreen || document.hidden) return
+            alive = true; rafId = requestAnimationFrame(loop)
         }
+        function onVis() { document.hidden ? pause() : resume() }
         document.addEventListener('visibilitychange', onVis)
+        const io = new IntersectionObserver(([entry]) => {
+            onScreen = entry.isIntersecting
+            onScreen ? resume() : pause()
+        })
+        io.observe(canvas)
 
         let resizeTimer
         function onResize() {
@@ -161,6 +170,7 @@ export default function HeroAtmosphere({ heroRef }) {
             cancelAnimationFrame(rafId)
             clearTimeout(resizeTimer)
             document.removeEventListener('visibilitychange', onVis)
+            io.disconnect()
             window.removeEventListener('resize', onResize)
         }
     }, [])

@@ -79,13 +79,21 @@
 }
 
 @media (max-width: 768px) {
+    .campusSection {
+        height: 100svh;
+    }
+
+    .videoWrapper {
+        height: 100svh;
+    }
+
     .textContainer {
         width: 90vw;
         right: 5vw;
         left: 5vw;
         top: 50%;
         transform: translateY(0);
-        gap: 16px;
+        gap: 12px;
     }
     
     .title {
